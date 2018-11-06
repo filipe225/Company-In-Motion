@@ -1,6 +1,6 @@
 <template>
 
-    <v-card>
+    <v-card transition="slide-x-reverse-transition">
         
         <v-toolbar color="orange darken-2" dark>
             <v-toolbar-title>Tasks</v-toolbar-title>
