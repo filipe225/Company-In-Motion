@@ -4,25 +4,20 @@
         <v-toolbar color="orange darken-1" dark>
             <v-toolbar-title>Notes</v-toolbar-title>
             <v-spacer></v-spacer>
-            <v-btn icon @click="showNewTaskForm">
+            <v-btn icon @click="showNewNoteForm">
                 <v-icon>add_circle</v-icon>
             </v-btn>
         </v-toolbar>
-        <v-layout row v-if="newTask">
-            <v-flex d-flex xs12>
-                <v-textarea outline
-                    name="inputNewNote" 
-                    hint="note content" 
-                    v-model="newTaskContent">
-                </v-textarea>                
-            </v-flex>
-            <v-flex d-flex xs12>
-                <v-btn icon @click="addNewTask">
-                    <v-icon>check_circle</v-icon>
-                </v-btn>                
-            </v-flex>
-            
-            <v-divider></v-divider>
+        <v-layout row v-if="newNote">
+            <v-form ref="form" v-model="valid" lazy-validation>
+                <v-text-field
+                    v-model="newNoteContent"
+                    label="Name"
+                    required></v-text-field>
+               
+                <v-btn :disabled="!valid" @click.prevent="addNewNote">submit</v-btn>
+                <v-btn @click="clear">clear</v-btn>
+            </v-form>
         </v-layout>
 
         <v-list two-line>
@@ -30,15 +25,11 @@
             <v-list-tile :key="item.title" avatar ripple>
 
                 <v-list-tile-content>
-                    <v-list-tile-sub-title>
-                        {{ item.content }}
-                    </v-list-tile-sub-title>
-                    <v-list-tile-action-text v-text="item.content"></v-list-tile-action-text>
+                    <v-list-tile-action>{{ item.date }}</v-list-tile-action>
+                    <v-list-tile-action-text>
+                        <v-card-text> {{ item.content }} </v-card-text>
+                    </v-list-tile-action-text>
                 </v-list-tile-content>
-
-                <v-list-tile-action>
-                    <v-list-tile-action-text>{{ item.date }}</v-list-tile-action-text>
-                </v-list-tile-action>
 
             </v-list-tile>
 
@@ -53,8 +44,9 @@
 export default {
     data () {
         return {
-            newTask: true,
-            newTaskContent: ""
+            newNote: true,
+            newNoteContent: "",
+            valid: true
         }
     },
 
@@ -69,11 +61,16 @@ export default {
     },
 
     methods: {
-        addNewTask: function() {
-            console.log(this.newTaskContent);
+        addNewNote: function() {
+            //if (this.$refs.form.validate()) {}
+            console.log(this.newNoteContent);
+            alert("hehe");
         },
-        showNewTaskForm: function() {
-            this.newTask = !this.newTask;
+        showNewNoteForm: function() {
+            this.newNote = !this.newNote;
+        },
+        clear: function() {
+            this.$refs.form.reset()
         }
     }
 }

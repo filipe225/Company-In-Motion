@@ -1,6 +1,6 @@
 <template>
-    <div>
-        <v-navigation-drawer v-model="sideNav">
+    <v-layout>
+        <v-navigation-drawer absolute temporary v-model="sideNav">
             <v-list>
                 <v-list-tile>
                     <v-list-tile-action>
@@ -17,24 +17,32 @@
             </v-list>
         </v-navigation-drawer>
         <v-toolbar>
-            <v-toolbar-side-icon  @click.native.stop="sideNav = !sideNav"></v-toolbar-side-icon>
-            <v-toolbar-title>Title</v-toolbar-title>
+            <v-toolbar-side-icon class="hidden-md-and-up" @click.native.stop="sideNav = !sideNav"></v-toolbar-side-icon>
+            <v-toolbar-title>
+                <router-link to="/" tag="span" style="cursor: pointer"> Title </router-link>
+            </v-toolbar-title>
             <v-spacer></v-spacer>
             <v-toolbar-items class="hidden-sm-and-down">
-                <v-btn flat><router-link to="/">Home</router-link></v-btn>
-                <v-btn flat><router-link to="/timeline">TimeLine</router-link></v-btn>
+                <v-btn flat><router-link to="/" tag="span">Home</router-link></v-btn>
+                <v-btn flat><router-link to="/timeline" tag="span">TimeLine</router-link></v-btn>
             </v-toolbar-items>
         </v-toolbar>
-    </div>
+    </v-layout>
 </template>
 
 <script>
 export default {
-    name: 'navbar',
-    data: function() {
-        return {
-            sideNav: false
-        }
-    }
-}
+  name: "navbar",
+  data: function() {
+    return {
+      sideNav: false,
+      menuItems: [
+        { icon: "supervisor_account", title: "Tasks", link: "" },
+        { icon: "supervisor_account", title: "Project", link: "" },
+        { icon: "supervisor_account", title: "Sign In", link: "" },
+        { icon: "supervisor_account", title: "Register", link: "" }
+      ]
+    };
+  }
+};
 </script>
