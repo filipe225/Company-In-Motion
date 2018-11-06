@@ -21,7 +21,7 @@
                                             label="Password"
                                             required>
                                         </v-text-field>
-                                        <v-btn large @click="userSignIn">Sign In</v-btn>
+                                        <v-btn large @click="userSignIn" class="mx-0 right">Sign In</v-btn>
                                     </v-form>
                                 </v-flex>
                                 <v-flex xs12 v-else>
@@ -46,6 +46,7 @@
                                             label="Confirm Password"
                                             required>
                                         </v-text-field>
+                                        <v-btn large @click="userRegister" class="mx-0 right">Register</v-btn>
                                     </v-form>
                                 </v-flex>
                             </v-layout>
@@ -62,7 +63,7 @@
 export default {
   data: function() {
     return {
-        isSigningIn: true,
+        isSigningIn: false,
         signinValid: true,
         registerValid: true,
         signin: {
@@ -74,7 +75,7 @@ export default {
             password: "",
             passwordRules: [
                 v => !!v || "Password is required",
-                v => v.length <=6 || "Password must have at least 7 characters"
+                v => v.length > 6 || "Password must have at least 7 characters"
             ]
         },
         register: {
@@ -86,12 +87,7 @@ export default {
             password: "",
             passwordRules: [
                 v => !!v || "Password is required",
-                v => v.length <=6 || "Password must have at least 7 characters"
-            ],
-            confirmPassword: "",
-            confirmPasswordRules: [
-                v => !!v || "Password is required",
-                v => v.length <=6 || "Password must have at least 7 characters"
+                v => v.length > 6 || "Password must have at least 7 characters"
             ]
         }
     };
@@ -112,6 +108,17 @@ export default {
               email: this.signin.email,
               password: this.signin.password
           })
+      },
+      userRegister: function() {
+          console.log( {
+              email: this.register.email,
+              password: this.register.password,
+              confirmPassword: this.register.confirmPassword
+          });
+          this.$store.dispatch('firebaseRegisterUser', {
+                                    email: this.register.email,
+                                    password: this.register.password,
+                                })
       }
   }
 };

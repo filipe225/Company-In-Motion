@@ -25,18 +25,47 @@
 
 <script>
 export default {
-  name: "navbar",
-  data: function() {
-    return {
-      sideNav: false,
-      menuItems: [
-        { icon: "supervisor_account", title: "Tasks", link: "/tasks" },
-        { icon: "supervisor_account", title: "Project", link: "/project" },        
-        { icon: "supervisor_account", title: "Timeline", link: "/timeline" },
-        { icon: "supervisor_account", title: "Sign In", link: "/signin" }
+    name: "navbar",
+    data: function() {
+        return {
+        sideNav: false
+        };
+    },
 
-      ]
-    };
-  }
+    computed: {
+        menuItems: function() {
+            let menuItems = [];
+            if(this.isUserAuthenticated) {
+                menuItems = [
+                    { icon: "supervisor_account", title: "Tasks", link: "/tasks" },
+                    { icon: "supervisor_account", title: "Project", link: "/project" },        
+                    { icon: "supervisor_account", title: "Timeline", link: "/timeline" },
+                    { icon: "supervisor_account", title: "Sign Out", link: "/signout" }
+                ]
+            }else {
+                menuItems = [
+                    { icon: "supervisor_account", title: "About Us", link: "/about_us" },  
+                    { icon: "supervisor_account", title: "Contact Us", link: "/contact_us" },
+                    { icon: "supervisor_account", title: "Sign In", link: "/signin" }
+                ]
+            }
+            return menuItems;
+        },
+        isUserAuthenticated: function() {
+            return this.$store.getters.isUserAuthenticated;
+        }
+    },
+    
+    created: function() {
+
+    },
+     
+    methods: {
+
+    },
+
+    watch: {}
+
+
 };
 </script>
