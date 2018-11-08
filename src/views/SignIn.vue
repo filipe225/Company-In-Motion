@@ -6,7 +6,8 @@
                     <v-card-text>
                         <v-container>
                             <v-layout row>
-                                <v-flex xs12 v-if="isSigningIn"> 
+                                <v-flex xs12>
+                                    <h1>Sign In</h1>
                                     <v-form v-model="signinValid">     
                                         <v-text-field
                                             v-model="signin.email"
@@ -24,31 +25,6 @@
                                         <v-btn large @click="userSignIn" class="mx-0 right">Sign In</v-btn>
                                     </v-form>
                                 </v-flex>
-                                <v-flex xs12 v-else>
-                                    <v-form v-model="registerValid">                   
-                                        <v-text-field
-                                            v-model="register.email"
-                                            v-bind:rules="register.emailRules"
-                                            label="E-mail"
-                                            required>
-                                        </v-text-field>
-                                        <v-text-field
-                                            type="password"
-                                            v-model="register.password"
-                                            v-bind:rules="register.passwordRules"
-                                            label="Password"
-                                            required>
-                                        </v-text-field>
-                                        <v-text-field
-                                            type="password"
-                                            v-model="register.confirmPassword"
-                                            v-bind:rules="[comparePasswords]"
-                                            label="Confirm Password"
-                                            required>
-                                        </v-text-field>
-                                        <v-btn large @click="userRegister" class="mx-0 right">Register</v-btn>
-                                    </v-form>
-                                </v-flex>
                             </v-layout>
                         </v-container>
                     </v-card-text>
@@ -61,66 +37,52 @@
 
 <script>
 export default {
-  data: function() {
-    return {
-        isSigningIn: false,
-        signinValid: true,
-        registerValid: true,
-        signin: {
-            email: "",
-            emailRules: [
-            v => !!v || "E-mail is required",
-            v => /.+@.+/.test(v) || "E-mail must be valid"
-            ],
-            password: "",
-            passwordRules: [
-                v => !!v || "Password is required",
-                v => v.length > 6 || "Password must have at least 7 characters"
-            ]
-        },
-        register: {
-            email: "",
-            emailRules: [
-            v => !!v || "E-mail is required",
-            v => /.+@.+/.test(v) || "E-mail must be valid"
-            ],
-            password: "",
-            passwordRules: [
-                v => !!v || "Password is required",
-                v => v.length > 6 || "Password must have at least 7 characters"
-            ]
+    data: function() {
+        return {
+            signinValid: true,
+            signin: {
+                email: "",
+                emailRules: [
+                v => !!v || "E-mail is required",
+                v => /.+@.+/.test(v) || "E-mail must be valid"
+                ],
+                password: "",
+                passwordRules: [
+                    v => !!v || "Password is required",
+                    v => v.length > 6 || "Password must have at least 7 characters"
+                ]
+            }
+        };
+    },
+
+    computed: {  
+        user: function() {
+            return this.$store.getters.getUser
         }
-    };
-  },
+    },
 
-  computed: {
-      comparePasswords: function() {
-          return this.register.password !== this.register.confirmPassword ?
-                    "Password do not match!" : "";
-      }
-  },
+    watch: {
+        user: function(value) {
+            if(value !== null) {
+                this.$router.push('/');
+            }
+        }
+    },
 
-  created: function() {},
+    created: function() {},
 
-  methods: {
-      userSignIn: function() {
-          console.log( {
-              email: this.signin.email,
-              password: this.signin.password
-          })
-      },
-      userRegister: function() {
-          console.log( {
-              email: this.register.email,
-              password: this.register.password,
-              confirmPassword: this.register.confirmPassword
-          });
-          this.$store.dispatch('firebaseRegisterUser', {
-                                    email: this.register.email,
-                                    password: this.register.password,
-                                })
-      }
-  }
+    methods: {
+        userSignIn: function() {
+            console.log( {
+                email: this.signin.email,
+                password: this.signin.password
+            })
+            this.$store.dispatch('firebaseSignInUser', {
+                email: this.signin.email,
+                password: this.signin.password
+            });
+        }
+    }
 };
 </script>
 

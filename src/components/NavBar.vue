@@ -46,7 +46,8 @@ export default {
                 menuItems = [
                     { icon: "supervisor_account", title: "About Us", link: "/about_us" },  
                     { icon: "supervisor_account", title: "Contact Us", link: "/contact_us" },
-                    { icon: "supervisor_account", title: "Sign In", link: "/signin" }
+                    { icon: "supervisor_account", title: "Sign In", link: "/signin" },
+                    { icon: "supervisor_account", title: "Register", link: "/register" }
                 ]
             }
             return menuItems;

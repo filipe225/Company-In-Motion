@@ -1,0 +1,19 @@
+
+USERS:
+    user_uid:
+        email: _
+        password: _
+        created_in: _
+        last_login: _
+        project: _
+        notes: []
+
+PROJECTS:
+    project_uid:
+        name: _
+        created_in: _
+        admin: _
+        associates: []
+        client: []
+        tasks: []
+        projections: []
