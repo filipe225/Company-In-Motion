@@ -24,7 +24,16 @@ new Vue({
         databaseURL: "https://companysimplify-1992.firebaseio.com",
         projectId: "companysimplify-1992",
         storageBucket: "companysimplify-1992.appspot.com"
+    });
+    firebase.auth().onAuthStateChanged( user => {
+        if (user) {
+            this.$store.dispatch('firebaseAutoSignIn', user);
+        }
     })
+    //this.$store.dispatch('loadNotes');
+    //this.$store.dispatch('loadProjects');
+    //this.$store.dispatch('loadProfile');
+
   }
 }).$mount('#app')
 

@@ -21,20 +21,21 @@
             </v-flex>
         </v-layout>
 
-        <v-list two-line>
+        <v-list three-line> 
             <template v-for="(item, index) in items">
-                <v-list-tile :key="item.title" avatar ripple>
-
+                <v-list-tile  :key="item.title" ripple>
                     <v-list-tile-content>
-                        <v-list-tile-action>{{ item.date }}</v-list-tile-action>
-                        <v-list-tile-action-text>
-                            <v-card-text> {{ item.content }} </v-card-text>
-                        </v-list-tile-action-text>
+                        <small>{{ item.date }}</small>
+                        <p>{{ item.content }}</p>
                     </v-list-tile-content>
-
+                    <v-list-tile-action>
+                        <v-btn icon><v-icon>edit</v-icon></v-btn>
+                        <v-btn icon><v-icon>delete_forever</v-icon></v-btn>
+                    </v-list-tile-action>
                 </v-list-tile>
 
                 <v-divider v-if="index + 1 < items.length" :key="index"></v-divider>
+
             </template>
         </v-list>
     </v-card>
@@ -45,7 +46,7 @@
 export default {
     data () {
         return {
-            newNote: true,
+            newNote: false,
             newNoteContent: "",
             valid: true
         }
@@ -77,3 +78,23 @@ export default {
 }
 
 </script>
+
+
+<style scoped>
+    .v-list__tile__action .v-btn--icon {
+        margin: -3px;
+    }
+    .auto-height {
+        height: auto!important;
+        padding-top: 10px;
+        padding-bottom: 10px;
+    }
+    .v-list--two-line .v-list__tile {
+        height: auto!important;
+    }
+    .v-list__tile__title, .v-list__tile__sub-title {
+        white-space: normal;
+        overflow: visible;
+        text-overflow: initial;
+    }
+</style>

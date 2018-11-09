@@ -13,6 +13,15 @@ export default {
     },
 
     actions: {
+        firebaseAutoSignIn: function({commit}, payload) {
+            commit('setUser', payload);
+        },
+
+        firebaseUserLogout: function({commit}) {
+            firebase.auth().signOut();
+            commit('setUser', null);
+        },
+
         firebaseSignInUser: function({commit}, payload) {
             firebase.auth().signInWithEmailAndPassword(payload.email, payload.password)
                 .then( user => {
@@ -37,6 +46,8 @@ export default {
                     console.log(error);
                 })
         }
+    
+
     },
 
     getters: {
