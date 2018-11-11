@@ -28,10 +28,12 @@ new Vue({
     firebase.auth().onAuthStateChanged( user => {
         if (user) {
             this.$store.dispatch('firebaseAutoSignIn', user);
+            this.$store.dispatch('firebaseGetUserDB');
+            this.$store.dispatch('firebaseLoadProjects');
         }
     })
-    //this.$store.dispatch('loadNotes');
-    //this.$store.dispatch('loadProjects');
+    console.log("El store", this.$store);
+    
     //this.$store.dispatch('loadProfile');
 
   }

@@ -17,6 +17,8 @@
     .texto-secundario {
         color: rgba(0, 0, 0, 0.6);
     }
+
+    .v-messages__message { color: red; }
 </style>
 
 

@@ -139,7 +139,7 @@ export default {
 
     computed: {
         items () {
-            return this.$store.getters.getNotes
+            return this.$store.getters.getNotes  
         }
     },
 

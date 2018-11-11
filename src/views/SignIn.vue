@@ -8,7 +8,7 @@
                             <v-layout row>
                                 <v-flex xs12>
                                     <h1>Sign In</h1>
-                                    <v-form v-model="signinValid">     
+                                    <v-form v-model="signinValid" class="mt-4">     
                                         <v-text-field
                                             v-model="signin.email"
                                             v-bind:rules="signin.emailRules"
@@ -22,7 +22,7 @@
                                             label="Password"
                                             required>
                                         </v-text-field>
-                                        <v-btn large @click="userSignIn" class="mx-0 right">Sign In</v-btn>
+                                        <v-btn large @click="userSignIn" dark class="mx-0 right teal darken-1">Sign In</v-btn>
                                     </v-form>
                                 </v-flex>
                             </v-layout>

@@ -7,6 +7,7 @@ import Home from './views/Home.vue'
 import Timeline from "./views/Timeline.vue"
 import SignIn from './views/SignIn.vue'
 import Register from './views/Register.vue'
+import Tasks from './views/Tasks.vue'
 import Projects from './views/Projects.vue'
 import ApproveFile from './views/ApproveFile.vue'
 
@@ -28,6 +29,12 @@ export default new Router({
         path: '/register',
         name: 'register',
         component: Register
+    },
+    {
+        path: '/tasks',
+        name: 'tasks',
+        component: Tasks,
+        beforeEnter: AuthGuard
     },
     {
         path: '/projects',
