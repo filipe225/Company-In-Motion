@@ -4,6 +4,7 @@ import ModuleNotes from "./ModuleNotes.js"
 import ModuleTasks from "./ModuleTasks.js"
 import Registration_SignIn from './ModuleRegistration_SignIn.js'
 import ModuleProjects from './ModuleProjects.js'
+import ModuleGlobalData from './ModuleGlobalData.js'
 
 Vue.use(Vuex)
 
@@ -12,6 +13,7 @@ export default new Vuex.Store({
         user:   Registration_SignIn,
         projects: ModuleProjects,
         notes:  ModuleNotes,
-        tasks:  ModuleTasks
+        tasks:  ModuleTasks,
+        global: ModuleGlobalData
     }
 })

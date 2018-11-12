@@ -1,8 +1,14 @@
 <template>
-  <div id="app">
-      <navbar></navbar>
-      <router-view />
-  </div>
+    <div id="app">
+        <v-app>
+            <navbar></navbar>
+            <v-content>
+                <my-alert></my-alert>
+                <router-view />
+            </v-content>
+            <footer-bar></footer-bar>          
+        </v-app>
+    </div>
 </template>
 
 <style>

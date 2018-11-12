@@ -43,7 +43,7 @@ export default new Router({
         beforeEnter: AuthGuard
     },
     {
-        path: '/projects/project_name/file_approval',
+        path: '/projects/:project_name/file_approval',
         name: 'file_approval',
         component: ApproveFile,
         beforeEnter: AuthGuard

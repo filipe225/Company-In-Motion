@@ -1,84 +1,129 @@
 <template>
-    <v-container fluid>
-        <!-- MODAL NEW PROJECT -->
-        <v-dialog v-model="newProjectCreation" persistent max-width="600px">
-            <v-card>
-                <v-card-title>
-                    <span class="headline">New Project Creation</span>
-                </v-card-title>
-                <v-card-text>
-                <v-container grid-list-md>
-                    <v-layout wrap>
-                        <v-flex xs12>
-                            <v-text-field label="Project Title*" required v-model="project_creation.title"></v-text-field>
-                        </v-flex>
-                        <v-flex xs12>
-                            <v-textarea 
-                                label="Project Description*" 
-                                required
-                                v-model="project_creation.description"></v-textarea>
-                        </v-flex>
-                    </v-layout>
-                </v-container>
-                <small>*indicates required field</small>
-                </v-card-text>
-                <v-card-actions>
-                <v-spacer></v-spacer>
-                <v-btn color="blue darken-1" flat @click.native="newProjectCreation = false">Close</v-btn>
-                <v-btn color="teal darken-1" flat @click="createNewProject">Create</v-btn>
-                </v-card-actions>
-            </v-card>
-        </v-dialog>
+    <v-layout row wrap>
+        <v-container fluid>
 
-        <v-layout row wrap>
-            <v-flex xs12 sm4 offset-sm3 v-if="projects.length === 0 && userDB.type === 'admin'">
-                <p> NO PROJECTS CREATED. CREATE A NEW ONE</p>
-                <v-btn @click="newProjectCreation = true">CREATE PROJECT</v-btn>
-            </v-flex>
-            <v-flex xs12 sm4 offset-sm3 v-else-if="projects.length === 0 && userDB.type === 'associate'">
-                <p> NO PROJECTS JOINED. ASSOCIATE TO A NEW ONE</p>
-                <v-btn @click="newProjectCreation = true">ASSOCIATE PROJECT</v-btn>
-            </v-flex>
-            <v-flex xs12 sm4 offset-sm3 v-if="projects.length === 0 && userDB.type === 'client'">
-                <p> NO PROJECTS JOINED. BECOME THE CLIENT OF A NEW ONE</p>
-                <v-btn @click="newProjectCreation = true">JOIN PROJECT</v-btn>
-            </v-flex>
-            <v-flex xs12 sm4 offset-sm1 v-else v-for="(project, index) in projects" v-bind:key="index">
-                <v-card  class="my-3">
-
-                    <v-toolbar color="orange darken-1" dark>
-                        <v-toolbar-title>{{ project.name }}</v-toolbar-title>
-                        <v-spacer></v-spacer>
-                        <small>{{ project.date }}</small>
-                    </v-toolbar>
-                    <v-list>
-                        <v-list-tile>
-                            <v-list-tile-title>
-                                Client: {{ project.client.name}}
-                            </v-list-tile-title>
-                        </v-list-tile>
-                        <v-divider></v-divider>
-                        <v-list-tile v-for="(associate, i) in project.associates" v-bind:key="i">
-                            <v-list-tile-title>
-                                Associate: {{ associate.name }}
-                            </v-list-tile-title>
-                        </v-list-tile>
-                        <v-divider></v-divider>
-                        <v-list-tile>
-                            <v-list-tile-title>
-                                Files to Approve: {{ project.filesAwatingApproval }}
-                            </v-list-tile-title>
-                        </v-list-tile>
-                        <v-list-tile>
-                            <v-list-tile-title>
-                                Files Approved: {{ project.filesApproved }}
-                            </v-list-tile-title>
-                        </v-list-tile>
-                    </v-list>
+            <!-- MODAL NEW PROJECT -->
+            <v-dialog v-model="newProjectCreation" persistent max-width="600px">
+                <v-card>
+                    <v-card-title>
+                        <span class="headline">New Project Creation</span>
+                    </v-card-title>
+                    <v-card-text>
+                    <v-container grid-list-md>
+                        <v-layout wrap>
+                            <v-flex xs12>
+                                <v-text-field label="Project Name *" required v-model="project_creation.name"></v-text-field>
+                            </v-flex>
+                            <v-flex xs12>
+                                <v-textarea 
+                                    label="Project Description *" 
+                                    required
+                                    v-model="project_creation.description"></v-textarea>
+                            </v-flex>
+                        </v-layout>
+                    </v-container>
+                    <small>*indicates required field</small>
+                    </v-card-text>
+                    <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn color="blue darken-1" flat @click.native="newProjectCreation = false">Close</v-btn>
+                    <v-btn color="teal darken-1" flat @click="createNewProject">Create</v-btn>
+                    </v-card-actions>
                 </v-card>
-            </v-flex>
-        </v-layout>
-    </v-container>
+            </v-dialog>
+
+            <v-layout row>
+                <v-btn @click="showProjects">Mostra</v-btn>
+            </v-layout>
+            
+
+            <v-layout row wrap>
+                <v-flex xs12 sm4 offset-sm3 v-if="projects.length === 0 && userDB.type === 'admin'">
+                    <p> NO PROJECTS CREATED. CREATE A NEW ONE</p>
+                    <v-btn @click="newProjectCreation = true">CREATE PROJECT</v-btn>
+                </v-flex>
+                <v-flex xs12 sm4 offset-sm3 v-else-if="projects.length === 0 && userDB.type === 'associate'">
+                    <p> NO PROJECTS JOINED. ASSOCIATE TO A NEW ONE</p>
+                    <v-btn @click="newProjectCreation = true">ASSOCIATE PROJECT</v-btn>
+                </v-flex>
+                <v-flex xs12 sm4 offset-sm3 v-if="projects.length === 0 && userDB.type === 'client'">
+                    <p> NO PROJECTS JOINED. BECOME THE CLIENT OF A NEW ONE</p>
+                    <v-btn @click="newProjectCreation = true">JOIN PROJECT</v-btn>
+                </v-flex>
+                <v-flex xs12 sm6  v-for="(project, index) in projects" v-bind:key="index">
+                    <v-card class="orange darken-1" dark>
+                        <v-card-title>
+                            <span class="headline">{{ project.name}}</span>
+
+                            <v-spacer></v-spacer>
+
+                            <v-menu bottom right>
+                                <v-btn slot="activator" dark icon>
+                                    <v-icon>more_vert</v-icon>
+                                </v-btn>
+
+                                <v-list>
+                                    <v-list-tile v-if="userDB.type === 'admin'">
+                                        <v-btn>Invite Client</v-btn>
+                                    </v-list-tile>
+                                    <v-list-tile v-if="userDB.type === 'admin'">
+                                        <v-btn>Invite Associate</v-btn>
+                                    </v-list-tile>
+                                    <v-list-tile v-if="userDB.type === 'admin' || userDB.type === 'associate'">
+                                        <router-link v-bind:to="'/projects/' + project.name + '/file_approval'">File to Approval</router-link>
+                                    </v-list-tile>
+                                    <v-list-tile v-if="userDB.type === 'admin' || userDB.type === 'associate'">
+                                        <v-btn>View Tasks</v-btn>
+                                    </v-list-tile>
+                                    <v-list-tile v-if="userDB.type === 'client'" >
+                                        <router-link v-bind:to="'/projects/' + project.name + '/file_approval'">Approve File</router-link>
+                                    </v-list-tile>
+                                    <v-list-tile>
+                                        <v-btn>Project Files</v-btn>
+                                    </v-list-tile>
+                                    <v-list-tile v-if="userDB.type === 'admin'">
+                                        <v-btn small>Delete Project</v-btn>
+                                    </v-list-tile>
+                                </v-list>
+                            </v-menu>
+                        </v-card-title>
+                        <v-list>
+                            <v-list-tile>
+                                {{ project.description }}
+                            </v-list-tile>
+                            <v-list-tile>
+                                Clients:
+                                <v-list-tile-title v-for="(client, index) in project.clients" v-bind:key="index">
+                                    {{ project.client.name}}
+                                </v-list-tile-title>
+                            </v-list-tile>
+                            <v-divider></v-divider>
+                            <v-list-tile >
+                                Associates:
+                                <v-list-tile-title v-for="(associate, i) in project.associates" v-bind:key="i">
+                                    {{ associate.name }}
+                                </v-list-tile-title>
+                            </v-list-tile>
+                            <!--
+                            <v-divider></v-divider>
+                            <v-list-tile>
+                                <v-list-tile-title>
+                                    Files to Approve: {{ project.filesAwatingApproval }}
+                                </v-list-tile-title>
+                            </v-list-tile>
+                            <v-list-tile>
+                                <v-list-tile-title>
+                                    Files Approved: {{ project.filesApproved }}
+                                </v-list-tile-title>
+                            </v-list-tile>
+                            -->
+                        </v-list>
+                    </v-card>
+                </v-flex>
+            </v-layout>
+
+        </v-container>
+    </v-layout>
 </template>
 
 
@@ -94,19 +139,25 @@ export default {
     data: function() {
         return {
             newProjectCreation: false,
-            projects: [],
             project_creation: {
-                title: '',
-                description: '',
-                clients: [],
-                associates: []
-            }
+                name: '',
+                description: ''
+            },
+            items: [
+                { title: 'Click Me' },
+                { title: 'Click Me' },
+                { title: 'Click Me' },
+                { title: 'Click Me 2' }
+            ]
         }
     },
     
     computed: {
         userDB: function() {
             return this.$store.getters.getUserDB;
+        },
+        projects: function() {
+            return this.$store.getters.getProjects;
         }
     },
 
@@ -116,7 +167,14 @@ export default {
 
     methods: {
         createNewProject: function() {
-            console.log("New Project");
+            let project =  {
+                name: this.project_creation.name,
+                description: this.project_creation.description
+            }
+            this.$store.dispatch('firebaseAddNewProject', project);
+        },
+        showProjects: function() {
+            console.log(this.projects);
         }
     }
 }

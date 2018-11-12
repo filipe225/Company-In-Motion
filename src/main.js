@@ -7,9 +7,13 @@ import * as firebase from 'firebase'
 
 import navbar from './components/NavBar'
 //import Footer from './components/Footer'
+import Alert from './components/AlertHttpResponse.vue'
+import Footer from './components/Footer.vue'
 
 
 Vue.component('navbar', navbar)
+Vue.component('my-alert', Alert)
+Vue.component('footer-bar', Footer)
 
 Vue.config.productionTip = false
 
@@ -29,7 +33,7 @@ new Vue({
         if (user) {
             this.$store.dispatch('firebaseAutoSignIn', user);
             this.$store.dispatch('firebaseGetUserDB');
-            this.$store.dispatch('firebaseLoadProjects');
+            this.$store.dispatch('firebaseLoadProjects');     
         }
     })
     console.log("El store", this.$store);
