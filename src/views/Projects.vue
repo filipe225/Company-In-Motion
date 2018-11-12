@@ -32,11 +32,6 @@
                 </v-card>
             </v-dialog>
 
-            <v-layout row>
-                <v-btn @click="showProjects">Mostra</v-btn>
-            </v-layout>
-            
-
             <v-layout row wrap>
                 <v-flex xs12 sm4 offset-sm3 v-if="projects.length === 0 && userDB.type === 'admin'">
                     <p> NO PROJECTS CREATED. CREATE A NEW ONE</p>
@@ -50,7 +45,7 @@
                     <p> NO PROJECTS JOINED. BECOME THE CLIENT OF A NEW ONE</p>
                     <v-btn @click="newProjectCreation = true">JOIN PROJECT</v-btn>
                 </v-flex>
-                <v-flex xs12 sm6  v-for="(project, index) in projects" v-bind:key="index">
+                <v-flex xs12 sm4 offset-sm1  v-for="(project, index) in projects" v-bind:key="index">
                     <v-card class="orange darken-1" dark>
                         <v-card-title>
                             <span class="headline">{{ project.name}}</span>
@@ -64,25 +59,33 @@
 
                                 <v-list>
                                     <v-list-tile v-if="userDB.type === 'admin'">
-                                        <v-btn>Invite Client</v-btn>
+                                        <v-btn flat>Invite Client</v-btn>
                                     </v-list-tile>
+                                    <v-divider></v-divider>
                                     <v-list-tile v-if="userDB.type === 'admin'">
-                                        <v-btn>Invite Associate</v-btn>
+                                        <v-btn flat>Invite Associate</v-btn>
                                     </v-list-tile>
+                                    <v-divider></v-divider>
                                     <v-list-tile v-if="userDB.type === 'admin' || userDB.type === 'associate'">
-                                        <router-link v-bind:to="'/projects/' + project.name + '/file_approval'">File to Approval</router-link>
+                                        <v-btn flat>
+                                            <router-link tag="span" v-bind:to="'/projects/' + project.name + '/file_approval'">
+                                            File to Approval</router-link>
+                                        </v-btn>
                                     </v-list-tile>
+                                    <v-divider></v-divider>
                                     <v-list-tile v-if="userDB.type === 'admin' || userDB.type === 'associate'">
-                                        <v-btn>View Tasks</v-btn>
+                                        <v-btn flat>View Tasks</v-btn>
                                     </v-list-tile>
+                                    <v-divider></v-divider>
                                     <v-list-tile v-if="userDB.type === 'client'" >
                                         <router-link v-bind:to="'/projects/' + project.name + '/file_approval'">Approve File</router-link>
                                     </v-list-tile>
+                                    <v-divider></v-divider>
                                     <v-list-tile>
-                                        <v-btn>Project Files</v-btn>
+                                        <v-btn flat>Project Files</v-btn>
                                     </v-list-tile>
                                     <v-list-tile v-if="userDB.type === 'admin'">
-                                        <v-btn small>Delete Project</v-btn>
+                                        <v-btn flat>Delete Project</v-btn>
                                     </v-list-tile>
                                 </v-list>
                             </v-menu>

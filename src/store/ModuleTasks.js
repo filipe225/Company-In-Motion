@@ -101,6 +101,106 @@ export default {
                 creator: 'Filipe',
                 assignee: 'Filipe',
                 status: task_status.indexOf("done")
+            },
+            {
+                id: 6,
+                title: 'Tasks #1',
+                content: lorem.slice(0, 20),
+                date: new Date().toDateString("yyyy-MM-dd hh:mm"),
+                deadline: null,
+                creator: 'Filipe',
+                assignee: 'Filipe',
+                status: task_status.indexOf("backlog")
+            },
+            {
+                id: 7,
+                title: 'Tasks #2',
+                content: lorem.slice(0, 20),
+                date: new Date().toDateString("yyyy-MM-dd hh:mm"),
+                deadline: null,
+                creator: 'Filipe',
+                assignee: 'Filipe',
+                status: task_status.indexOf("backlog")
+            },
+            {
+                id: 8,
+                title: 'Tasks #3',
+                content: lorem.slice(0, 20),
+                date: new Date().toDateString("yyyy-MM-dd hh:mm"),
+                deadline: null,
+                creator: 'Filipe',
+                assignee: 'Filipe',
+                status: task_status.indexOf("in progress")
+            },
+            {
+                id: 9,
+                title: 'Tasks #4',
+                content: lorem.slice(0, 20),
+                date: new Date().toDateString("yyyy-MM-dd hh:mm"),
+                deadline: null,
+                creator: 'Filipe',
+                assignee: 'Filipe',
+                status: task_status.indexOf("development")
+            },
+            {
+                id: 5,
+                title: 'Tasks #5',
+                content: lorem.slice(0, 20),
+                date: new Date().toDateString("yyyy-MM-dd hh:mm"),
+                deadline: null,
+                creator: 'Filipe',
+                assignee: 'Filipe',
+                status: task_status.indexOf("done")
+            },
+            {
+                id: 1,
+                title: 'Tasks #1',
+                content: lorem.slice(0, 20),
+                date: new Date().toDateString("yyyy-MM-dd hh:mm"),
+                deadline: null,
+                creator: 'Filipe',
+                assignee: 'Filipe',
+                status: task_status.indexOf("backlog")
+            },
+            {
+                id: 2,
+                title: 'Tasks #2',
+                content: lorem.slice(0, 20),
+                date: new Date().toDateString("yyyy-MM-dd hh:mm"),
+                deadline: null,
+                creator: 'Filipe',
+                assignee: 'Filipe',
+                status: task_status.indexOf("backlog")
+            },
+            {
+                id: 3,
+                title: 'Tasks #3',
+                content: lorem.slice(0, 20),
+                date: new Date().toDateString("yyyy-MM-dd hh:mm"),
+                deadline: null,
+                creator: 'Filipe',
+                assignee: 'Filipe',
+                status: task_status.indexOf("in progress")
+            },
+            {
+                id: 4,
+                title: 'Tasks #4',
+                content: lorem.slice(0, 20),
+                date: new Date().toDateString("yyyy-MM-dd hh:mm"),
+                deadline: null,
+                creator: 'Filipe',
+                assignee: 'Filipe',
+                status: task_status.indexOf("development")
+            },
+            {
+                id: 5,
+                title: 'Tasks #5',
+                content: lorem.slice(0, 20),
+                date: new Date().toDateString("yyyy-MM-dd hh:mm"),
+                deadline: null,
+                creator: 'Filipe',
+                assignee: 'Filipe',
+                status: task_status.indexOf("done")
             }
         ]
     },
