@@ -1,5 +1,5 @@
 <template>
-    <v-alert v-model="show" dismissible class="fix-alert">
+    <v-alert v-model="show" dismissible class="fix-alert" type="success">
         {{msg}}
     </v-alert>
 </template>
@@ -41,7 +41,7 @@ export default {
                 setTimeout(function() {
                     this.show = false;
                     this.msg = "";
-                }, 2000);
+                }.bind(this), 2000);
             },
             deep: true
         }

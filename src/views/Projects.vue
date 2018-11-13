@@ -2,6 +2,24 @@
     <v-layout row wrap>
         <v-container fluid>
 
+            <v-dialog v-model="dialogNewUser" max-width="500px">
+                <v-card>
+                    <v-card-title>
+                        <span class="headline">Invite User</span>
+                    </v-card-title>
+                    <v-card-text>
+                        <v-text-field
+                            v-model="newUserEmail"
+                            label="Email"
+                        ></v-text-field>
+                    </v-card-text>
+                    <v-card-actions>
+                        <v-btn flat @click="dialogNewUser=false">Close</v-btn>
+                        <v-btn color="primary" flat @click="inviteUser">Send Invite</v-btn>
+                    </v-card-actions>
+                </v-card>
+            </v-dialog>
+
             <!-- MODAL NEW PROJECT -->
             <v-dialog v-model="newProjectCreation" persistent max-width="600px">
                 <v-card>
@@ -59,11 +77,17 @@
 
                                 <v-list>
                                     <v-list-tile v-if="userDB.type === 'admin'">
-                                        <v-btn flat>Invite Client</v-btn>
+                                        <v-btn  
+                                            ref="invite_client"
+                                            v-bind:data-projectName="project.name" 
+                                            @click="dialogNewUser = true" flat>Invite Client</v-btn>
                                     </v-list-tile>
                                     <v-divider></v-divider>
                                     <v-list-tile v-if="userDB.type === 'admin'">
-                                        <v-btn flat>Invite Associate</v-btn>
+                                        <v-btn 
+                                            ref="invite_associate"
+                                            v-bind:data-projectName="project.name" 
+                                            @click="dialogNewUser = true" flat>Invite Associate</v-btn>
                                     </v-list-tile>
                                     <v-divider></v-divider>
                                     <v-list-tile v-if="userDB.type === 'admin' || userDB.type === 'associate'">
@@ -74,18 +98,26 @@
                                     </v-list-tile>
                                     <v-divider></v-divider>
                                     <v-list-tile v-if="userDB.type === 'admin' || userDB.type === 'associate'">
-                                        <v-btn flat>View Tasks</v-btn>
+                                        <v-btn flat>
+                                            <router-link tag="span" v-bind:to="'/projects/' + project.name + '/project_tasks'">View Tasks</router-link> 
+                                        </v-btn>    
                                     </v-list-tile>
                                     <v-divider></v-divider>
                                     <v-list-tile v-if="userDB.type === 'client'" >
-                                        <router-link v-bind:to="'/projects/' + project.name + '/file_approval'">Approve File</router-link>
+                                        <v-btn flat>
+                                            <router-link tag="span" v-bind:to="'/projects/' + project.name + '/file_approval'">Approve File</router-link> 
+                                        </v-btn>    
                                     </v-list-tile>
                                     <v-divider></v-divider>
                                     <v-list-tile>
-                                        <v-btn flat>Project Files</v-btn>
+                                        <v-btn flat>
+                                            <router-link tag="span" v-bind:to="'/projects/' + project.name + '/project_files'">Project Files</router-link> 
+                                        </v-btn>    
                                     </v-list-tile>
+                                    <v-divider></v-divider>
                                     <v-list-tile v-if="userDB.type === 'admin'">
-                                        <v-btn flat>Delete Project</v-btn>
+                                        <v-btn flat>
+                                            <router-link tag="span" @click="dialogDeleteProject = true">Delete Project</router-link></v-btn>
                                     </v-list-tile>
                                 </v-list>
                             </v-menu>
@@ -141,6 +173,9 @@ const event = {
 export default {
     data: function() {
         return {
+            dialogDeleteProject: false,
+            dialogNewUser: false,
+            newUserEmail: '',
             newProjectCreation: false,
             project_creation: {
                 name: '',
@@ -176,8 +211,28 @@ export default {
             }
             this.$store.dispatch('firebaseAddNewProject', project);
         },
+        inviteAssociate: function() {
+            console.log(this.$refs);
+            let projectName = this.$refs.invite_associate[0].$el.dataset.projectname;
+            let obj =  {
+                mail_to: this.newUserEmail,
+                project_name: projectName,
+                main_link: "http://localhost:8080/" + projectName + "/invitation"             
+            };
+            console.log(obj);
+            this.$store.dispatch('firebaseInviteAssociateClient', obj)
+        },
+        inviteClient: function() {
+
+        },
+        inviteUser: function() {
+            console.log(this.newUserEmail);
+        },
         showProjects: function() {
             console.log(this.projects);
+        },
+        deleteProject: function() {
+            console.log("deleteProject");
         }
     }
 }

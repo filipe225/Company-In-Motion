@@ -1,13 +1,12 @@
 
 <template>
   <v-timeline>
-    <v-timeline-item v-for="(year, i) in years" :color="year.color" :key="i" small>
-      <span slot="opposite" :class="`headline font-weight-bold ${year.color}--text`" v-text="year.year"></span>
+    <v-timeline-item v-for="(event, i) in events" :color="event.color" :key="i" small>
+      <span slot="opposite" :class="`headline font-weight-bold ${event.color}--text`" v-text="event.date"></span>
       <div class="py-3">
-        <h2 :class="`headline font-weight-light mb-3 ${year.color}--text`">Lorem ipsum</h2>
+        <!--<h2 :class="`headline font-weight-light mb-3 ${event.color}--text`">{{ event.date }}</h2>-->
         <div>
-            Lorem ipsum dolor sit amet, no nam oblique veritus. Commune scaevola imperdiet nec ut, sed euismod convenire principes at. 
-            Est et nobis iisque percipit, an vim zril disputando voluptatibus, vix an salutandi sententiae.
+            <p>{{ event.event }}</p>.
         </div>
       </div>
     </v-timeline-item>
@@ -17,26 +16,31 @@
 <script>
 export default {
     data: () => ({
-        years: [
+        events: [
             {
                 color: 'cyan',
-                year: '1960'
+                date: new Date().toDateString('yyyy-MM-dd hh:mm:ss'),
+                event: 'Project Cargobid created'
             },
             {
                 color: 'green',
-                year: '1970'
+                date: new Date().toDateString('yyyy-MM-dd hh:mm:ss'),
+                event: 'File #1 to Approval'
             },
             {
                 color: 'pink',
-                year: '1980'
+                date: new Date().toDateString('yyyy-MM-dd hh:mm:ss'),
+                event: 'File #2 to Approval'
             },
             {
                 color: 'amber',
-                year: '1990'
+                date: new Date().toDateString('yyyy-MM-dd hh:mm:ss'),
+                event: 'Approved File #1'
             },
             {
                 color: 'orange',
-                year: '2000'
+                date: new Date().toDateString('yyyy-MM-dd hh:mm:ss'),
+                event: 'Approved File #2'
             }
             ]
     }),

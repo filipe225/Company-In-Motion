@@ -1,42 +1,56 @@
 <template>
     <v-container fluid grid-list-md>
         <v-layout row wrap>
-            <v-flex xs12 sm9>
+            <v-flex sm5 class="hidden-xs-only">
                 <v-card class="pa-3">
-                    <v-form ref="form" v-model="valid" lazy-validation>
-                        <v-text-field
-                            v-model="title"
-                            label="Title"
-                            required></v-text-field>
-                        <v-textarea
-                            v-model="description"
-                            label="Description"
-                            required></v-textarea>
-                        <v-layout row>
-                            <v-flex x12>
-                                <v-btn raised @click="pickFile"> Upload File</v-btn>
-                                <label>{{ imageFileName }}</label>
-                                <input ref="fileInput" 
-                                    type="file"
-                                    required
-                                    accept="image/*"
-                                    style="display: none"
-                                    @change="onFilePicked" />
-                            </v-flex>
-                        </v-layout>
-                        <v-layout row>
-                            <v-flex x12>
-                                <img v-bind:src="imageUrl" style="width: 200px; height: 200px;border: 1px solid black;" />
-                            </v-flex>
-                        </v-layout>
-                        <v-btn type="submit" primary @click.prevent="newFileToApproval">Submit</v-btn>
-                        <v-btn type="reset" info>Reset</v-btn>
-                    </v-form>
+                    <v-card-title primary-title>
+                        <span class="headline">{{ project_name }}</span>
+                    </v-card-title>
+                    <project-timeline v-bind:timeline="timeline"></project-timeline>
                 </v-card>
             </v-flex>
-            <v-flex sm3 class="hidden-xs">
-                <v-card>
-                    INFORMAÇÃO DO CLIENTE ???
+            <v-flex xs12 sm7>
+                <v-card class="pa-3">
+                    <v-card-title primary-title>
+                        <span class="headline">{{ project_name}}</span>
+                    </v-card-title>
+                    <v-layout row>
+                        <v-flex xs12 md8 offset-md2>
+                            <v-form ref="form" v-model="valid" lazy-validation>
+                                <v-text-field
+                                    v-model="title"
+                                    label="Title"
+                                    required></v-text-field>
+                                <v-textarea
+                                    v-model="description"
+                                    label="Description"
+                                    required></v-textarea>
+                                <v-layout row>
+                                    <v-flex x12>
+                                        <v-btn raised @click="pickFile" class="ml-0"> Upload File</v-btn>
+                                        <label>{{ imageFileName }}</label>
+                                        <input ref="fileInput" 
+                                            type="file"
+                                            required
+                                            accept="image/*"
+                                            style="display: none"
+                                            @change="onFilePicked" />
+                                    </v-flex>
+                                </v-layout>
+                                <v-layout row>
+                                    <v-flex x12>
+                                        <img v-bind:src="imageUrl" style="width: 200px; height: 200px;border: 1px solid black;" />
+                                    </v-flex>
+                                </v-layout>
+                                <v-layout row>
+                                    <v-flex x12>
+                                        <v-btn type="reset" info class="left">Reset</v-btn>
+                                        <v-btn type="submit" primary @click.prevent="newFileToApproval" class="right">Submit</v-btn>
+                                    </v-flex>
+                                </v-layout>
+                            </v-form>                            
+                        </v-flex>
+                    </v-layout>
                 </v-card>
             </v-flex>
         </v-layout>
@@ -45,10 +59,13 @@
 
 
 <script>
+import timeline from '@/components/Timeline.vue'
+
 export default {  
     data: function() {
         return {
             valid: true,
+            project_name: '',
             title: null,
             description: null,
             imageUrl: null,
@@ -66,7 +83,11 @@ export default {
     },
 
     created: function() {
+        this.project_name = this.$route.params.project_name;
+    },
 
+    components: {
+        projectTimeline: timeline
     },
 
     methods: {
@@ -74,6 +95,7 @@ export default {
             if(!this.title || !this.description || !this.image) return;
 
             const newApproval = {
+                project_name: this.project_name,
                 title: this.title,
                 description: this.description,
                 image: this.image

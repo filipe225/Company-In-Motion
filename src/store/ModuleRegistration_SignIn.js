@@ -59,7 +59,9 @@ export default {
                                 .then(response => {
                                     console.log(response);
                                     response.forEach( doc => {
-                                        commit('setLoadedProject', doc.data());                                       
+                                        let id = doc.id;
+                                        let data = doc.data();
+                                        commit('setLoadedProject', {id, ...data});                                       
                                     });
                                     commit('setNewHttpCall', {response: 200, msg: 'Projects loaded'})
                                 })

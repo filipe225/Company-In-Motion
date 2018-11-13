@@ -30,7 +30,8 @@ filesApproved: 4
 */
 
 class Project {
-    constructor(n, desc, adminID) {
+    constructor(n, desc, adminID, firebaseUID) {
+        this.id = firebaseUID || "";
         this.name = n;
         this.description = desc;
         this.date = new Date().toISOString();
@@ -79,36 +80,6 @@ export default {
 
     actions: {
         firebaseLoadProjects: function ({ commit, getters }, payload) {
-            const signed_user = getters.getUser;
-            const proj_refs = firebase.firestore().collection('projects')
-            let projects = null;
-            switch (signed_user.type) {
-                case "admin":
-                    projects = proj_refs.where('admin', '==', signed_user.uid);
-                    break;
-                case "associate":
-                    projects = proj_refs.where('associates', 'array-contains', signed_user.uid);
-                    break;
-                case "client":
-                    projects = proj_refs.where('clients', 'array-contains', signed_user.uid);
-                    break;
-                default:
-                    return;
-                    break;
-            }
-
-            projects.get()
-                .then(response => {
-                    console.log(response);
-                    commit('setProjects', projects);
-                    commit('setNewHttpCall', {response: 200, msg: 'Projects loaded'})
-                })
-                .catch(error => {
-                    console.log(error);
-                    commit('setNewHttpCall', {response: 500, msg: 'Error loading projects'})
-                });
-
-
         },
 
         firebaseAddNewProject: function ({ commit, getters }, payload) {
@@ -129,13 +100,41 @@ export default {
 
         },
 
-        firebaseNewFileToApproval: function ({ commit }, payload) {
-            const filename = payload.image.name;
-            //const project_id = payload.id
-            const reference = firebase.firestore().collection('projects');
+        firebaseNewFileToApproval: function ({ commit, getters }, payload) {
+            let projects = getters.getProjects;
+            let project_index = projects.findIndex( project => project.name === payload.project_name);
+            let project_id = projects[project_index].id;
+            const reference = firebase.storage().ref(project_id)
             reference.put(payload.image)
-                .then(fileData => console.log(fileData))
+                .then(fileData => console.log("firebaseNewFileToApproval", fileData))
                 .catch(error => console.log(error));
+        },
+
+        firebaseInviteAssociateClient: function({commit}, payload) {
+            fetch('https://us-central1-companysimplify-1992.cloudfunctions.net/inviteAssociateClient' +
+                    '?mail_to=' + payload.mail_to +
+                    '&project_name=' + payload.project_name +
+                    '&main_link=' + payload.main_link , {
+                method: "POST", // *GET, POST, PUT, DELETE, etc.
+                mode: "cors", // no-cors, cors, *same-origin
+                cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
+                credentials: "same-origin", // include, *same-origin, omit
+                headers: {
+                    "Content-Type": "application/json; charset=utf-8",
+                    // "Content-Type": "application/x-www-form-urlencoded",
+                },
+                redirect: "follow", // manual, *follow, error
+                referrer: "no-referrer", // no-referrer, *client
+                body: JSON.stringify(payload), // body data type must match "Content-Type" header           
+            })
+            .then(response => {
+                if(response.status === 200) {
+                    commit('setNewHttpCall', { response: "success", msg: "Email sent"})
+                }
+            })
+            .catch( error => {
+                commit('setNewHttpCall', { response: "error", msg: "Error sending email. Please try again."})
+            })
         }
     },
 

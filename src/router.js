@@ -10,6 +10,8 @@ import Register from './views/Register.vue'
 import Tasks from './views/Tasks.vue'
 import Projects from './views/Projects.vue'
 import ApproveFile from './views/ApproveFile.vue'
+import ProjectFiles from './views/ProjectFiles.vue'
+import ProjectTasks from './views/ProjectTasks.vue'
 
 Vue.use(Router)
 
@@ -40,6 +42,18 @@ export default new Router({
         path: '/projects',
         name: 'projects',
         component: Projects,
+        beforeEnter: AuthGuard
+    },
+    {
+        path: '/projects/:project_name/project_tasks',
+        name: 'project_tasks',
+        component: ProjectTasks,
+        beforeEnter: AuthGuard
+    },
+    {
+        path: '/projects/:project_name/project_files',
+        name: 'project_files',
+        component: ProjectFiles,
         beforeEnter: AuthGuard
     },
     {
