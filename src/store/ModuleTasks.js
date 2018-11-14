@@ -143,7 +143,7 @@ export default {
                 status: task_status.indexOf("development")
             },
             {
-                id: 5,
+                id: 10,
                 title: 'Tasks #5',
                 content: lorem.slice(0, 20),
                 date: new Date().toDateString("yyyy-MM-dd hh:mm"),
@@ -153,7 +153,7 @@ export default {
                 status: task_status.indexOf("done")
             },
             {
-                id: 1,
+                id: 11,
                 title: 'Tasks #1',
                 content: lorem.slice(0, 20),
                 date: new Date().toDateString("yyyy-MM-dd hh:mm"),
@@ -163,7 +163,7 @@ export default {
                 status: task_status.indexOf("backlog")
             },
             {
-                id: 2,
+                id: 12,
                 title: 'Tasks #2',
                 content: lorem.slice(0, 20),
                 date: new Date().toDateString("yyyy-MM-dd hh:mm"),
@@ -173,7 +173,7 @@ export default {
                 status: task_status.indexOf("backlog")
             },
             {
-                id: 3,
+                id: 13,
                 title: 'Tasks #3',
                 content: lorem.slice(0, 20),
                 date: new Date().toDateString("yyyy-MM-dd hh:mm"),
@@ -183,7 +183,7 @@ export default {
                 status: task_status.indexOf("in progress")
             },
             {
-                id: 4,
+                id: 14,
                 title: 'Tasks #4',
                 content: lorem.slice(0, 20),
                 date: new Date().toDateString("yyyy-MM-dd hh:mm"),
@@ -193,7 +193,7 @@ export default {
                 status: task_status.indexOf("development")
             },
             {
-                id: 5,
+                id: 15,
                 title: 'Tasks #5',
                 content: lorem.slice(0, 20),
                 date: new Date().toDateString("yyyy-MM-dd hh:mm"),

@@ -3,23 +3,32 @@
         <v-footer app fixed dark height="auto">
             <v-card class="flex" flat tile>
                 <v-card-title class="teal">
-                    <strong class="subheading">Get connected with us on social networks!</strong>
+                    <strong class="subheading">
+                        <v-layout row wrap>
+                            <v-flex xs12 sm8>
+                                Do you use this website regularly?<br/>
+                                Then consider donating. It would help me to continue to improve its features.
+                            </v-flex>
+                            <v-flex xs12 sm4>
+                                <v-btn large class="indigo darken-1">DONATE</v-btn>
+                            </v-flex>
+                        </v-layout>
+                    </strong>
 
                     <v-spacer></v-spacer>
 
                     <v-btn
-                    v-for="icon in icons"
-                    :key="icon"
-                    class="mx-3"
-                    dark
-                    icon
-                    >
-                    <v-icon size="24px">{{ icon }}</v-icon>
+                        v-for="link in links"
+                        :key="link"
+                        color="white"
+                        flat
+                        round>
+                        {{ link }}
                     </v-btn>
                 </v-card-title>
 
                 <v-card-actions class="grey darken-3 justify-center">
-                    &copy;2018 — <strong>Vuetify</strong>
+                    &copy;2018 — <strong><v-btn flat href="www.linkedin.com" style="text-decoration: underline;">@ Filipe Sousa</v-btn></strong>
                 </v-card-actions>
             </v-card>
         </v-footer>
@@ -29,13 +38,11 @@
 <script>
   export default {
     data: () => ({
-      icons: [
-        'fab fa-facebook',
-        'fab fa-twitter',
-        'fab fa-google-plus',
-        'fab fa-linkedin',
-        'fab fa-instagram'
-      ]
+        links: [
+            'Home',
+            'About Us',
+            'Contact Us'
+        ]
     })
   }
 </script>

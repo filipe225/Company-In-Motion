@@ -1,19 +1,18 @@
 <template>
     <v-layout>
         <v-container fluid>
+            HOME
             <v-menu offset-y>
                 <v-btn
                     slot="activator"
                     color="primary"
-                    dark
-                >
+                    dark>
                     Dropdown
                 </v-btn>
                 <v-list>
                     <v-list-tile
-                    v-for="(item, index) in items"
-                    :key="index"
-                    >
+                        v-for="(item, index) in items"
+                        :key="index">
                     <v-list-tile-title>{{ item.title }}</v-list-tile-title>
                     </v-list-tile>
                 </v-list>

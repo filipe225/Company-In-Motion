@@ -22,32 +22,38 @@
 
             <!-- MODAL NEW PROJECT -->
             <v-dialog v-model="newProjectCreation" persistent max-width="600px">
-                <v-card>
-                    <v-card-title>
-                        <span class="headline">New Project Creation</span>
-                    </v-card-title>
-                    <v-card-text>
-                    <v-container grid-list-md>
-                        <v-layout wrap>
-                            <v-flex xs12>
-                                <v-text-field label="Project Name *" required v-model="project_creation.name"></v-text-field>
-                            </v-flex>
-                            <v-flex xs12>
-                                <v-textarea 
-                                    label="Project Description *" 
-                                    required
-                                    v-model="project_creation.description"></v-textarea>
-                            </v-flex>
-                        </v-layout>
-                    </v-container>
-                    <small>*indicates required field</small>
-                    </v-card-text>
-                    <v-card-actions>
-                    <v-spacer></v-spacer>
-                    <v-btn color="blue darken-1" flat @click.native="newProjectCreation = false">Close</v-btn>
-                    <v-btn color="teal darken-1" flat @click="createNewProject">Create</v-btn>
-                    </v-card-actions>
-                </v-card>
+                <v-form v-model="newProjectValid">  
+                    <v-card>
+                        <v-card-title>
+                            <span class="headline">New Project Creation</span>
+                        </v-card-title>
+                        <v-card-text>
+                        <v-container grid-list-md>
+                            
+                            <v-layout wrap>
+                                <v-flex xs12>
+                                    <v-text-field label="Project Name *" required 
+                                        v-model="project_creation.name" 
+                                        v-bind:rules="project_creation.nameRules"></v-text-field>
+                                </v-flex>
+                                <v-flex xs12>
+                                    <v-textarea 
+                                        label="Project Description *" 
+                                        required
+                                        v-model="project_creation.description"
+                                        v-bind:rules="project_creation.descriptionRules"></v-textarea>
+                                </v-flex>
+                            </v-layout>
+                        </v-container>
+                        <small>*indicates required field</small>
+                        </v-card-text>
+                        <v-card-actions>
+                        <v-spacer></v-spacer>
+                        <v-btn color="blue darken-1" flat @click.native="newProjectCreation = false">Close</v-btn>
+                        <v-btn color="teal darken-1" flat @click="createNewProject" v-bind:disabled="!newProjectValid">Create</v-btn>
+                        </v-card-actions>
+                    </v-card>
+                </v-form>
             </v-dialog>
 
             <v-layout row wrap>
@@ -62,6 +68,10 @@
                 <v-flex xs12 sm4 offset-sm3 v-if="projects.length === 0 && userDB.type === 'client'">
                     <p> NO PROJECTS JOINED. BECOME THE CLIENT OF A NEW ONE</p>
                     <v-btn @click="newProjectCreation = true">JOIN PROJECT</v-btn>
+                </v-flex>
+                <v-flex xs12 sm4 offset-sm1 v-if="userDB.type === 'admin'">
+                    <p> NO PROJECTS CREATED. CREATE A NEW ONE</p>
+                    <v-btn @click="newProjectCreation = true">CREATE PROJECT</v-btn>
                 </v-flex>
                 <v-flex xs12 sm4 offset-sm1  v-for="(project, index) in projects" v-bind:key="index">
                     <v-card class="orange darken-1" dark>
@@ -99,32 +109,39 @@
                                     <v-divider></v-divider>
                                     <v-list-tile v-if="userDB.type === 'admin' || userDB.type === 'associate'">
                                         <v-btn flat>
-                                            <router-link tag="span" v-bind:to="'/projects/' + project.name + '/project_tasks'">View Tasks</router-link> 
+                                            <router-link tag="span" v-bind:to="'/projects/' + project.name + '/project_tasks'">
+                                                View Tasks</router-link> 
                                         </v-btn>    
                                     </v-list-tile>
                                     <v-divider></v-divider>
                                     <v-list-tile v-if="userDB.type === 'client'" >
                                         <v-btn flat>
-                                            <router-link tag="span" v-bind:to="'/projects/' + project.name + '/file_approval'">Approve File</router-link> 
+                                            <router-link tag="span" v-bind:to="'/projects/' + project.name + '/file_approval'">
+                                                Approve File</router-link> 
                                         </v-btn>    
                                     </v-list-tile>
                                     <v-divider></v-divider>
                                     <v-list-tile>
                                         <v-btn flat>
-                                            <router-link tag="span" v-bind:to="'/projects/' + project.name + '/project_files'">Project Files</router-link> 
+                                            <router-link tag="span" v-bind:to="'/projects/' + project.name + '/project_files'">
+                                                Project Files</router-link> 
                                         </v-btn>    
                                     </v-list-tile>
                                     <v-divider></v-divider>
                                     <v-list-tile v-if="userDB.type === 'admin'">
-                                        <v-btn flat>
-                                            <router-link tag="span" @click="dialogDeleteProject = true">Delete Project</router-link></v-btn>
+                                        <v-btn flat @click="dialogDeleteProject = true">
+                                            Delete Project</v-btn>
                                     </v-list-tile>
                                 </v-list>
                             </v-menu>
                         </v-card-title>
                         <v-list>
                             <v-list-tile>
-                                {{ project.description }}
+                                <v-list-tile-content>
+                                    <v-list-tile-sub-title class="py-1">Description:</v-list-tile-sub-title>
+                                    <v-list-tile-title class="py-1">{{ project.description }}</v-list-tile-title>
+                                    <v-list-tile-sub-title class="py-1"><small>{{ project.date }}</small></v-list-tile-sub-title>
+                                </v-list-tile-content>
                             </v-list-tile>
                             <v-list-tile>
                                 Clients:
@@ -177,9 +194,19 @@ export default {
             dialogNewUser: false,
             newUserEmail: '',
             newProjectCreation: false,
+            newProjectValid: false,
             project_creation: {
                 name: '',
-                description: ''
+                nameRules : [
+                    v => { 
+                        let index = this.projects.findIndex( project => project.name === this.project_creation.name);
+                        return index === -1 || "Name not available. Choose another."; 
+                    }
+                ],
+                description: '',
+                descriptionRules: [
+                    v => !!v || "Description is required"
+                ]
             },
             items: [
                 { title: 'Click Me' },
@@ -203,6 +230,10 @@ export default {
 
     },
 
+    mounted: function() {
+        console.log(this.projects);
+    },
+
     methods: {
         createNewProject: function() {
             let project =  {
@@ -210,6 +241,10 @@ export default {
                 description: this.project_creation.description
             }
             this.$store.dispatch('firebaseAddNewProject', project);
+        },
+        checkNameAvailable: function() {
+            let index = this.projects.findIndex( project => project.name === this.project_creation.name);
+            return index === -1;
         },
         inviteAssociate: function() {
             console.log(this.$refs);
@@ -317,5 +352,7 @@ export default {
 -->
 
 <style scoped>
-
+    .v-card__title {
+        padding: 8px 10px;
+    }
 </style>
