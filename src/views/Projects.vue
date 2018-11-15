@@ -90,20 +90,22 @@
                                         <v-btn  
                                             ref="invite_client"
                                             v-bind:data-projectName="project.name" 
-                                            @click="dialogNewUser = true" flat>Invite Client</v-btn>
+                                            @click="dialogNewUser = true" flat>
+                                                Invite Client</v-btn>
                                     </v-list-tile>
                                     <v-divider></v-divider>
                                     <v-list-tile v-if="userDB.type === 'admin'">
                                         <v-btn 
                                             ref="invite_associate"
                                             v-bind:data-projectName="project.name" 
-                                            @click="dialogNewUser = true" flat>Invite Associate</v-btn>
+                                            @click="dialogNewUser = true" flat>
+                                                Invite Associate</v-btn>
                                     </v-list-tile>
                                     <v-divider></v-divider>
                                     <v-list-tile v-if="userDB.type === 'admin' || userDB.type === 'associate'">
                                         <v-btn flat>
                                             <router-link tag="span" v-bind:to="'/projects/' + project.name + '/file_approval'">
-                                            File to Approval</router-link>
+                                                File to Approval</router-link>
                                         </v-btn>
                                     </v-list-tile>
                                     <v-divider></v-divider>
@@ -138,9 +140,9 @@
                         <v-list>
                             <v-list-tile>
                                 <v-list-tile-content>
-                                    <v-list-tile-sub-title class="py-1">Description:</v-list-tile-sub-title>
-                                    <v-list-tile-title class="py-1">{{ project.description }}</v-list-tile-title>
-                                    <v-list-tile-sub-title class="py-1"><small>{{ project.date }}</small></v-list-tile-sub-title>
+                                    <v-list-tile-sub-title>Description:</v-list-tile-sub-title>
+                                    <v-list-tile-title>{{ project.description }}</v-list-tile-title>
+                                    <v-list-tile-sub-title><small>{{ project.date }}</small></v-list-tile-sub-title>
                                 </v-list-tile-content>
                             </v-list-tile>
                             <v-list-tile>
