@@ -79,6 +79,16 @@ export default {
     },
 
     actions: {
+        firebaseProjectAddUse: function({ commit}, payload) {
+            let ref = firebase.firestore().collection('projects').where('name', '==', payload.project_name)
+            let coiso = ref.get().then( data => {
+
+            })
+            .catch( error => {
+
+            });
+        },
+
         firebaseLoadProjects: function ({ commit, getters }, payload) {
         },
 
@@ -106,7 +116,25 @@ export default {
             let project_id = projects[project_index].id;
             const reference = firebase.storage().ref(project_id)
             reference.put(payload.image)
-                .then(fileData => console.log("firebaseNewFileToApproval", fileData))
+                .then(fileData =>  {
+                    console.log("firebaseNewFileToApproval", fileData)
+                    let fileId = fileData.uid;
+                    let aprovalData = {
+                        fileId: fileId,
+                        title: payload.title,
+                        description: payload.description,
+                        comments: []
+                    }
+                    let ref = firebase.firestore().collection('projects').doc(project_id);
+                    ref.update('files', firebase.firestore.FieldValue.arrayUnion(aprovalData))
+                        .then( response => {
+                            commit('setNewHttpCall', {response: 200, msg: 'Success'})
+                        })
+                        .catch( error => {
+                            console.log(error);
+                            commit('setNewHttpCall', {response: 500, msg: 'Error'})
+                        })
+                })
                 .catch(error => console.log(error));
         },
 

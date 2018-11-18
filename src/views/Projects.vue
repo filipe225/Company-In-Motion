@@ -2,7 +2,7 @@
     <v-layout row wrap>
         <v-container fluid>
 
-            <v-dialog v-model="dialogNewUser" max-width="500px">
+            <v-dialog v-model="dialogNewClient" max-width="500px">
                 <v-card>
                     <v-card-title>
                         <span class="headline">Invite User</span>
@@ -14,8 +14,26 @@
                         ></v-text-field>
                     </v-card-text>
                     <v-card-actions>
-                        <v-btn flat @click="dialogNewUser=false">Close</v-btn>
-                        <v-btn color="primary" flat @click="inviteUser">Send Invite</v-btn>
+                        <v-btn flat @click="dialogNewClient=false">Close</v-btn>
+                        <v-btn color="primary" flat @click="inviteClient">Send Invite</v-btn>
+                    </v-card-actions>
+                </v-card>
+            </v-dialog>
+
+            <v-dialog v-model="dialogNewAssociate" max-width="500px">
+                <v-card>
+                    <v-card-title>
+                        <span class="headline">Invite User</span>
+                    </v-card-title>
+                    <v-card-text>
+                        <v-text-field
+                            v-model="newUserEmail"
+                            label="Email"
+                        ></v-text-field>
+                    </v-card-text>
+                    <v-card-actions>
+                        <v-btn flat @click="dialogNewAssociate=false">Close</v-btn>
+                        <v-btn color="primary" flat @click="inviteAssociate">Send Invite</v-btn>
                     </v-card-actions>
                 </v-card>
             </v-dialog>
@@ -89,16 +107,16 @@
                                     <v-list-tile v-if="userDB.type === 'admin'">
                                         <v-btn  
                                             ref="invite_client"
-                                            v-bind:data-projectName="project.name" 
-                                            @click="dialogNewUser = true" flat>
+                                            v-bind:data-pid="project.id" 
+                                            @click="dialogNewClient = true" flat>
                                                 Invite Client</v-btn>
                                     </v-list-tile>
                                     <v-divider></v-divider>
                                     <v-list-tile v-if="userDB.type === 'admin'">
                                         <v-btn 
                                             ref="invite_associate"
-                                            v-bind:data-projectName="project.name" 
-                                            @click="dialogNewUser = true" flat>
+                                            v-bind:data-pid="project.id" 
+                                            @click="dialogNewAssociate = true" flat>
                                                 Invite Associate</v-btn>
                                     </v-list-tile>
                                     <v-divider></v-divider>
@@ -193,7 +211,8 @@ export default {
     data: function() {
         return {
             dialogDeleteProject: false,
-            dialogNewUser: false,
+            dialogNewClient: false,
+            dialogNewAssociate: false,
             newUserEmail: '',
             newProjectCreation: false,
             newProjectValid: false,
@@ -250,17 +269,24 @@ export default {
         },
         inviteAssociate: function() {
             console.log(this.$refs);
-            let projectName = this.$refs.invite_associate[0].$el.dataset.projectname;
+            let projectID = this.$refs.invite_associate[0].$el.dataset.pid;
             let obj =  {
                 mail_to: this.newUserEmail,
                 project_name: projectName,
-                main_link: "http://localhost:8080/" + projectName + "/invitation"             
+                main_link: "http://localhost:8080/" + projectID + "/associate/invitation/" + this.userDB.id            
             };
             console.log(obj);
             this.$store.dispatch('firebaseInviteAssociateClient', obj)
         },
         inviteClient: function() {
-
+            let projectID = this.$refs.invite_client[0].$el.dataset.pid;
+            let obj =  {
+                mail_to: this.newUserEmail,
+                project_name: projectName,
+                main_link: "http://localhost:8080/" + projectID + "/client/invitation/" + this.userDB.id            
+            };
+            console.log(obj);
+            this.$store.dispatch('firebaseInviteAssociateClient', obj)
         },
         inviteUser: function() {
             console.log(this.newUserEmail);
