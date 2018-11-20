@@ -110,32 +110,26 @@ export default {
 
         },
 
-        firebaseNewFileToApproval: function ({ commit, getters }, payload) {
+        firebaseNewFileToApproval: async function ({ commit, getters }, payload) {
             let projects = getters.getProjects;
             let project_index = projects.findIndex( project => project.name === payload.project_name);
             let project_id = projects[project_index].id;
-            const reference = firebase.storage().ref(project_id)
-            reference.put(payload.image)
-                .then(fileData =>  {
-                    console.log("firebaseNewFileToApproval", fileData)
-                    let fileId = fileData.uid;
-                    let aprovalData = {
-                        fileId: fileId,
-                        title: payload.title,
-                        description: payload.description,
-                        comments: []
-                    }
-                    let ref = firebase.firestore().collection('projects').doc(project_id);
-                    ref.update('files', firebase.firestore.FieldValue.arrayUnion(aprovalData))
-                        .then( response => {
-                            commit('setNewHttpCall', {response: 200, msg: 'Success'})
-                        })
-                        .catch( error => {
-                            console.log(error);
-                            commit('setNewHttpCall', {response: 500, msg: 'Error'})
-                        })
-                })
-                .catch(error => console.log(error));
+            try{
+                let projectRef = firebase.storage().ref().child(project_id + "/" + payload.imageName);
+                let fileData = await projectRef.put(payload.image);
+                let aprovalData = {
+                    fileId: payload.imageName,
+                    title: payload.title,
+                    description: payload.description,
+                    comments: []
+                }
+                let ref = firebase.firestore().collection('projects').doc(project_id);
+                let response = await ref.update('files', firebase.firestore.FieldValue.arrayUnion(aprovalData))
+                commit('setNewHttpCall', {response: 200, msg: 'File Uploaded correctly.'})
+            }catch(error) {
+                console.log(error);
+                commit('setNewHttpCall', {response: 500, msg: 'Error uploading file. Try again or contact support.'})
+            }
         },
 
         firebaseInviteAssociateClient: function({commit}, payload) {
@@ -161,7 +155,7 @@ export default {
                 }
             })
             .catch( error => {
-                commit('setNewHttpCall', { response: "error", msg: "Error sending email. Please try again."})
+                commit('setNewHttpCall', { response: "error", msg: "Error sending email. Try again or contact support."})
             })
         }
     },

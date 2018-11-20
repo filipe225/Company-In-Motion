@@ -1,5 +1,5 @@
 <template>
-    <v-alert v-model="show" dismissible class="fix-alert" type="success">
+    <v-alert v-model="show" dismissible class="fix-alert" v-bind:type="alertType">
         {{msg}}
     </v-alert>
 </template>
@@ -10,7 +10,8 @@ export default {
     data: function() {
         return {
             show: false,
-            msg: ''
+            msg: '',
+            alertType: 'info'
         }
     },
 
@@ -29,13 +30,16 @@ export default {
                     case 200:
                         this.show = true;
                         this.msg = value.msg;
+                        this.alertType = "success";
                         break;
                     case 500:
                         this.show = true;
                         this.msg = value.msg;
+                        this.alertType = "error"
                         break;
                     default:
                         this.show = false;
+                        this.alertType = "info"
                         break;
                 }
                 setTimeout(function() {

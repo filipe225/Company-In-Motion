@@ -76,47 +76,47 @@ export default {
         };
     },
 
-  computed: {
-    comparePasswords: function() {
-      return this.register.password !== this.register.confirmPassword
-        ? "Password do not match!"
-        : "";
+    computed: {
+        comparePasswords: function() {
+        return this.register.password !== this.register.confirmPassword
+            ? "Password do not match!"
+            : "";
+        },
+        user: function() {
+        return this.$store.getters.getUser;
+        }
     },
-    user: function() {
-      return this.$store.getters.getUser;
+
+    watch: {
+        user: function(value) {
+        if (value !== null) {
+            this.$router.push("/signin");
+        }
+        }
+    },
+
+    created: function() {},
+
+    methods: {
+        userRegister: function() {
+            let obj = {
+                displatName: this.register.displayName,
+                email: this.register.email,
+                password: this.register.password,
+                confirmPassword: this.register.confirmPassword,
+                type: this.register.userType
+            }
+            for(let o in obj) {
+                if(!obj[o]) return;
+            }
+            this.$store.dispatch("firebaseRegisterUser", {
+                displayName: obj.displatName,
+                email: obj.email,
+                password: obj.password,
+                type: obj.type
+            });
+        }
     }
-  },
-
-  watch: {
-    user: function(value) {
-      if (value !== null) {
-        this.$router.push("/signin");
-      }
-    }
-  },
-
-  created: function() {},
-
-  methods: {
-    userRegister: function() {
-        let obj = {
-            displatName: this.register.displayName,
-            email: this.register.email,
-            password: this.register.password,
-            confirmPassword: this.register.confirmPassword,
-            type: this.register.userType
-        }
-        for(let o in obj) {
-            if(!obj[o]) return;
-        }
-        this.$store.dispatch("firebaseRegisterUser", {
-            displayName: obj.displatName,
-            email: obj.email,
-            password: obj.password,
-            type: obj.type
-        });
-        }
-  }
 };
 </script>
 

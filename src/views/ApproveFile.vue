@@ -6,7 +6,8 @@
                     <v-card-title primary-title>
                         <span class="headline">{{ project_name }}</span>
                     </v-card-title>
-                    <project-timeline v-bind:timeline="timeline"></project-timeline>
+                    <!--<project-timeline v-bind:timeline="timeline"></project-timeline>-->
+                    <project-timeline></project-timeline>
                 </v-card>
             </v-flex>
             <v-flex xs12 sm7>
@@ -98,7 +99,8 @@ export default {
                 project_name: this.project_name,
                 title: this.title,
                 description: this.description,
-                image: this.image
+                image: this.image,
+                imageName: this.image.name
             }
             console.log(newApproval);
             this.$store.dispatch('firebaseNewFileToApproval', newApproval);

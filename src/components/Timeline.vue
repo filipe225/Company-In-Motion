@@ -1,20 +1,21 @@
 
 <template>
-  <v-timeline>
-    <v-timeline-item v-for="(event, i) in events" :color="event.color" :key="i" small>
-      <span slot="opposite" :class="`headline font-weight-bold ${event.color}--text`" v-text="event.date"></span>
-      <div class="py-3">
-        <!--<h2 :class="`headline font-weight-light mb-3 ${event.color}--text`">{{ event.date }}</h2>-->
-        <div>
-            <p>{{ event.event }}</p>.
+    <v-timeline>
+        <v-timeline-item v-for="(event, i) in events" :color="event.color" :key="i" small>
+        <span slot="opposite" :class="`headline font-weight-bold ${event.color}--text`" v-text="event.date"></span>
+        <div class="py-3">
+            <!--<h2 :class="`headline font-weight-light mb-3 ${event.color}--text`">{{ event.date }}</h2>-->
+            <div>
+                <p>{{ event.event }}</p>.
+            </div>
         </div>
-      </div>
-    </v-timeline-item>
-  </v-timeline>
+        </v-timeline-item>
+    </v-timeline>
 </template>
 
 <script>
 export default {
+    name: 'project-timeline',
     data: () => ({
         events: [
             {
