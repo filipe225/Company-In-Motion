@@ -23,6 +23,10 @@ export default {
     getters: {
         getHttpCallResponse: function(state) {
             return state.newHttpCall;
+        },
+
+        getStorageBaseUrl: function() {
+            return 'gs://companysimplify-1992.appspot.com/';
         }
     }
 }

@@ -1,5 +1,28 @@
 <template>
     <v-container fluid grid-list-md>
+        <v-layout>
+            <!-- FILE UPLOAD PROGRESS -->
+            <v-dialog v-model="dialogFileUpload" max-width="500px">
+                <v-card>
+                    <v-card-title>
+                        <span class="headline">File Uploading Progress</span>
+                    </v-card-title>
+                    <v-card-text class="text-xs-center">
+                        <v-progress-circular
+                            :rotate="-90"
+                            :size="100"
+                            :width="15"
+                            :value="fileUploadProgress"
+                            color="primary">
+                                {{ fileUploadProgress }}
+                        </v-progress-circular>
+                    </v-card-text>
+                    <v-card-actions>
+                        <v-btn flat @click="dialogFileUpload = false;">Close</v-btn>
+                    </v-card-actions>
+                </v-card>
+            </v-dialog>
+        </v-layout>
         <v-layout row wrap>
             <v-flex sm5 class="hidden-xs-only">
                 <v-card class="pa-3">
@@ -17,7 +40,7 @@
                     </v-card-title>
                     <v-layout row>
                         <v-flex xs12 md8 offset-md2>
-                            <v-form ref="form" v-model="valid" lazy-validation>
+                            <v-form ref="form_new_file" v-model="valid" lazy-validation>
                                 <v-text-field
                                     v-model="title"
                                     label="Title"
@@ -63,8 +86,13 @@
 import timeline from '@/components/Timeline.vue'
 
 export default {  
+    components: {
+        projectTimeline: timeline
+    },
+
     data: function() {
         return {
+            dialogFileUpload: false,
             valid: true,
             project_name: '',
             title: null,
@@ -80,15 +108,23 @@ export default {
     },
 
     computed: {
+        fileUploadProgress: function() {
+            return this.$store.getters.getFileUploadProgress;
+        }
+    },
 
+    watch: {
+        fileUploadProgress: function(value) {
+            if(value >= 100) {
+                this.dialogFileUpload = false;
+                this.$refs.form_new_file.reset();
+                this.imageFileName = "";
+            }
+        }
     },
 
     created: function() {
         this.project_name = this.$route.params.project_name;
-    },
-
-    components: {
-        projectTimeline: timeline
     },
 
     methods: {
@@ -103,6 +139,7 @@ export default {
                 imageName: this.image.name
             }
             console.log(newApproval);
+            this.dialogFileUpload = true;
             this.$store.dispatch('firebaseNewFileToApproval', newApproval);
 
         },

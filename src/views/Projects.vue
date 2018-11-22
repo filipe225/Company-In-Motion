@@ -2,6 +2,9 @@
     <v-layout row wrap>
         <v-container fluid>
 
+
+
+            <!-- MODAL INVITE CLIENT -->
             <v-dialog v-model="dialogNewClient" max-width="500px">
                 <v-card>
                     <v-card-title>
@@ -20,6 +23,7 @@
                 </v-card>
             </v-dialog>
 
+            <!-- MODAL INVITE ASSOCIATE -->
             <v-dialog v-model="dialogNewAssociate" max-width="500px">
                 <v-card>
                     <v-card-title>
@@ -91,7 +95,7 @@
                     <p> NO PROJECTS CREATED. CREATE A NEW ONE</p>
                     <v-btn @click="newProjectCreation = true">CREATE PROJECT</v-btn>
                 </v-flex>
-                <v-flex xs12 sm4 offset-sm1  v-for="(project, index) in projects" v-bind:key="index">
+                <v-flex xs12 sm4 offset-sm1  v-for="(project, index) in projects" v-bind:key="index" style="margin-top: 10px; margin-bottom: 10px;">
                     <v-card class="orange darken-1" dark>
                         <v-card-title>
                             <span class="headline">{{ project.name}}</span>
@@ -261,7 +265,7 @@ export default {
                 name: this.project_creation.name,
                 description: this.project_creation.description
             }
-            this.$store.dispatch('firebaseAddNewProject', project);
+            this.$store.dispatch('firebaseCreateNewProject', project);
         },
         checkNameAvailable: function() {
             let index = this.projects.findIndex( project => project.name === this.project_creation.name);

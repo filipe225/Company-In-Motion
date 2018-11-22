@@ -28,7 +28,8 @@ export default {
             commit('setUser', payload);          
         },
 
-        firebaseGetUserDB: function({commit, getters}, payload) {
+        firebaseGetUserDB: function({commit, getters, dispatch}, payload) {
+            console.log(arguments);
             console.log('firebaseGetUserDB');
             const signed_user = getters.getUser;
             console.log()
@@ -61,7 +62,8 @@ export default {
                                     response.forEach( doc => {
                                         let id = doc.id;
                                         let data = doc.data();
-                                        commit('setLoadedProject', {id, ...data});                                       
+                                        commit('setLoadedProject', {id, ...data});   
+                                        dispatch('firebaseLoadProjects');                                   
                                     });
                                     commit('setNewHttpCall', {response: 200, msg: 'Projects loaded'})
                                 })

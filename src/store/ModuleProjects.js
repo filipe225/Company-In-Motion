@@ -39,6 +39,8 @@ class Project {
         this.clients = [];
         this.associates = [];
         this.files = [];
+        this.tasks = [];
+        this.events = [];
     }
 
     getObject() {
@@ -56,7 +58,8 @@ class Project {
 
 export default {
     state: {
-        projects: []
+        projects: [],
+        file_upload_progress: 0
     },
 
     mutations: {
@@ -75,6 +78,10 @@ export default {
 
         setNewFileToApproval: function (state, payload) {
             state.projects.push(payload);
+        },
+        
+        setFileUploadProgress: function(state, payload) {
+            state.file_upload_progress = payload;
         }
     },
 
@@ -90,40 +97,82 @@ export default {
         },
 
         firebaseLoadProjects: function ({ commit, getters }, payload) {
+            console.log("firebaseLoadProjects");
+            let projects = getters.getProjects;
+            projects = projects.reduce((a, b) => {
+                a.push(b.id);
+                return a;
+            }, []);
+            console.log(projects);
+
+            projects.forEach( val => {
+                console.log(val);
+                let ref = firebase.firestore().collection('project_files').doc(val);
+                ref.get().then(response =>  {
+                    response.forEach( data => console.log(data.data()));
+                }).catch( error => console.log(error));
+            });
         },
 
-        firebaseAddNewProject: function ({ commit, getters }, payload) {
-            const signed_user = getters.getUserDB;
-            const proj_refs = firebase.firestore().collection('projects')
+        firebaseCreateNewProject: async function ({ commit, getters }, payload) {
+            const signed_user = getters.getUserDB;            
             let newProject = new Project(payload.name, payload.description, signed_user.id);
-            proj_refs.add(newProject.getObject())
-                    .then(response => {
-                        console.log(response);
-                        commit('setNewProject', {name: payload.name, description: payload.description, admin: signed_user.id});
-                        commit('setNewHttpCall', {response: 200, msg: 'New project created!'})
-                    })
-                    .catch(error => {
-                        console.log(error);
-                        commit('setNewHttpCall', {response: 500, msg: 'Error creating new project. Try Again or contact support.'})
-                    });
 
+            const proj_refs = firebase.firestore().collection('projects')
 
+            try {
+                let firstResponse = await proj_refs.add(newProject.getObject());
+                let project_id = firstResponse.id;
+                const proj_files_refs = firebase.firestore().collection('project_files').doc(project_id);
+                let secondResponse = await proj_files_refs.set({files: []});
+                const proj_tasks_refs = firebase.firestore().collection('project_tasks').doc(project_id);
+                let thirdResponse = await proj_tasks_refs.set({tasks: []});
+
+                commit('setNewProject', {name: payload.name, description: payload.description, admin: signed_user.id});
+                commit('setNewHttpCall', {response: 200, msg: 'New project created!'})
+            } catch(error) {
+                console.log(error);
+                commit('setNewHttpCall', {response: 500, msg: 'Error creating new project. Try Again or contact support.'})
+            }
         },
 
         firebaseNewFileToApproval: async function ({ commit, getters }, payload) {
+            commit('setFileUploadProgress', 0);
             let projects = getters.getProjects;
             let project_index = projects.findIndex( project => project.name === payload.project_name);
             let project_id = projects[project_index].id;
             try{
                 let projectRef = firebase.storage().ref().child(project_id + "/" + payload.imageName);
-                let fileData = await projectRef.put(payload.image);
+                let uploadTask = projectRef.put(payload.image);
+
+                // Listen for state changes, errors, and completion of the upload.
+                uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED, // or 'state_changed'
+                function(snapshot) {
+                    // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
+                    var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                    console.log('Upload is ' + progress + '% done');
+                    switch (snapshot.state) {
+                        case firebase.storage.TaskState.PAUSED: // or 'paused'
+                            console.log('Upload is paused');
+                            break;
+                        case firebase.storage.TaskState.RUNNING: // or 'running'
+                            console.log('Upload is running');
+                            commit('setFileUploadProgress', progress);
+                            break;
+                        }
+                }, function(error) {
+                    console.log(error);
+                });
+
                 let aprovalData = {
                     fileId: payload.imageName,
+                    fileUrl: getters.getStorageBaseUrl + project_id + "/" + payload.imageName, 
                     title: payload.title,
                     description: payload.description,
-                    comments: []
+                    comments: [],
+                    state: 'pending'
                 }
-                let ref = firebase.firestore().collection('projects').doc(project_id);
+                let ref = firebase.firestore().collection('project_files').doc(project_id);
                 let response = await ref.update('files', firebase.firestore.FieldValue.arrayUnion(aprovalData))
                 commit('setNewHttpCall', {response: 200, msg: 'File Uploaded correctly.'})
             }catch(error) {
@@ -163,6 +212,9 @@ export default {
     getters: {
         getProjects: function(state) {
             return state.projects;
+        },
+        getFileUploadProgress: function(state) {
+            return state.file_upload_progress;
         }
     }
 }
