@@ -32,7 +32,7 @@ new Vue({
     firebase.auth().onAuthStateChanged( user => {
         if (user) {
             this.$store.dispatch('firebaseAutoSignIn', user);
-            this.$store.dispatch('firebaseGetUserDB');
+            this.$store.dispatch('firebaseGetUserDB', user.uid);
             //this.$store.dispatch('firebaseLoadProjects');     
         }
     })

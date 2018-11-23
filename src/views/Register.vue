@@ -49,6 +49,15 @@
                     </v-card-text>
                 </v-card>
             </v-flex>
+            <v-flex xs12 sm6 offset-sm3 class="text-xs-right">
+                <p>Already registered ?
+                    <v-btn flat>
+                        <router-link tag="span" v-bind:to="'/signin'" style="color: blue;">
+                            Sign In Now!
+                        </router-link>
+                    </v-btn>
+                </p>
+            </v-flex>
         </v-layout>
     </v-container>
 </template>

@@ -28,12 +28,30 @@ export default {
             commit('setUser', payload);          
         },
 
-        firebaseGetUserDB: function({commit, getters, dispatch}, payload) {
-            console.log(arguments);
+        firebaseGetUserDB: async function({commit, getters, dispatch}, payload) {
             console.log('firebaseGetUserDB');
-            const signed_user = getters.getUser;
-            console.log()
-            const userdb = firebase.firestore().collection('users').where('id', '==', signed_user.uid)
+            //const signed_user = getters.getUser;
+
+            const firestore = firebase.firestore();
+            const settings = {/* your settings... */ timestampsInSnapshots: true};
+            firestore.settings(settings);
+
+            const signed_user = payload;
+            const userdb = firebase.firestore().collection('users').where('id', '==', signed_user)
+
+            try{
+                let userData = await userdb.get();
+                console.log(userData);
+                console.log(userData.length);
+                if(userData.length === "1") {
+                    console.log(userData);
+                }
+                
+            } catch( error) {
+                console.log(error);
+            }
+
+            /*
             userdb.get()    
                 .then( data => {
                     data.forEach( doc => {
@@ -63,7 +81,7 @@ export default {
                                         let id = doc.id;
                                         let data = doc.data();
                                         commit('setLoadedProject', {id, ...data});   
-                                        dispatch('firebaseLoadProjects');                                   
+                                        //dispatch('firebaseLoadProjects');                                   
                                     });
                                     commit('setNewHttpCall', {response: 200, msg: 'Projects loaded'})
                                 })
@@ -77,6 +95,7 @@ export default {
                 .catch( error => {
                     console.log(error);
                 })
+            */
         },
 
         firebaseUserLogout: function({commit}) {
@@ -85,6 +104,25 @@ export default {
         },
 
         firebaseSignInUser: function({commit}, payload) {
+            firebase.auth()
+                    .setPersistence(firebase.auth.Auth.Persistence.SESSION)
+                    .then(function() {
+                        return firebase.auth().signInWithEmailAndPassword(payload.email, payload.password);
+                    })
+                    .catch(function(error) {
+                        // Handle Errors here.
+                        var errorCode = error.code;
+                        var errorMessage = error.message;
+                        console.log(errorCode, errorMessage);
+                    })
+                    .then( user => {
+                        console.log("signed", user);
+                        const newUser = {
+                            id: user.uid
+                        }
+                        commit("setUser", newUser);
+                    });
+            /*
             firebase.auth().signInWithEmailAndPassword(payload.email, payload.password)
                 .then( user => {
                     console.log("signed", user);
@@ -94,6 +132,7 @@ export default {
                     commit("setUser", newUser);
                 })
                 .catch( error => console.log(error));
+            */
         },
 
         firebaseRegisterUser: function( {commit}, payload) {
