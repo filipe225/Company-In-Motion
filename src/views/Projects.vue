@@ -70,9 +70,9 @@
                         <small>*indicates required field</small>
                         </v-card-text>
                         <v-card-actions>
-                        <v-spacer></v-spacer>
-                        <v-btn color="blue darken-1" flat @click.native="newProjectCreation = false">Close</v-btn>
-                        <v-btn color="teal darken-1" flat @click="createNewProject" v-bind:disabled="!newProjectValid">Create</v-btn>
+                            <v-spacer></v-spacer>
+                            <v-btn color="blue darken-1" flat @click.native="newProjectCreation = false">Close</v-btn>
+                            <v-btn color="teal darken-1" flat @click="createNewProject" v-bind:disabled="!newProjectValid">Create</v-btn>
                         </v-card-actions>
                     </v-card>
                 </v-form>
