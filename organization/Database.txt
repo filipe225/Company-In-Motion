@@ -1,12 +1,22 @@
 
+
 USERS:
     user_uid:
         email: _
-        password: _
+        displayName: _
+        type: "admin" || "associate" || "client"
         created_in: _
         last_login: _
-        project: _
-        notes: []
+        avatar: filename
+        company_title: _
+        description: _
+        newsletter: _
+        notes: [ {
+            id: _
+            title: _
+            content: _
+            created_in: _
+        }]
 
 PROJECTS:
     project_uid:
@@ -14,6 +24,21 @@ PROJECTS:
         created_in: _
         admin: _
         associates: []
-        client: []
-        tasks: []
-        projections: []
+        clients: []
+
+PROJECT_TASKS:
+
+
+PROJECT_FILES:
+    project_uid:
+        name: _
+        id: _
+        state: "pending" || "aprove" || "disapproved"
+        comments: [ {
+            id: _
+            content: _
+            made_by: user_uid
+        }]
+
+PROJECT_BUDGET:
+    project_uid:

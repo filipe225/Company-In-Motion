@@ -40,62 +40,59 @@ export default {
             const userdb = firebase.firestore().collection('users').where('id', '==', signed_user)
 
             try{
-                let userData = await userdb.get();
-                console.log(userData);
-                console.log(userData.length);
-                if(userData.length === "1") {
-                    console.log(userData);
+                let userResponse = await userdb.get();
+                console.log(userResponse);
+                let firstDoc = userResponse.docs[0];
+                if(firstDoc.exists) {
+                    //let userId = firstDoc.id;
+                    let userData = firstDoc.data(); 
+                    commit('setUserDB', {...userData})
+                    console.log(getters.getUserDB);
+
+                    const proj_refs = firebase.firestore().collection('projects')
+                    let projects = null;
+                    switch (userData.type) {
+                        case "admin":
+                            projects = proj_refs.where('admin', '==', userData.id);
+                            break;
+                        case "associate":
+                            projects = proj_refs.where('associates', 'array-contains', userData.id);
+                            break;
+                        case "client":
+                            projects = proj_refs.where('clients', 'array-contains', userData.id);
+                            break;
+                        default:
+                            return;
+                            break;
+                    }
+
+                    console.log("projects", projects);
+
+                    let projectsResponse = await projects.get();
+                    console.log(projectsResponse);
+                    let projectDocs = projectsResponse.docs;
+                    projectDocs.forEach( doc => {
+                        let project_id = doc.id;
+                        let project_data = doc.data();                       
+                        commit('setLoadedProject', {id: project_id, ...project_data});   
+                    });
+
+                    let user_projects = getters.getProjects;
+                    for(let i=0, len = user_projects.length; i<len; i++) {
+                        const proj_files_ref = firebase.firestore().collection('project_files').doc(user_projects[i].id)
+                        let project_files_response = await proj_files_ref.get();
+                        let proj_files_data = project_files_response.docs[0].data();
+                        console.log(project_files_response);
+                    }
+
+                    commit('setNewHttpCall', {response: 200, msg: 'Projects loaded'})
+
                 }
                 
             } catch( error) {
                 console.log(error);
+                commit('setNewHttpCall', {response: 500, msg: 'Error loading projects'})
             }
-
-            /*
-            userdb.get()    
-                .then( data => {
-                    data.forEach( doc => {
-                        if(doc.exists) {
-                            commit('setUserDB', doc.data());
-                            const proj_refs = firebase.firestore().collection('projects')
-                            let projects = null;
-                            switch (doc.data().type) {
-                                case "admin":
-                                    projects = proj_refs.where('admin', '==', signed_user.uid);
-                                    break;
-                                case "associate":
-                                    projects = proj_refs.where('associates', 'array-contains', signed_user.uid);
-                                    break;
-                                case "client":
-                                    projects = proj_refs.where('clients', 'array-contains', signed_user.uid);
-                                    break;
-                                default:
-                                    return;
-                                    break;
-                            }
-                
-                            projects.get()
-                                .then(response => {
-                                    console.log(response);
-                                    response.forEach( doc => {
-                                        let id = doc.id;
-                                        let data = doc.data();
-                                        commit('setLoadedProject', {id, ...data});   
-                                        //dispatch('firebaseLoadProjects');                                   
-                                    });
-                                    commit('setNewHttpCall', {response: 200, msg: 'Projects loaded'})
-                                })
-                                .catch(error => {
-                                    console.log(error);
-                                    commit('setNewHttpCall', {response: 500, msg: 'Error loading projects'})
-                                });
-                        }
-                    })
-                })
-                .catch( error => {
-                    console.log(error);
-                })
-            */
         },
 
         firebaseUserLogout: function({commit}) {

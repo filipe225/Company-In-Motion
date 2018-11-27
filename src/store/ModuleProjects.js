@@ -127,6 +127,11 @@ export default {
                 let secondResponse = await proj_files_refs.set({files: []});
                 const proj_tasks_refs = firebase.firestore().collection('project_tasks').doc(project_id);
                 let thirdResponse = await proj_tasks_refs.set({tasks: []});
+                const proj_budget_refs = firebase.firestore().collection('project_budget').doc(project_id);
+                let fourthResponse = await proj_budget_refs.set({budget: []});
+                const proj_events_refs = firebase.firestore().collection('project_events').doc(project_id)
+                let firstEvent = new Event()
+                let fifthResponse = await proj_events_refs.set({ events: []})
 
                 commit('setNewProject', {name: payload.name, description: payload.description, admin: signed_user.id});
                 commit('setNewHttpCall', {response: 200, msg: 'New project created!'})
@@ -162,6 +167,7 @@ export default {
                         }
                 }, function(error) {
                     console.log(error);
+                    commit('setNewHttpCall', {response: 500, msg: 'Error uploading file. Try again or contact support.'})
                 });
 
                 let aprovalData = {
