@@ -16,7 +16,7 @@
                 </v-list-tile>
             </v-list>
         </v-navigation-drawer>
-        <v-toolbar app color="orange darken-3" dark>
+        <v-toolbar app color="primary" dark>
             <v-toolbar-side-icon class="hidden-md-and-up" @click.native.stop="sideNav = !sideNav"></v-toolbar-side-icon>
             <v-toolbar-title>
                 <router-link to="/" tag="span" style="cursor: pointer"> Company Simplicity </router-link>

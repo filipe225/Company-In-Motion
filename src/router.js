@@ -7,6 +7,7 @@ import Home from './views/Home.vue'
 import Timeline from "./views/Timeline.vue"
 import SignIn from './views/SignIn.vue'
 import Register from './views/Register.vue'
+import ContactUs from './views/ContactUs.vue'
 import DashBoard from './views/DashBoard.vue'
 import Tasks from './views/Tasks.vue'
 import Projects from './views/Projects.vue'
@@ -39,6 +40,11 @@ export default new Router({
         name: 'tasks',
         component: Tasks,
         beforeEnter: AuthGuard
+    },
+    {
+        path: '/contact_us',
+        name: 'contact_us',
+        component: ContactUs,
     },
     {
         path: '/dashboard',

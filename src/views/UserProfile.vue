@@ -1,7 +1,13 @@
 
 <template>
-    <v-container fluid>
-        
+    <v-container>
+        <v-layout row wrap>
+            <v-flex xs12>
+                <v-form>
+                    
+                </v-form>
+            </v-flex>
+        </v-layout>
     </v-container>
 
 </template>

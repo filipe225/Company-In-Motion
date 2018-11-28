@@ -108,7 +108,7 @@
                                 </v-btn>
 
                                 <v-list>
-                                    <v-list-tile v-if="userDB.type === 'admin'">
+                                    <v-list-tile v-if="userDB.type === 'admin' || userDB.type === 'project_manager'">
                                         <v-btn  
                                             ref="invite_client"
                                             v-bind:data-pid="project.id" 
@@ -116,7 +116,7 @@
                                                 Invite Client</v-btn>
                                     </v-list-tile>
                                     <v-divider></v-divider>
-                                    <v-list-tile v-if="userDB.type === 'admin'">
+                                    <v-list-tile v-if="userDB.type === 'admin' || userDB.type === 'project_manager'">
                                         <v-btn 
                                             ref="invite_associate"
                                             v-bind:data-pid="project.id" 
@@ -124,21 +124,21 @@
                                                 Invite Associate</v-btn>
                                     </v-list-tile>
                                     <v-divider></v-divider>
-                                    <v-list-tile v-if="userDB.type === 'admin' || userDB.type === 'associate'">
+                                    <v-list-tile v-if="userDB.type === 'admin' || userDB.type === 'project_manager' || userDB.type === 'client'">
                                         <v-btn flat>
                                             <router-link tag="span" v-bind:to="'/projects/' + project.name + '/file_approval'">
                                                 File to Approval</router-link>
                                         </v-btn>
                                     </v-list-tile>
                                     <v-divider></v-divider>
-                                    <v-list-tile v-if="userDB.type === 'admin' || userDB.type === 'associate'">
+                                    <v-list-tile v-if="userDB.type == 'admin' || userDB.type === 'associate' || userDB.type === 'project_manager'">
                                         <v-btn flat>
                                             <router-link tag="span" v-bind:to="'/projects/' + project.name + '/project_tasks'">
                                                 View Tasks</router-link> 
                                         </v-btn>    
                                     </v-list-tile>
                                     <v-divider></v-divider>
-                                    <v-list-tile v-if="userDB.type === 'client'" >
+                                    <v-list-tile v-if="userDB.type === 'admin' || userDB.type === 'project_manager' || userDB.type === 'client'">
                                         <v-btn flat>
                                             <router-link tag="span" v-bind:to="'/projects/' + project.name + '/file_approval'">
                                                 Approve File</router-link> 
