@@ -79,21 +79,17 @@
             </v-dialog>
 
             <v-layout row wrap>
-                <v-flex xs12 sm4 offset-sm3 v-if="projects.length === 0 && userDB.type === 'admin'">
-                    <p> NO PROJECTS CREATED. CREATE A NEW ONE</p>
-                    <v-btn @click="newProjectCreation = true">CREATE PROJECT</v-btn>
-                </v-flex>
-                <v-flex xs12 sm4 offset-sm3 v-else-if="projects.length === 0 && userDB.type === 'associate'">
-                    <p> NO PROJECTS JOINED. ASSOCIATE TO A NEW ONE</p>
-                    <v-btn @click="newProjectCreation = true">ASSOCIATE PROJECT</v-btn>
-                </v-flex>
-                <v-flex xs12 sm4 offset-sm3 v-if="projects.length === 0 && userDB.type === 'client'">
-                    <p> NO PROJECTS JOINED. BECOME THE CLIENT OF A NEW ONE</p>
-                    <v-btn @click="newProjectCreation = true">JOIN PROJECT</v-btn>
-                </v-flex>
                 <v-flex xs12 sm4 offset-sm1 v-if="userDB.type === 'admin'">
                     <p> NO PROJECTS CREATED. CREATE A NEW ONE</p>
                     <v-btn @click="newProjectCreation = true">CREATE PROJECT</v-btn>
+                </v-flex>
+                <v-flex xs12 sm4 offset-sm1 v-else-if="projects.length === 0 && userDB.type === 'associate'">
+                    <p> NO PROJECTS JOINED. ASSOCIATE TO A NEW ONE</p>
+                    <v-btn @click="newProjectCreation = true">ASSOCIATE PROJECT</v-btn>
+                </v-flex>
+                <v-flex xs12 sm4 offset-sm1 v-if="projects.length === 0 && userDB.type === 'client'">
+                    <p> NO PROJECTS JOINED. BECOME THE CLIENT OF A NEW ONE</p>
+                    <v-btn @click="newProjectCreation = true">JOIN PROJECT</v-btn>
                 </v-flex>
                 <v-flex xs12 sm4 offset-sm1  v-for="(project, index) in projects" v-bind:key="index" style="margin-top: 10px; margin-bottom: 10px;">
                     <v-card class="orange darken-1" dark>
@@ -164,7 +160,7 @@
                                 <v-list-tile-content>
                                     <v-list-tile-sub-title>Description:</v-list-tile-sub-title>
                                     <v-list-tile-title>{{ project.description }}</v-list-tile-title>
-                                    <v-list-tile-sub-title><small>{{ project.date }}</small></v-list-tile-sub-title>
+                                    <v-list-tile-sub-title><small>{{ new Date(project.created_in).toDateString('yyyy-MM-dd') }}</small></v-list-tile-sub-title>
                                 </v-list-tile-content>
                             </v-list-tile>
                             <v-list-tile>
@@ -283,6 +279,7 @@ export default {
 
     mounted: function() {
         console.log(this.projects);
+        console.log(this.userDB);
     },
 
     methods: {

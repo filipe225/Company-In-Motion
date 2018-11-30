@@ -34,7 +34,7 @@ class Project {
         this.id = firebaseUID || "";
         this.name = n;
         this.description = desc;
-        this.date = new Date().toISOString();
+        this.created_in = new Date().toISOString();
         this.admin = adminID;
         this.clients = [];
         this.associates = [];
@@ -47,11 +47,10 @@ class Project {
         return {
             name: this.name,
             description: this.description,
-            date: this.date,
+            created_in: this.created_in,
             admin: this.admin,
             clients: this.clients,
-            associates: this.associates,
-            files: this.files
+            associates: this.associates
         }
     }
 }
@@ -74,6 +73,17 @@ export default {
 
         setLoadedProject: function(state, payload) {
             state.projects.push(payload);
+        },
+
+        setNewObjectForProject: function(state, payload) {
+            let desired_project_index = state.projects.findIndex( proj => proj.id === payload.id);
+            if(desired_project_index > -1) {
+                Object.assign(state.projects[desired_project_index], payload.data);
+                //state.projects[desired_project_index][key] = payload.data;
+            }else {
+                console.log(payload);
+            }
+            
         },
 
         setNewFileToApproval: function (state, payload) {
@@ -130,8 +140,10 @@ export default {
                 const proj_budget_refs = firebase.firestore().collection('project_budget').doc(project_id);
                 let fourthResponse = await proj_budget_refs.set({budget: []});
                 const proj_events_refs = firebase.firestore().collection('project_events').doc(project_id)
-                let firstEvent = new Event()
-                let fifthResponse = await proj_events_refs.set({ events: []})
+                let fifthResponse = await proj_events_refs.set({ events: [ {
+                    title: `Project ${payload.name} created`,
+                    created_in: new Date().toISOString()
+                }]})
 
                 commit('setNewProject', {name: payload.name, description: payload.description, admin: signed_user.id});
                 commit('setNewHttpCall', {response: 200, msg: 'New project created!'})
@@ -170,13 +182,16 @@ export default {
                     commit('setNewHttpCall', {response: 500, msg: 'Error uploading file. Try again or contact support.'})
                 });
 
+                let user = getters.getUserDB;
+
                 let aprovalData = {
                     fileId: payload.imageName,
                     fileUrl: getters.getStorageBaseUrl + project_id + "/" + payload.imageName, 
                     title: payload.title,
                     description: payload.description,
                     comments: [],
-                    state: 'pending'
+                    state: 'pending',
+                    uploaderUserType: user.type
                 }
                 let ref = firebase.firestore().collection('project_files').doc(project_id);
                 let response = await ref.update('files', firebase.firestore.FieldValue.arrayUnion(aprovalData))
@@ -221,6 +236,19 @@ export default {
         },
         getFileUploadProgress: function(state) {
             return state.file_upload_progress;
+        },
+        getProjectEvents: function(state) {
+            return function(payload) {
+                let project_index = state.projects.findIndex( proj => proj.name === payload);
+                return state.projects[project_index].events;    
+            }
+        },
+        getProjectFiles: function(state) {
+            return function(payload) {
+                let project_index = state.projects.findIndex( proj => proj.name === payload);
+                return state.projects[project_index].files;                
+            }
+
         }
     }
 }

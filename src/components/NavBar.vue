@@ -52,6 +52,7 @@ export default {
             let menuItems = [];
             if(this.isUserAuthenticated) {
                 menuItems = [
+                    { icon: "supervisor_account", title: "Relax", link: "/relax" },
                     { icon: "assignment", title: "Tasks", link: "/tasks" },
                     { icon: "supervisor_account", title: "Projects", link: "/projects" },        
                     { icon: "receipt", title: "Budget", link: "/projects/project_name/budget" },
@@ -59,6 +60,7 @@ export default {
                 ]
             }else {
                 menuItems = [
+                    { icon: "supervisor_account", title: "Relax", link: "/relax" },
                     { icon: "supervisor_account", title: "About Us", link: "/about_us" },  
                     { icon: "contact_support", title: "Contact Us", link: "/contact_us" },
                     { icon: "assignment_ind", title: "Sign In", link: "/signin" },

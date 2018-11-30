@@ -30,7 +30,7 @@
                         <span class="headline">{{ project_name }}</span>
                     </v-card-title>
                     <!--<project-timeline v-bind:timeline="timeline"></project-timeline>-->
-                    <project-timeline></project-timeline>
+                    <project-timeline v-bind:events="projectEvents"></project-timeline>
                 </v-card>
             </v-flex>
             <v-flex xs12 sm7>
@@ -110,6 +110,9 @@ export default {
     computed: {
         fileUploadProgress: function() {
             return this.$store.getters.getFileUploadProgress;
+        },
+        projectEvents: function() {
+            return this.$store.getters.getProjectEvents(this.project_name);
         }
     },
 
@@ -125,6 +128,10 @@ export default {
 
     created: function() {
         this.project_name = this.$route.params.project_name;
+    },
+
+    mounted: function() {
+        console.log(this.projectEvents);
     },
 
     methods: {

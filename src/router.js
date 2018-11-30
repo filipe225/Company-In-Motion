@@ -15,6 +15,7 @@ import ApproveFile from './views/ApproveFile.vue'
 import ProjectUserInvited from './views/ProjectUserInvited.vue'
 import ProjectFiles from './views/ProjectFiles.vue'
 import ProjectTasks from './views/ProjectTasks.vue'
+import Relax from './views/Relax.vue'
 
 Vue.use(Router)
 
@@ -80,6 +81,11 @@ export default new Router({
         name: 'file_approval',
         component: ApproveFile,
         beforeEnter: AuthGuard
+    },
+    {
+        path: "/relax",
+        name: "relax",
+        component: Relax
     },
     {
       path: '/about',

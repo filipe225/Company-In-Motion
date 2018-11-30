@@ -36,18 +36,19 @@ export default {
             const settings = {/* your settings... */ timestampsInSnapshots: true};
             firestore.settings(settings);
 
+            //console.log(payload)
             const signed_user = payload;
             const userdb = firebase.firestore().collection('users').where('id', '==', signed_user)
 
             try{
                 let userResponse = await userdb.get();
-                console.log(userResponse);
+                //console.log(userResponse);
                 let firstDoc = userResponse.docs[0];
                 if(firstDoc.exists) {
                     //let userId = firstDoc.id;
                     let userData = firstDoc.data(); 
                     commit('setUserDB', {...userData})
-                    console.log(getters.getUserDB);
+                    //console.log(getters.getUserDB);
 
                     const proj_refs = firebase.firestore().collection('projects')
                     let projects = null;
@@ -66,10 +67,8 @@ export default {
                             break;
                     }
 
-                    console.log("projects", projects);
-
                     let projectsResponse = await projects.get();
-                    console.log(projectsResponse);
+                    //console.log(projectsResponse);
                     let projectDocs = projectsResponse.docs;
                     projectDocs.forEach( doc => {
                         let project_id = doc.id;
@@ -77,13 +76,26 @@ export default {
                         commit('setLoadedProject', {id: project_id, ...project_data});   
                     });
 
+                    console.log("projects", getters.getProjects);
+
                     let user_projects = getters.getProjects;
                     for(let i=0, len = user_projects.length; i<len; i++) {
                         const proj_files_ref = firebase.firestore().collection('project_files').doc(user_projects[i].id)
                         let project_files_response = await proj_files_ref.get();
-                        let proj_files_data = project_files_response.docs[0].data();
-                        console.log(project_files_response);
+                        let proj_files_data = project_files_response.data();
+                        commit('setNewObjectForProject', {id: user_projects[i].id, data: proj_files_data})
+
+                        console.log("files", proj_files_data);
                     }
+
+                    for(let i=0, len = user_projects.length; i<len; i++) {
+                        const proj_events_ref = firebase.firestore().collection('project_events').doc(user_projects[i].id)
+                        let project_events_response = await proj_events_ref.get();
+                        let proj_events_data = project_events_response.data();
+                        commit('setNewObjectForProject', {id: user_projects[i].id, data: proj_events_data})
+                        console.log("events", proj_events_data);
+                    }
+
 
                     commit('setNewHttpCall', {response: 200, msg: 'Projects loaded'})
 
@@ -140,6 +152,7 @@ export default {
                         displayName: payload.displayName,
                         email: payload.email,
                         type: payload.type,
+                        created_in: new Date().toISOString(),
                         notes: []                      
                     }
                     console.log(newUser);                  

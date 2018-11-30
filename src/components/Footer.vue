@@ -1,6 +1,6 @@
 <template>
     <v-container fluid>
-        <v-footer app fixed dark height="auto">
+        <v-footer app dark height="auto">
             <v-card class="flex" flat tile>
                 <v-card-title class="teal">
                     <strong class="subheading">
