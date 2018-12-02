@@ -191,7 +191,8 @@ export default {
                     description: payload.description,
                     comments: [],
                     state: 'pending',
-                    uploaderUserType: user.type
+                    uploaderUserType: user.type,
+                    created_in: new Date().toISOString()
                 }
                 let ref = firebase.firestore().collection('project_files').doc(project_id);
                 let response = await ref.update('files', firebase.firestore.FieldValue.arrayUnion(aprovalData))
@@ -227,6 +228,22 @@ export default {
             .catch( error => {
                 commit('setNewHttpCall', { response: "error", msg: "Error sending email. Try again or contact support."})
             })
+        },
+
+        firebaseDeleteFileFromProject: function({commit, getter}, payload) {
+            let project_name = payload.project_name;
+            let file_index = payload.file_index;
+            let file_id = payload.file_id;
+
+            let projects = getters.getProjects;
+            let project_index = projects.findIndex( project => project.name === project_name );
+            let fileObj = projects[project_index].files[file_index];
+
+            if(fileObj.fileId === file_id) {
+                const filesRef = firebase.storage().ref(projects[project_index].id);
+                //filesRef.delete();
+            }
+
         }
     },
 

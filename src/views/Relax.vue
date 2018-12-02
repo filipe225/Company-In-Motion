@@ -30,7 +30,10 @@ export default {
                 this.$refs.div_background_content.style.backgroundImage = "none";
                 //this.$refs.div_background_content.style.-webkit-transition: background-image 0.2s ease-in-out;
                 this.$refs.div_background_content.style.transition = "background-image 1s ease-in-out";
+                this.$router.push( {path: '/projects'});
             }.bind(this), 2000);
+
+
 
         }
     }

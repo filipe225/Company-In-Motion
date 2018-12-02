@@ -2,7 +2,7 @@
     <v-container fluid>
         <v-layout row wrap grid-list-md>
             <v-flex xs12 sm6>
-                <v-card>
+                <v-card class="elevation-24">
                     <v-card-text>
                         <v-container>
 							<v-layout>

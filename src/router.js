@@ -11,10 +11,11 @@ import ContactUs from './views/ContactUs.vue'
 import DashBoard from './views/DashBoard.vue'
 import Tasks from './views/Tasks.vue'
 import Projects from './views/Projects.vue'
-import ApproveFile from './views/ApproveFile.vue'
 import ProjectUserInvited from './views/ProjectUserInvited.vue'
 import ProjectFiles from './views/ProjectFiles.vue'
 import ProjectTasks from './views/ProjectTasks.vue'
+import ProjectSendFileToAproval from './views/ProjectSendFileToAproval.vue'
+import ProjectReviewFile from './views/ProjectReviewFile.vue'
 import Relax from './views/Relax.vue'
 
 Vue.use(Router)
@@ -77,9 +78,15 @@ export default new Router({
         beforeEnter: AuthGuard
     },
     {
-        path: '/projects/:project_name/file_approval',
-        name: 'file_approval',
-        component: ApproveFile,
+        path: '/projects/:project_name/send_file_to_approval',
+        name: 'send_file_to_approval',
+        component: ProjectSendFileToAproval,
+        beforeEnter: AuthGuard
+    },
+    {
+        path: '/projects/:project_name/file_reviw/:file_index',
+        name: 'file_review',
+        component: ProjectReviewFile,
         beforeEnter: AuthGuard
     },
     {

@@ -122,8 +122,8 @@
                                     <v-divider></v-divider>
                                     <v-list-tile v-if="userDB.type === 'admin' || userDB.type === 'project_manager' || userDB.type === 'client'">
                                         <v-btn flat>
-                                            <router-link tag="span" v-bind:to="'/projects/' + project.name + '/file_approval'">
-                                                File to Approval</router-link>
+                                            <router-link tag="span" v-bind:to="'/projects/' + project.name + '/send_file_to_approval'">
+                                                Send File to Approval</router-link>
                                         </v-btn>
                                     </v-list-tile>
                                     <v-divider></v-divider>
