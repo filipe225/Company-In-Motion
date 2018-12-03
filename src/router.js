@@ -84,7 +84,7 @@ export default new Router({
         beforeEnter: AuthGuard
     },
     {
-        path: '/projects/:project_name/file_reviw/:file_index',
+        path: '/projects/:project_name/project_files/file_review/:file_id',
         name: 'file_review',
         component: ProjectReviewFile,
         beforeEnter: AuthGuard

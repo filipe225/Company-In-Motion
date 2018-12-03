@@ -104,7 +104,7 @@ export default {
             },
             {
                 id: 6,
-                title: 'Tasks #1',
+                title: 'Tasks #6',
                 content: lorem.slice(0, 20),
                 date: new Date().toDateString("yyyy-MM-dd hh:mm"),
                 deadline: null,
@@ -114,7 +114,7 @@ export default {
             },
             {
                 id: 7,
-                title: 'Tasks #2',
+                title: 'Tasks #7',
                 content: lorem.slice(0, 20),
                 date: new Date().toDateString("yyyy-MM-dd hh:mm"),
                 deadline: null,
@@ -124,7 +124,7 @@ export default {
             },
             {
                 id: 8,
-                title: 'Tasks #3',
+                title: 'Tasks #8',
                 content: lorem.slice(0, 20),
                 date: new Date().toDateString("yyyy-MM-dd hh:mm"),
                 deadline: null,
@@ -134,7 +134,7 @@ export default {
             },
             {
                 id: 9,
-                title: 'Tasks #4',
+                title: 'Tasks #9',
                 content: lorem.slice(0, 20),
                 date: new Date().toDateString("yyyy-MM-dd hh:mm"),
                 deadline: null,
@@ -144,7 +144,7 @@ export default {
             },
             {
                 id: 10,
-                title: 'Tasks #5',
+                title: 'Tasks #10',
                 content: lorem.slice(0, 20),
                 date: new Date().toDateString("yyyy-MM-dd hh:mm"),
                 deadline: null,
@@ -154,7 +154,7 @@ export default {
             },
             {
                 id: 11,
-                title: 'Tasks #1',
+                title: 'Tasks #11',
                 content: lorem.slice(0, 20),
                 date: new Date().toDateString("yyyy-MM-dd hh:mm"),
                 deadline: null,
@@ -164,7 +164,7 @@ export default {
             },
             {
                 id: 12,
-                title: 'Tasks #2',
+                title: 'Tasks #12',
                 content: lorem.slice(0, 20),
                 date: new Date().toDateString("yyyy-MM-dd hh:mm"),
                 deadline: null,
@@ -174,7 +174,7 @@ export default {
             },
             {
                 id: 13,
-                title: 'Tasks #3',
+                title: 'Tasks #13',
                 content: lorem.slice(0, 20),
                 date: new Date().toDateString("yyyy-MM-dd hh:mm"),
                 deadline: null,
@@ -184,7 +184,7 @@ export default {
             },
             {
                 id: 14,
-                title: 'Tasks #4',
+                title: 'Tasks #14',
                 content: lorem.slice(0, 20),
                 date: new Date().toDateString("yyyy-MM-dd hh:mm"),
                 deadline: null,
@@ -194,7 +194,7 @@ export default {
             },
             {
                 id: 15,
-                title: 'Tasks #5',
+                title: 'Tasks #15',
                 content: lorem.slice(0, 20),
                 date: new Date().toDateString("yyyy-MM-dd hh:mm"),
                 deadline: null,

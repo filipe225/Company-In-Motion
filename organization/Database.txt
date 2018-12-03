@@ -1,10 +1,8 @@
-
-
 USERS:
     user_uid:
         email: _
         displayName: _
-        type: "admin" || "associate" || "client"
+        type: "admin" || "associate" || "client" || "Project Manager"
         created_in: _
         last_login: _
         avatar: filename
@@ -27,13 +25,29 @@ PROJECTS:
         clients: []
 
 PROJECT_TASKS:
+    project_uid:
+
+
+
+PROJECT_EVENTS:
+    project_uid:
+        title: String,
+        created_in: String
 
 
 PROJECT_FILES:
     project_uid:
-        name: _
-        id: _
-        state: "pending" || "aprove" || "disapproved"
+        fileId: String,
+        fileName: String,
+        fileExtension: String,
+        fileUrl: getters.getStorageBaseUrl + project_id + "/" + file_id,
+        fileDownloadUrl: '',
+        title: String,
+        description: String,
+        comments: [],
+        state: "pending" || "aprove" || "disapproved",
+        uploaderUserType: current_user.type,
+        created_in: new Date().toISOString()
         comments: [ {
             id: _
             content: _

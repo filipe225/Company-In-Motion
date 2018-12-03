@@ -86,8 +86,13 @@ export default {
             
         },
 
-        setNewFileToApproval: function (state, payload) {
-            state.projects.push(payload);
+        setNewEventToProject: function(state, payload) {
+            state.projects[payload.project_index].events.push(payload.eventData);
+            console.log(state.projects);
+        },
+
+        setNewFileToProject: function (state, payload) {
+            state.projects[payload.project_index].files.push(payload.fileData);
         },
         
         setFileUploadProgress: function(state, payload) {
@@ -162,13 +167,19 @@ export default {
                 let projectRef = firebase.storage().ref().child(project_id + "/" + payload.imageName);
                 let uploadTask = projectRef.put(payload.image);
 
+                let file_id = null;
+
                 // Listen for state changes, errors, and completion of the upload.
                 uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED, // or 'state_changed'
                 function(snapshot) {
                     // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
                     var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-                    console.log('Upload is ' + progress + '% done');
+                    console.log(snapshot.state);
+                    //console.log('Upload is ' + progress + '% done');
                     switch (snapshot.state) {
+                        case firebase.storage.TaskState.SUCCESS: 
+                            file_id = snapshot.metadata.generation;
+                            break;
                         case firebase.storage.TaskState.PAUSED: // or 'paused'
                             console.log('Upload is paused');
                             break;
@@ -182,20 +193,40 @@ export default {
                     commit('setNewHttpCall', {response: 500, msg: 'Error uploading file. Try again or contact support.'})
                 });
 
-                let user = getters.getUserDB;
+                let current_user = getters.getUserDB;
+                let file_extension = payload.imageName.split(".").reverse();
+                file_extension = file_extension[0];
 
-                let aprovalData = {
-                    fileId: payload.imageName,
-                    fileUrl: getters.getStorageBaseUrl + project_id + "/" + payload.imageName, 
+
+                let fileData = {
+                    fileId: file_id,
+                    fileName: payload.imageName,
+                    fileExtension: file_extension,
+                    fileUrl: getters.getStorageBaseUrl + project_id + "/" + file_id,
+                    fileDownloadUrl: '',
                     title: payload.title,
                     description: payload.description,
                     comments: [],
                     state: 'pending',
-                    uploaderUserType: user.type,
+                    uploaderUserType: current_user.type,
                     created_in: new Date().toISOString()
-                }
-                let ref = firebase.firestore().collection('project_files').doc(project_id);
-                let response = await ref.update('files', firebase.firestore.FieldValue.arrayUnion(aprovalData))
+                };
+
+                let project_files_ref = firebase.firestore().collection('project_files').doc(project_id);
+                let project_files_response = await project_files_ref.update('files', firebase.firestore.FieldValue.arrayUnion(fileData))
+
+                commit('setNewFileToProject', {project_index: project_index, fileData: fileData});
+
+                const eventData = {
+                    title: `File ${payload.imageName} sent for aproval by ${current_user.displayName}`,
+                    created_in: new Date().toISOString()
+                };
+
+                let project_events_ref = firebase.firestore().collection('project_events').doc(project_id);
+                let project_events_response = await project_events_ref.update('events', firebase.firestore.FieldValue.arrayUnion(eventData));
+
+                commit('setNewEventToProject', {project_index: project_index, eventData: eventData});
+
                 commit('setNewHttpCall', {response: 200, msg: 'File Uploaded correctly.'})
             }catch(error) {
                 console.log(error);
@@ -203,7 +234,7 @@ export default {
             }
         },
 
-        firebaseInviteAssociateClient: function({commit}, payload) {
+        firebaseInviteAssociateClientManager: function({commit}, payload) {
             fetch('https://us-central1-companysimplify-1992.cloudfunctions.net/inviteAssociateClient' +
                     '?mail_to=' + payload.mail_to +
                     '&project_name=' + payload.project_name +
@@ -228,6 +259,12 @@ export default {
             .catch( error => {
                 commit('setNewHttpCall', { response: "error", msg: "Error sending email. Try again or contact support."})
             })
+        },
+
+        firebaseAddUserToProject: function({commit, getters}, payload) {
+            let projects = getters.getProjects;
+            let project_index = projects.findIndex( project => project.id === payload.id);
+
         },
 
         firebaseDeleteFileFromProject: function({commit, getter}, payload) {

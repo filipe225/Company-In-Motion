@@ -153,6 +153,7 @@ export default {
                         email: payload.email,
                         type: payload.type,
                         created_in: new Date().toISOString(),
+                        photo_url: 'https://firebasestorage.googleapis.com/v0/b/companysimplify-1992.appspot.com/o/users_avatars%2Fdefault%2Fuser_avatar_default.png?alt=media&token=b6883e32-5b03-48d2-9d9a-3c802e0e359b',
                         notes: []                      
                     }
                     console.log(newUser);                  

@@ -1,5 +1,6 @@
 <template>
-    <v-alert v-model="show" dismissible class="fix-alert" v-bind:type="alertType">
+    <v-alert v-model="show" dismissible class="fix-alert" 
+             v-bind:type="alertType" transition="scale-transition">
         {{msg}}
     </v-alert>
 </template>
@@ -62,6 +63,7 @@ export default {
 </script>
 
 <style scoped>
+    /*
     .fix-alert {
         width: 60%;
         margin: 5px auto;
@@ -69,6 +71,20 @@ export default {
         max-height: 50px;
         border: 1px solid gray;
         background-color: lawngreen;
+    }
+    */
+    .fix-alert[data-v-682f81e5] {
+        width: 300px;
+        margin: 5px auto;
+        padding: 10px 16px;
+        height: 200px;
+        /* max-height: 50px; */
+        border: 1px solid gray;
+        background-color: lawngreen;
+        position: absolute;
+        right: 20px;
+        top: 10px;
+        z-index: 999;
     }
 </style>
 

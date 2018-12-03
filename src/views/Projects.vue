@@ -2,7 +2,24 @@
     <v-layout row wrap>
         <v-container fluid>
 
-
+            <!-- MODAL INVITE PROJECT MANAGER -->
+            <v-dialog v-model="dialogNewProjectManager" max-width="500px">
+                <v-card>
+                    <v-card-title>
+                        <span class="headline">Invite User</span>
+                    </v-card-title>
+                    <v-card-text>
+                        <v-text-field
+                            v-model="newUserEmail"
+                            label="Email"
+                        ></v-text-field>
+                    </v-card-text>
+                    <v-card-actions>
+                        <v-btn flat @click="dialogNewProjectManager=false">Close</v-btn>
+                        <v-btn color="primary" flat @click="inviteClient">Send Invite</v-btn>
+                    </v-card-actions>
+                </v-card>
+            </v-dialog>
 
             <!-- MODAL INVITE CLIENT -->
             <v-dialog v-model="dialogNewClient" max-width="500px">
@@ -104,6 +121,14 @@
                                 </v-btn>
 
                                 <v-list>
+                                    <v-list-tile v-if="userDB.type === 'admin' || userDB.type === 'project_manager'">
+                                        <v-btn 
+                                            ref="invite_associate"
+                                            v-bind:data-pid="project.id" 
+                                            @click="dialogNewProjectManager = true" flat>
+                                                Invite Project Manager</v-btn>
+                                    </v-list-tile>
+                                    <v-divider></v-divider>
                                     <v-list-tile v-if="userDB.type === 'admin' || userDB.type === 'project_manager'">
                                         <v-btn  
                                             ref="invite_client"
@@ -239,6 +264,7 @@ export default {
             dialogDeleteProject: false,
             dialogNewClient: false,
             dialogNewAssociate: false,
+            dialogNewProjectManager: false,
             newUserEmail: '',
             newProjectCreation: false,
             newProjectValid: false,
@@ -314,6 +340,15 @@ export default {
             };
             console.log(obj);
             this.$store.dispatch('firebaseInviteAssociateClient', obj)
+        },
+        inviteProjectManager: function() {
+            let projectID = this.$refs.invite_project_manager[0].$el.dataset.pid;
+            let obj =  {
+                mail_to: this.newUserEmail,
+                project_name: projectName,
+                main_link: "http://localhost:8080/" + projectID + "/client/invitation/" + this.userDB.id            
+            };
+            this.$store.dispatch('firebaseInviteAssociateClientManager', obj)
         },
         inviteUser: function() {
             console.log(this.newUserEmail);
