@@ -4,11 +4,11 @@
 
         <!-- REGISTRATION FORM -->
         <v-layout row wrap grid-list-md v-if="showRegistration && !userAddedToProject">
-            <v-flex xs12 sm6>
+            <v-flex xs12 sm6 offset-sm3>
                 <v-card>
                     <v-card-text>
-                        <v-container>
-							<v-layout>
+                        <v-container class="pa-0">
+							<v-layout row wrap>
 								<v-flex xs12>
 									<h1>Register</h1>
 									<v-form v-model="registerValid" class="mt-4">
@@ -38,8 +38,8 @@
 											required>
 										</v-text-field>
 
-                                        <v-checkbox v-bind:label="userType" 
-                                            v-model="checkbox" disabled="true" required>
+                                        <v-checkbox v-bind:label="register.userType" 
+                                            v-model="register.checkbox" disabled required>
                                         </v-checkbox>
 
 										<v-btn large @click="userRegister" 
@@ -47,13 +47,9 @@
                                                 dark class="mx-0 right teal darken-1">Register</v-btn>
 									</v-form>
 								</v-flex>
-                                <v-flex xs12 sm6 class="text-xs-right">
+                                <v-flex xs12 class="text-xs-right">
                                     <p>Already registered ?
-                                        <v-btn flat>
-                                            <router-link tag="span" v-bind:to="'/signin'" style="color: blue;">
-                                                Sign In Now!
-                                            </router-link>
-                                        </v-btn>
+                                        <v-btn flat style="color: blue;" @click="showRegistration = false"><span>Sign In Now!</span></v-btn>
                                     </p>
                                 </v-flex>
 							</v-layout>
@@ -69,8 +65,8 @@
             <v-flex xs12 sm6 offset-sm3>
                 <v-card>
                     <v-card-text>
-                        <v-container>
-                            <v-layout row>
+                        <v-container class="pa-0">
+                            <v-layout row wrap>
                                 <v-flex xs12>
                                     <h1>Sign In</h1>
                                     <v-form v-model="signinValid" class="mt-4">     
@@ -90,12 +86,10 @@
                                         <v-btn large @click="userSignIn" dark class="mx-0 right teal darken-1">Sign In</v-btn>
                                     </v-form>
                                 </v-flex>
-                                <v-flex xs12 sm6 offset-sm3 class="text-xs-right">
+                                <v-flex xs12 class="text-xs-right">
                                     <p>Not registered yet?
-                                        <v-btn flat>
-                                            <router-link tag="span" v-bind:to="'/register'" style="color: blue;">
-                                                Register Now!
-                                            </router-link>
+                                        <v-btn flat style="color: blue;" @click="showRegistration = true">
+                                            <span>Register Now!</span>
                                         </v-btn>
                                     </p>
                                 </v-flex>
@@ -110,8 +104,13 @@
 
         <!-- SHOW WHEN USER GETS ADDED TO THE PROJECT CORRECTLY -->
         <v-layout row wrap v-else-if="userAddedToProject">
-            <v-flex xs12 text-xs-center>
+            <v-flex xs6 offset-xs3 text-xs-center>
                     {{ user_type }} YOU HAVE BEEN ADDED TO THE PROJECT  {{ project_name }}                
+            </v-flex>
+            <v-flex xs6 offset-xs2>
+                <v-btn flat>
+                    <router-link tag="span" :to="`/${project_name}`">Go to Projects</router-link>
+                </v-btn>
             </v-flex>
         </v-layout>
 
@@ -155,19 +154,30 @@ export default {
                 v => !!v || "Password is required",
                 v => v.length > 6 || "Password must have at least 7 characters"
                 ],
-                userType: null
+                userType: null,
+                checkbox: true
             }
         }
     },
 
+    computed: {
+        comparePasswords: function() {
+            return this.register.password !== this.register.confirmPassword
+                ? "Password do not match!"
+                : "";
+        }
+
+    },
+
     created: function() {
         this.project_name = this.$route.params.project_name;
-        this.user_type = this.$route.params.user_type;
+        let user_type = this.$route.params.user_type;
         this.user_id = this.$route.params.user_id;
         let user_email = this.$route.params.email;
 
         this.register.email = user_email;
         this.signin.email = user_email;
+        this.register.userType = user_type;
 
     },
 
@@ -179,16 +189,16 @@ export default {
 
             this.$store.dispatch('firebaseProjectAddUser', { 
                 project_name: this.project_name, 
-                user_type: this.user_type, user_id: 
-                this.user_id
+                user_type: this.user_type, 
+                user_id: this.user_id
             });
         },
 
         userRegister: function() {
             this.$store.dispatch('firebaseProjectAddUser', { 
                 project_name: this.project_name, 
-                user_type: this.user_type, user_id: 
-                this.user_id 
+                user_type: this.user_type, 
+                user_id: this.user_id
             });
         }
     }

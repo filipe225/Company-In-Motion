@@ -157,8 +157,8 @@ export default {
                         notes: []                      
                     }
                     console.log(newUser);                  
-                    let reference = firebase.firestore().collection("users")
-                    return reference.add(newUser);
+                    let reference = firebase.firestore().collection("users").doc(newUser.id)
+                    return reference.set(newUser);
                 })
                 .then(data =>  {
                     console.log('database ->' , data);

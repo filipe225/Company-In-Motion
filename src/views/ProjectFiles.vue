@@ -11,20 +11,31 @@
             </v-toolbar>
                 <v-flex slot="item" slot-scope="props" xs12 sm3 md3 lg3>
                     <v-card class="elevation-12 hover-me">
+
                         <v-card-title ref="ref_file_id" v-bind:data-fileId="props.item.fileId"><h4>{{ props.item.title }}</h4></v-card-title>
                         <v-divider></v-divider>
+
                         <img src="@/assets/file_placeholder_html.png" class="files-images" />
                         <v-divider></v-divider>
+
                         <v-card-title><h5>{{ props.item.fileId }}</h5></v-card-title>
                         <v-divider></v-divider>
+
                         <v-card-title><h5>{{ new Date().toDateString('yyyy-MM-dd') }}</h5></v-card-title>
                         <v-divider></v-divider>
+
+                        <v-card-title><h5 v-bind:class="props.item.state">{{ props.item.state.toUpperCase() }}</h5></v-card-title>
+                        <v-divider></v-divider>  
+
                         <v-card-actions>
                             <v-btn icon title="Download file" v-bind:data-fileIndex="props.index"><v-icon>cloud_download</v-icon></v-btn>
                             <v-btn icon title="Delete file from Project" v-bind:data-fileIndex="props.index"><v-icon>delete_forever</v-icon></v-btn>
-                            <v-btn icon title="Send Email for file revisition" v-bind:data-fileIndex="props.index"><v-icon>email</v-icon></v-btn>
+                            <v-btn icon title="Send Email for file revisition"
+                                v-if="props.item.state === 'pending'"
+                                v-bind:data-fileIndex="props.index"><v-icon>email</v-icon></v-btn>
                             <v-btn icon title="View File Comments" @click="openFileDetails" v-bind:data-fileIndex="props.index"><v-icon>pageview</v-icon></v-btn>                      
                         </v-card-actions>
+
                     </v-card>
                 </v-flex>
         </v-data-iterator>
@@ -111,12 +122,12 @@ export default {
                     button_clicked = target;
             }
 
-            console.log(e.target)
-            console.log(button_clicked);
+            //console.log(e.target)
+            //console.log(button_clicked);
             file_index = button_clicked.dataset.fileindex;
             let ref_file_id = this.files[file_index].fileId;
             let coiso = this.files[file_index].title;
-            console.log(ref_file_id);
+            //console.log(ref_file_id);
             this.$router.push('/projects/'+  this.project_name + '/project_files/file_review/' + ref_file_id);
         },
         deleteFileFromProject: function() {
@@ -138,6 +149,16 @@ export default {
 
     .hover-me:hover {
         background-color: aqua;
+    }
+
+    .pending {
+        color: darkgoldenrod;
+    }
+    .aproved {
+        color: darkgreen;
+    }
+    .disaproved {
+        color: darkred;
     }
 
 </style>

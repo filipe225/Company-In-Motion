@@ -38,9 +38,6 @@ class Project {
         this.admin = adminID;
         this.clients = [];
         this.associates = [];
-        this.files = [];
-        this.tasks = [];
-        this.events = [];
     }
 
     getObject() {
@@ -267,6 +264,38 @@ export default {
 
         },
 
+        firebaseAproveFile: function({commit, getters}, payload) {
+            let projects = getters.getProjects;
+            let project_index = projects.findIndex( project => project.name === project_name);
+            if(project_index === -1) return;
+            let project = state.projects[project_index];
+            let file = project.files.find( file => file.fileId === file_id);
+            
+            try {
+                commit('setNewHttpCall', { response: "success", msg: `${file.fileName} was successfully aproved!`})
+            } catch(error) {
+                commit('setNewHttpCall', { response: "error", msg: `Error Aproving File ${file.fileName}. Try again or contact support.`})
+            }
+        },
+
+        firebaseDisaproveFile: function({commit, getters}, payload) {
+            let projects = getters.getProjects;
+            let project_index = projects.findIndex( project => project.name === project_name);
+            if(project_index === -1) return;
+            let project = state.projects[project_index];
+            let file = project.files.find( file => file.fileId === file_id);
+            
+            try {
+                commit('setNewHttpCall', { response: "success", msg: `${file.fileName} was successfully disaproved!!`})
+            } catch(error) {
+                commit('setNewHttpCall', { response: "error", msg: `Error Disaproving File ${file.fileName}. Try again or contact support.`})
+            }
+        },
+
+        firebaseNewCommentToFile: function({commit, getters}, payload) {
+            
+        },
+
         firebaseDeleteFileFromProject: function({commit, getter}, payload) {
             let project_name = payload.project_name;
             let file_index = payload.file_index;
@@ -303,6 +332,16 @@ export default {
                 return state.projects[project_index].files;                
             }
 
+        },
+        getProjectFile: function(state) {
+            return function({project_name, file_id}) {
+                let project_index = state.projects.findIndex( project => project.name === project_name);
+                console.log("index", project_index)
+                if(project_index === -1) return;
+                let project = state.projects[project_index];
+                let file = project.files.find( file => file.fileId === file_id);
+                return file;
+            }
         }
     }
 }

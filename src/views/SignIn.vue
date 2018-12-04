@@ -73,7 +73,7 @@ export default {
     watch: {
         user: function(value) {
             if(value !== null) {
-                this.$router.push('/relax');
+                this.$router.push('/');
             }
         }
     },

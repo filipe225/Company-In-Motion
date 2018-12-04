@@ -81,6 +81,7 @@ export default {
     methods: {
         userLogout: function() {
             this.$store.dispatch('firebaseUserLogout');
+            this.$router.push('/');
         }
     },
 
