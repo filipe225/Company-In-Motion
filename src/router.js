@@ -17,6 +17,7 @@ import ProjectTasks from './views/ProjectTasks.vue'
 import ProjectSendFileToAproval from './views/ProjectSendFileToAproval.vue'
 import ProjectReviewFile from './views/ProjectReviewFile.vue'
 import Relax from './views/Relax.vue'
+import UserProfile from './views/UserProfile.vue'
 
 Vue.use(Router)
 
@@ -95,6 +96,12 @@ export default new Router({
         component: Relax
     },
     {
+        path: "/user_profiles/:user_id",
+        name: "user_profiles",
+        component: UserProfile,
+        beforeEnter: AuthGuard
+    },
+    {
       path: '/about',
       name: 'about',
       // route level code-splitting
@@ -104,59 +111,5 @@ export default new Router({
     }
   ],
   mode: 'history'
-})
 
-
-/*
-{
-    path: '/about',
-    name: 'about',
-    component: About
-},
-{
-    path: '/contact_us',
-    name: 'contact',
-    component: ContactUs
-},
-{
-    path: '/user_profile',
-    name: 'profile',
-    component: UserProfile
-},
-{
-    path: '/notes_tasks',
-    name: 'notes_tasks',
-    component: Notes
-},
-{
-    path: '/projects',
-    name: 'projects',
-    component: Projects
-},
-{
-    path: '/projects/new_project',
-    name: 'new_project',
-    component: NewProject
-},
-{
-    path: '/projects/budget',
-    name: 'budget',
-    component: Budget
-},
-{
-    path: '/projects/:project_name/tasks',
-    name: 'tasks',
-    component: Tasks
-},
-{
-    path: '/projects/:project_name/file_to_approve',
-    name: 'file_to_approve',
-    component: FileToApprove
-},
-{
-    path: '/projects/:project_name/approve_file',
-    name: 'approve_file',
-    component: ApproveFile
-},
-
-*/
+});

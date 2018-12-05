@@ -2,7 +2,7 @@
 <template>
     <v-container fluid>
         <audio controls>
-            <source src="@/assets/relax_song.mp3" type="audio/mpeg">
+            <source src="@/assets/songs/relax_song.mp3" type="audio/mpeg">
             Your browser does not support the audio element.
         </audio>
         <v-layout row>

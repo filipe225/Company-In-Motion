@@ -126,10 +126,18 @@ export default {
 
     methods: {
         aproveFile: function() {
-            this.$store.dispatch('firebaseAproveFile', {project_name: this.project_name, file_id: this.file_id});
+            this.$store.dispatch('firebaseAproveFile', {
+                    project_name: this.project_name, 
+                    file_id: this.file_id,
+                    userDB: this.userDB
+                });
         },
         disaproveFile: function() {
-            this.$store.dispatch('firebaseDisaproveFile', {project_name: this.project_name, file_id: this.file_id});
+            this.$store.dispatch('firebaseDisaproveFile', {
+                    project_name: this.project_name, 
+                    file_id: this.file_id,
+                    userDB: this.userDB
+                });
         },
         addNewComment: function() {
             let commentObject = {

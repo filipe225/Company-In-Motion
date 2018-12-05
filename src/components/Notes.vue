@@ -127,7 +127,8 @@
 
 <script>
 export default {
-    data () {
+    props: ["userNotes"],
+    data: function() {
         return {
             newNote: false,
             newNoteContent: "",
@@ -139,7 +140,7 @@ export default {
 
     computed: {
         items () {
-            return this.$store.getters.getNotes  
+            return this.userNotes;
         }
     },
 

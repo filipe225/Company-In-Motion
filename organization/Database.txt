@@ -23,6 +23,7 @@ PROJECTS:
         admin: _
         associates: []
         clients: []
+        project_managers: []
 
 PROJECT_TASKS:
     project_uid:

@@ -1,15 +1,15 @@
 <template>
     <v-container fluid>
-        <v-footer app dark height="auto">
+        <v-footer dark height="auto">
             <v-card class="flex" flat tile>
                 <v-card-title class="teal">
                     <strong class="subheading">
                         <v-layout row wrap>
-                            <v-flex xs12 sm8>
+                            <v-flex xs12 sm7>
                                 Do you use this website regularly?<br/>
                                 Then consider donating. It would help me to continue to improve its features.
                             </v-flex>
-                            <v-flex xs12 sm4>
+                            <v-flex xs12 sm5>
                                 <v-btn large class="indigo darken-1">DONATE</v-btn>
                             </v-flex>
                         </v-layout>

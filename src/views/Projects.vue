@@ -6,7 +6,7 @@
             <v-dialog v-model="dialogNewProjectManager" max-width="500px">
                 <v-card>
                     <v-card-title>
-                        <span class="headline">Invite User</span>
+                        <span class="headline">Invite Project Manager</span>
                     </v-card-title>
                     <v-card-text>
                         <v-text-field
@@ -16,7 +16,7 @@
                     </v-card-text>
                     <v-card-actions>
                         <v-btn flat @click="dialogNewProjectManager=false">Close</v-btn>
-                        <v-btn color="primary" flat @click="inviteClient">Send Invite</v-btn>
+                        <v-btn color="primary" flat @click="inviteProjectManager">Send Invite</v-btn>
                     </v-card-actions>
                 </v-card>
             </v-dialog>
@@ -25,7 +25,7 @@
             <v-dialog v-model="dialogNewClient" max-width="500px">
                 <v-card>
                     <v-card-title>
-                        <span class="headline">Invite User</span>
+                        <span class="headline">Invite New Client</span>
                     </v-card-title>
                     <v-card-text>
                         <v-text-field
@@ -44,7 +44,7 @@
             <v-dialog v-model="dialogNewAssociate" max-width="500px">
                 <v-card>
                     <v-card-title>
-                        <span class="headline">Invite User</span>
+                        <span class="headline">Invite New Associate</span>
                     </v-card-title>
                     <v-card-text>
                         <v-text-field
@@ -349,12 +349,6 @@ export default {
                 main_link: "http://localhost:8080/" + projectID + "/client/invitation/" + this.userDB.id            
             };
             this.$store.dispatch('firebaseInviteAssociateClientManager', obj)
-        },
-        inviteUser: function() {
-            console.log(this.newUserEmail);
-        },
-        showProjects: function() {
-            console.log(this.projects);
         },
         deleteProject: function() {
             console.log("deleteProject");

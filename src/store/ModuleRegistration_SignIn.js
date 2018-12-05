@@ -110,11 +110,13 @@ export default {
         firebaseUserLogout: function({commit}) {
             firebase.auth().signOut();
             commit('setUser', null);
+            commit('setUserDB', null);
+            commit('setProjects', []);
         },
 
         firebaseSignInUser: function({commit}, payload) {
             firebase.auth()
-                    .setPersistence(firebase.auth.Auth.Persistence.SESSION)
+                    .setPersistence(firebase.auth.Auth.Persistence.LOCAL)
                     .then(function() {
                         return firebase.auth().signInWithEmailAndPassword(payload.email, payload.password);
                     })

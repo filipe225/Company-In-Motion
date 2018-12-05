@@ -2,7 +2,7 @@
     <v-container fluid grid-list-md>
         <v-layout row wrap>
             <v-flex d-flex xs12 sm5 md4>
-                <Notes></Notes>
+                <Notes v-bind:userNotes:="userDBNotes"></Notes>
             </v-flex>
             <v-flex d-flex xs12 sm7 md8>
                 <Tasks></Tasks>
@@ -16,6 +16,12 @@ import Notes from '@/components/Notes.vue';
 import Tasks from '@/components/Tasks.vue';
 
 export default {
+
+    components: {
+        Notes,
+        Tasks
+    },
+    
     data: function() {
         return {
 
@@ -23,12 +29,29 @@ export default {
     },
     
     computed: {
+        userDB: function() {
+            return this.$store.getters.getUserDB;
+        },
+        userDBNotes: function() {
+            return this.userDB.notes;
+        },
+        projects: function() {
+            this.$store.getters.getProjects;
+        },
+        getUserAssignedTasks: function() {
+            let tasks = this.projects.reduce( (tasksArray, project) => {
+                let project_tasks = project.tasks;
+                tasksArray.push(project_tasks);
+                return tasksArray;
+            }, []);
 
-    },
+            let filteredTasks = tasks.filter(project_tasks => {
+                return project_tasks.filter( task => task.assignee === this.userDB.id);
+            });
 
-    components: {
-        Notes,
-        Tasks
+            console.log(filteredTasks);
+        }
     }
+
 }
 </script>

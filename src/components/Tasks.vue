@@ -33,13 +33,15 @@
 
 <script>
 export default {
+    props: ['userAssignedTasks'],
+
     data() {
         return {};
     },
 
     computed: {
         items () {
-            return this.$store.getters.getTasks;
+            return this.userAssignedTasks;
         }
     },
 

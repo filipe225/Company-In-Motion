@@ -38,6 +38,7 @@ class Project {
         this.admin = adminID;
         this.clients = [];
         this.associates = [];
+        this.project_managers = [];
     }
 
     getObject() {
@@ -47,7 +48,8 @@ class Project {
             created_in: this.created_in,
             admin: this.admin,
             clients: this.clients,
-            associates: this.associates
+            associates: this.associates,
+            project_managers: this.project_managers
         }
     }
 }
@@ -206,6 +208,7 @@ export default {
                     comments: [],
                     state: 'pending',
                     uploaderUserType: current_user.type,
+                    uploaderUserId: current_user.id,
                     created_in: new Date().toISOString()
                 };
 
@@ -258,9 +261,21 @@ export default {
             })
         },
 
-        firebaseAddUserToProject: function({commit, getters}, payload) {
+        firebaseAddUserToProject: async function({commit, getters}, payload) {
             let projects = getters.getProjects;
             let project_index = projects.findIndex( project => project.id === payload.id);
+            let project = projects[project_index];
+            
+            try {
+                let user_type = paylaod.user_type;
+
+                const projectReference = firebase.firestore().collection('projects').doc(project.id);
+                let response = await projectReference.update();
+                commit('setNewHttpCall', { response: "success", msg: "User added to project!"})
+            } catch(error) {
+                console.log(error);
+                commit('setNewHttpCall', { response: "error", msg: "Error adding user to project. Try again or contact support."})
+            }
 
         },
 
@@ -272,6 +287,9 @@ export default {
             let file = project.files.find( file => file.fileId === file_id);
             
             try {
+                const fileRef = firebase.firestore().collection('project_files').doc(project.id);
+                // UPDATE ARRAY IN SPECIFIC INDEX
+                console.log(fileRef);
                 commit('setNewHttpCall', { response: "success", msg: `${file.fileName} was successfully aproved!`})
             } catch(error) {
                 commit('setNewHttpCall', { response: "error", msg: `Error Aproving File ${file.fileName}. Try again or contact support.`})
