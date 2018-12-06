@@ -196,7 +196,6 @@ export default {
                 let file_extension = payload.imageName.split(".").reverse();
                 file_extension = file_extension[0];
 
-
                 let fileData = {
                     fileId: file_id,
                     fileName: payload.imageName,
@@ -212,8 +211,8 @@ export default {
                     created_in: new Date().toISOString()
                 };
 
-                let project_files_ref = firebase.firestore().collection('project_files').doc(project_id);
-                let project_files_response = await project_files_ref.update('files', firebase.firestore.FieldValue.arrayUnion(fileData))
+                let project_files_ref = firebase.firestore().collection('project_files').doc(project_id).collection('files').doc(file_id);
+                let project_files_response = await project_files_ref.set(fileData);
 
                 commit('setNewFileToProject', {project_index: project_index, fileData: fileData});
 

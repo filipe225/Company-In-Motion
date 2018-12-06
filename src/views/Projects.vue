@@ -88,6 +88,7 @@
                         </v-card-text>
                         <v-card-actions>
                             <v-spacer></v-spacer>
+                            <v-btn flat type="reset" ref="reset_project_creation">Reset Form</v-btn>
                             <v-btn color="blue darken-1" flat @click.native="newProjectCreation = false">Close</v-btn>
                             <v-btn color="teal darken-1" flat @click="createNewProject" v-bind:disabled="!newProjectValid">Create</v-btn>
                         </v-card-actions>
@@ -96,9 +97,15 @@
             </v-dialog>
 
             <v-layout row wrap>
-                <v-flex xs12 sm4 offset-sm1 v-if="userDB.type === 'admin'">
-                    <p> NO PROJECTS CREATED. CREATE A NEW ONE</p>
-                    <v-btn @click="newProjectCreation = true">CREATE PROJECT</v-btn>
+                <v-flex xs12 v-if="userDB.type === 'admin'">
+                    <v-layout row wrap>
+                        <v-flex xs6>
+                            <v-btn left>REFRESH PROJECTS</v-btn>
+                        </v-flex>
+                        <v-flex xs6>
+                            <v-btn @click="newProjectCreation = true" right>CREATE NEW PROJECT</v-btn>
+                        </v-flex>
+                    </v-layout>                  
                 </v-flex>
                 <v-flex xs12 sm4 offset-sm1 v-else-if="projects.length === 0 && userDB.type === 'associate'">
                     <p> NO PROJECTS JOINED. ASSOCIATE TO A NEW ONE</p>
@@ -123,7 +130,7 @@
                                 <v-list>
                                     <v-list-tile v-if="userDB.type === 'admin' || userDB.type === 'project_manager'">
                                         <v-btn 
-                                            ref="invite_associate"
+                                            ref="invite_project_manager"
                                             v-bind:data-pid="project.id" 
                                             @click="dialogNewProjectManager = true" flat>
                                                 Invite Project Manager</v-btn>
@@ -315,6 +322,9 @@ export default {
                 description: this.project_creation.description
             }
             this.$store.dispatch('firebaseCreateNewProject', project);
+            this.newProjectCreation = false;
+            this.project_creation.name = '';
+            this.project_creation.description = '';
         },
         checkNameAvailable: function() {
             let index = this.projects.findIndex( project => project.name === this.project_creation.name);
@@ -323,32 +333,44 @@ export default {
         inviteAssociate: function() {
             console.log(this.$refs);
             let projectID = this.$refs.invite_associate[0].$el.dataset.pid;
+            let project_index = this.projects.findIndex(project => project.id === projectID);
+            let projectName = this.projects[project_index].name;
+
             let obj =  {
                 mail_to: this.newUserEmail,
                 project_name: projectName,
-                main_link: "http://localhost:8080/" + projectID + "/associate/invitation/" + this.userDB.id            
+                main_link: "http://localhost:8080/projects/" + projectID + "/associate/invitation/" + this.userDB.id            
             };
             console.log(obj);
             this.$store.dispatch('firebaseInviteAssociateClient', obj)
         },
         inviteClient: function() {
             let projectID = this.$refs.invite_client[0].$el.dataset.pid;
+            let project_index = this.projects.findIndex(project => project.id === projectID);
+            let projectName = this.projects[project_index].name;
+
             let obj =  {
                 mail_to: this.newUserEmail,
                 project_name: projectName,
-                main_link: "http://localhost:8080/" + projectID + "/client/invitation/" + this.userDB.id            
+                main_link: "http://localhost:8080/projects/" + projectID + "/client/invitation/" + this.userDB.id            
             };
             console.log(obj);
             this.$store.dispatch('firebaseInviteAssociateClient', obj)
         },
         inviteProjectManager: function() {
+            console.log(this.$refs);
+
             let projectID = this.$refs.invite_project_manager[0].$el.dataset.pid;
+            let project_index = this.projects.findIndex(project => project.id === projectID);
+            let projectName = this.projects[project_index].name;
+
             let obj =  {
                 mail_to: this.newUserEmail,
                 project_name: projectName,
-                main_link: "http://localhost:8080/" + projectID + "/client/invitation/" + this.userDB.id            
+                main_link: "http://localhost:8080/projects/" + projectID + "/project_manager/invitation/" + this.userDB.id            
             };
             this.$store.dispatch('firebaseInviteAssociateClientManager', obj)
+
         },
         deleteProject: function() {
             console.log("deleteProject");

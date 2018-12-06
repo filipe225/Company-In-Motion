@@ -8,7 +8,7 @@
                     </v-list-tile-action>
                     <v-list-tile-content>{{ menuItem.title }}</v-list-tile-content>
                 </v-list-tile>
-                <v-list-tile v-if="isUserAuthenticated" router v-bind:to="'/user_list/' + userDB.id" style="cursor: pointer;">
+                <v-list-tile v-if="isUserAuthenticated" router v-bind:to="'/user_list/cWzernzqOQV7A3IV8IAeipK86iU2'" style="cursor: pointer;">
                     <v-list-tile-action>
                         <v-icon class="pr-1">how_to_reg</v-icon>
                     </v-list-tile-action>
@@ -42,7 +42,7 @@
 
                         <v-list color="teal" dark>
                             <v-list-tile>
-                                <v-list-tile-action>
+                                <v-list-tile-action router v-bind:to="'/user_list/cWzernzqOQV7A3IV8IAeipK86iU2'" style="cursor: pointer;">
                                     <v-icon class="pr-1">how_to_reg</v-icon>
                                 </v-list-tile-action>
                                 <v-list-tile-content>Profile</v-list-tile-content>                       
@@ -99,7 +99,9 @@ export default {
             return this.$store.getters.isUserAuthenticated;
         },
         userDB: function() {
-            return this.$store.getters.getUserDB;
+            if(this.isUserAuthenticated)
+                return this.$store.getters.getUserDB;
+            else return null;
         }
     },
     

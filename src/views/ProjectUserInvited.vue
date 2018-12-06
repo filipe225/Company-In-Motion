@@ -170,7 +170,7 @@ export default {
     },
 
     created: function() {
-        this.project_name = this.$route.params.project_name;
+        this.project_id = this.$route.params.project_id;
         let user_type = this.$route.params.user_type;
         this.user_id = this.$route.params.user_id;
         let user_email = this.$route.params.email;
@@ -187,7 +187,7 @@ export default {
             // No sign in é necessario verificar se a conta do utlizador
             // corresponde ao pedido enviado por email.
 
-            this.$store.dispatch('firebaseProjectAddUser', { 
+            this.$store.dispatch('firebaseAddUserToProject', { 
                 project_name: this.project_name, 
                 user_type: this.user_type, 
                 user_id: this.user_id
@@ -195,7 +195,8 @@ export default {
         },
 
         userRegister: function() {
-            this.$store.dispatch('firebaseProjectAddUser', { 
+            this.$store.dispatch('firebaseAddUserToProject', { 
+                project_id: this.project_id,
                 project_name: this.project_name, 
                 user_type: this.user_type, 
                 user_id: this.user_id

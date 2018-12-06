@@ -38,15 +38,15 @@ export default {
 
             //console.log(payload)
             const signed_user = payload;
-            const userdb = firebase.firestore().collection('users').where('id', '==', signed_user)
+            //const userdb = firebase.firestore().collection('users').where('id', '==', signed_user)
+            const userdb = firebase.firestore().collection('users').doc(signed_user)
 
             try{
                 let userResponse = await userdb.get();
                 //console.log(userResponse);
-                let firstDoc = userResponse.docs[0];
-                if(firstDoc.exists) {
+                if(userResponse.exists) {
                     //let userId = firstDoc.id;
-                    let userData = firstDoc.data(); 
+                    let userData = userResponse.data(); 
                     commit('setUserDB', {...userData})
                     //console.log(getters.getUserDB);
 
@@ -55,6 +55,9 @@ export default {
                     switch (userData.type) {
                         case "admin":
                             projects = proj_refs.where('admin', '==', userData.id);
+                            break;
+                        case "project_manager":
+                            projects = proj_refs.where('project_managers', 'array-contains', userData.id);
                             break;
                         case "associate":
                             projects = proj_refs.where('associates', 'array-contains', userData.id);
@@ -70,6 +73,7 @@ export default {
                     let projectsResponse = await projects.get();
                     //console.log(projectsResponse);
                     let projectDocs = projectsResponse.docs;
+                    console.log(projectDocs);
                     projectDocs.forEach( doc => {
                         let project_id = doc.id;
                         let project_data = doc.data();                       
