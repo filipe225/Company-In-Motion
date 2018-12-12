@@ -61,12 +61,19 @@ export default {
     },
 
     mutations: {
+        deleteProject: function(state, payload) {
+            let project_id = payload.project_id;
+            let project_index = state.projects.findIndex(project => project.id === payload.project_id);
+            state.projects.splice(payload.project_index, 1);
+        },
+
         setProjects: function (state, payload) {
             state.projects = payload;
         },
 
         setNewProject: function (state, payload) {
             let newProject = new Project(payload.name, payload.description, payload.admin);
+            newProject.events = payload.events;
             state.projects.push(newProject);
         },
 
@@ -135,26 +142,60 @@ export default {
             const proj_refs = firebase.firestore().collection('projects')
 
             try {
+                let events = [{
+                    title: `Project ${payload.name} created`,
+                    created_in: new Date().toISOString()
+                }];
+
                 let firstResponse = await proj_refs.add(newProject.getObject());
                 let project_id = firstResponse.id;
-                const proj_files_refs = firebase.firestore().collection('project_files').doc(project_id);
+                const proj_files_refs = firebase.firestore().collection('project_files').doc(project_id) //.collection("files");
                 let secondResponse = await proj_files_refs.set({files: []});
-                const proj_tasks_refs = firebase.firestore().collection('project_tasks').doc(project_id);
+                const proj_tasks_refs = firebase.firestore().collection('project_tasks').doc(project_id) //.collection("tasks");
                 let thirdResponse = await proj_tasks_refs.set({tasks: []});
                 const proj_budget_refs = firebase.firestore().collection('project_budget').doc(project_id);
                 let fourthResponse = await proj_budget_refs.set({budget: []});
                 const proj_events_refs = firebase.firestore().collection('project_events').doc(project_id)
-                let fifthResponse = await proj_events_refs.set({ events: [ {
-                    title: `Project ${payload.name} created`,
-                    created_in: new Date().toISOString()
-                }]})
+                let fifthResponse = await proj_events_refs.set({ events })
 
-                commit('setNewProject', {name: payload.name, description: payload.description, admin: signed_user.id});
+                commit('setNewProject', {name: payload.name, description: payload.description, admin: signed_user.id, events: events});
                 commit('setNewHttpCall', {response: 200, msg: 'New project created!'})
             } catch(error) {
                 console.log(error);
                 commit('setNewHttpCall', {response: 500, msg: 'Error creating new project. Try Again or contact support.'})
             }
+        },
+
+        firebaseDeleteProject: async function({commit, getters}, payload) {
+            if(payload.project_index === -1) return;
+            console.log(payload);
+            let projects = getters.getProjects;
+            let project_index = payload.project_index;
+            let project_id = projects[project_index].id;
+
+            try {
+                let projectRef = firebase.firestore().collection('projects').doc(project_id);
+                let projectResp = await projectRef.delete();
+
+                let projectFilesRef = firebase.firestore().collection('project_files').doc(project_id);
+                let projectFilesResp = await projectFilesRef.delete();
+
+                let projectTasksRef = firebase.firestore().collection('project_tasks').doc(project_id);
+                let projectTasksResp = await projectTasksRef.delete();
+
+                let projectEventsRef = firebase.firestore().collection('project_events').doc(project_id);
+                let projectEventsResp = await projectEventsRef.delete();
+
+                let projectBudgetRef = firebase.firestore().collection('project_budget').doc(project_id);
+                let projectBudgetResp = await projectBudgetRef.delete();
+
+                commit('setNewHttpCall', {response: 200, msg: `Project ${projects[project_index].name} was deleted!`})
+                commit('deleteProject', {project_id: project_id, project_index: project_index});
+            } catch(error) {
+                console.log(error);
+                commit('setNewHttpCall', {response: 500, msg: 'Error deleting project. Try Again or contact support.'})
+            }
+
         },
 
         firebaseNewFileToApproval: async function ({ commit, getters }, payload) {
@@ -166,8 +207,6 @@ export default {
                 let projectRef = firebase.storage().ref().child(project_id + "/" + payload.imageName);
                 let uploadTask = projectRef.put(payload.image);
 
-                let file_id = null;
-
                 // Listen for state changes, errors, and completion of the upload.
                 uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED, // or 'state_changed'
                 function(snapshot) {
@@ -177,7 +216,6 @@ export default {
                     //console.log('Upload is ' + progress + '% done');
                     switch (snapshot.state) {
                         case firebase.storage.TaskState.SUCCESS: 
-                            file_id = snapshot.metadata.generation;
                             break;
                         case firebase.storage.TaskState.PAUSED: // or 'paused'
                             console.log('Upload is paused');
@@ -190,43 +228,56 @@ export default {
                 }, function(error) {
                     console.log(error);
                     commit('setNewHttpCall', {response: 500, msg: 'Error uploading file. Try again or contact support.'})
+                }, function() {
+                    // Handle successful uploads on complete
+                    // For instance, get the download URL: https://firebasestorage.googleapis.com/...
+
+                    let file_id = uploadTask.snapshot.metadata.generation;
+
+                    uploadTask.snapshot.ref.getDownloadURL().then(function(downloadURL) {
+                        let fileDownloadUrl = downloadURL.toString();
+
+                        let current_user = getters.getUserDB;
+                        let file_extension = payload.imageName.split(".").reverse();
+                        file_extension = file_extension[0];
+        
+                        let fileData = {
+                            fileId: file_id,
+                            fileName: payload.imageName,
+                            fileExtension: file_extension,
+                            fileUrl: getters.getStorageBaseUrl + project_id + "/" + file_id,
+                            fileDownloadUrl: fileDownloadUrl,
+                            title: payload.title,
+                            description: payload.description,
+                            comments: [],
+                            state: 'pending',
+                            uploaderUserType: current_user.type,
+                            uploaderUserId: current_user.id,
+                            created_in: new Date().toISOString()
+                        };
+        
+                        console.log(project_id, file_id);
+                        let project_files_ref = firebase.firestore().collection('project_files').doc(project_id).collection('files').doc(file_id);
+                        let project_files_response = project_files_ref.set(fileData);
+        
+                        commit('setNewFileToProject', {project_index: project_index, fileData: fileData});
+        
+                        const eventData = {
+                            title: `File ${payload.imageName} sent for aproval by ${current_user.displayName}`,
+                            created_in: new Date().toISOString()
+                        };
+        
+                        let project_events_ref = firebase.firestore().collection('project_events').doc(project_id);
+                        let project_events_response =  project_events_ref.update('events', firebase.firestore.FieldValue.arrayUnion(eventData));
+        
+                        commit('setNewEventToProject', {project_index: project_index, eventData: eventData});
+        
+                        commit('setNewHttpCall', {response: 200, msg: 'File Uploaded correctly.'})
+                    });
+
                 });
 
-                let current_user = getters.getUserDB;
-                let file_extension = payload.imageName.split(".").reverse();
-                file_extension = file_extension[0];
 
-                let fileData = {
-                    fileId: file_id,
-                    fileName: payload.imageName,
-                    fileExtension: file_extension,
-                    fileUrl: getters.getStorageBaseUrl + project_id + "/" + file_id,
-                    fileDownloadUrl: '',
-                    title: payload.title,
-                    description: payload.description,
-                    comments: [],
-                    state: 'pending',
-                    uploaderUserType: current_user.type,
-                    uploaderUserId: current_user.id,
-                    created_in: new Date().toISOString()
-                };
-
-                let project_files_ref = firebase.firestore().collection('project_files').doc(project_id).collection('files').doc(file_id);
-                let project_files_response = await project_files_ref.set(fileData);
-
-                commit('setNewFileToProject', {project_index: project_index, fileData: fileData});
-
-                const eventData = {
-                    title: `File ${payload.imageName} sent for aproval by ${current_user.displayName}`,
-                    created_in: new Date().toISOString()
-                };
-
-                let project_events_ref = firebase.firestore().collection('project_events').doc(project_id);
-                let project_events_response = await project_events_ref.update('events', firebase.firestore.FieldValue.arrayUnion(eventData));
-
-                commit('setNewEventToProject', {project_index: project_index, eventData: eventData});
-
-                commit('setNewHttpCall', {response: 200, msg: 'File Uploaded correctly.'})
             }catch(error) {
                 console.log(error);
                 commit('setNewHttpCall', {response: 500, msg: 'Error uploading file. Try again or contact support.'})
@@ -286,7 +337,7 @@ export default {
             let file = project.files.find( file => file.fileId === file_id);
             
             try {
-                const fileRef = firebase.firestore().collection('project_files').doc(project.id);
+                const fileRef = firebase.firestore().collection('project_files').doc(project.id).collection("files").doc(file.id);
                 // UPDATE ARRAY IN SPECIFIC INDEX
                 console.log(fileRef);
                 commit('setNewHttpCall', { response: "success", msg: `${file.fileName} was successfully aproved!`})

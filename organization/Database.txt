@@ -27,6 +27,7 @@ PROJECTS:
 
 PROJECT_TASKS:
     project_uid:
+        tasks:
 
 
 
@@ -38,22 +39,23 @@ PROJECT_EVENTS:
 
 PROJECT_FILES:
     project_uid:
-        fileId: String,
-        fileName: String,
-        fileExtension: String,
-        fileUrl: getters.getStorageBaseUrl + project_id + "/" + file_id,
-        fileDownloadUrl: '',
-        title: String,
-        description: String,
-        comments: [],
-        state: "pending" || "aprove" || "disapproved",
-        uploaderUserType: current_user.type,
-        created_in: new Date().toISOString()
-        comments: [ {
-            id: _
-            content: _
-            made_by: user_uid
-        }]
+        files:
+            fileId: String,
+            fileName: String,
+            fileExtension: String,
+            fileUrl: getters.getStorageBaseUrl + project_id + "/" + file_id,
+            fileDownloadUrl: '',
+            title: String,
+            description: String,
+            comments: [],
+            state: "pending" || "aprove" || "disapproved",
+            uploaderUserType: current_user.type,
+            created_in: new Date().toISOString()
+            comments: [ {
+                id: _
+                content: _
+                made_by: user_uid
+            }]
 
 PROJECT_BUDGET:
     project_uid:

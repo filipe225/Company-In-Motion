@@ -96,6 +96,22 @@
                 </v-form>
             </v-dialog>
 
+            <!-- MODAL DELETE PROJECT -->
+            <v-dialog v-model="dialogDeleteProject" max-width="500px">
+                <v-card>
+                    <v-card-title v-if="selectedIndex !== -1">
+                        <span class="headline">DELETE PROJECT {{projects[selectedIndex].name}}</span>
+                    </v-card-title>
+                    <v-card-text>
+                        ARE YOU SURE YOU WANT TO DELETE THIS PROJECT AND ALL ITS INFORMATION ?
+                    </v-card-text>
+                    <v-card-actions>
+                        <v-btn flat @click="dialogDeleteProject = false">Cancel</v-btn>
+                        <v-btn color="primary" flat @click="deleteProject" class="right">DELETE</v-btn>
+                    </v-card-actions>
+                </v-card>
+            </v-dialog>
+
             <v-layout row wrap>
                 <v-flex xs12 v-if="userDB.type === 'admin'">
                     <v-layout row wrap>
@@ -103,7 +119,7 @@
                             <v-btn left>REFRESH PROJECTS</v-btn>
                         </v-flex>
                         <v-flex xs6>
-                            <v-btn @click="newProjectCreation = true" right>CREATE NEW PROJECT</v-btn>
+                            <v-btn @click="newProjectCreation = true" class="right">CREATE NEW PROJECT</v-btn>
                         </v-flex>
                     </v-layout>                  
                 </v-flex>
@@ -181,7 +197,7 @@
                                     </v-list-tile>
                                     <v-divider></v-divider>
                                     <v-list-tile v-if="userDB.type === 'admin'">
-                                        <v-btn flat @click="dialogDeleteProject = true">
+                                        <v-btn flat @click="showDeleteProjectDialog(index)">
                                             Delete Project</v-btn>
                                     </v-list-tile>
                                 </v-list>
@@ -268,6 +284,7 @@ const event = {
 export default {
     data: function() {
         return {
+            selectedIndex: -1,
             dialogDeleteProject: false,
             dialogNewClient: false,
             dialogNewAssociate: false,
@@ -342,7 +359,7 @@ export default {
                 main_link: "http://localhost:8080/projects/" + projectID + "/associate/invitation/" + this.userDB.id            
             };
             console.log(obj);
-            this.$store.dispatch('firebaseInviteAssociateClient', obj)
+            this.$store.dispatch('firebaseInviteAssociateClientManager', obj)
         },
         inviteClient: function() {
             let projectID = this.$refs.invite_client[0].$el.dataset.pid;
@@ -355,7 +372,7 @@ export default {
                 main_link: "http://localhost:8080/projects/" + projectID + "/client/invitation/" + this.userDB.id            
             };
             console.log(obj);
-            this.$store.dispatch('firebaseInviteAssociateClient', obj)
+            this.$store.dispatch('firebaseInviteAssociateClientManager', obj)
         },
         inviteProjectManager: function() {
             console.log(this.$refs);
@@ -374,6 +391,15 @@ export default {
         },
         deleteProject: function() {
             console.log("deleteProject");
+
+            this.$store.dispatch('firebaseDeleteProject', {project_index: this.selectedIndex});
+            this.selectedIndex = -1;
+
+
+        },
+        showDeleteProjectDialog: function(index) {
+            this.dialogDeleteProject = true;
+            this.selectedIndex = index;
         }
     }
 }

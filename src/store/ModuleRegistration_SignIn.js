@@ -120,7 +120,7 @@ export default {
 
         firebaseSignInUser: function({commit}, payload) {
             firebase.auth()
-                    .setPersistence(firebase.auth.Auth.Persistence.LOCAL)
+                    .setPersistence(firebase.auth.Auth.Persistence.SESSION)
                     .then(function() {
                         return firebase.auth().signInWithEmailAndPassword(payload.email, payload.password);
                     })
