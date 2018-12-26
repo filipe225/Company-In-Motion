@@ -84,12 +84,15 @@ export default {
 
                     let user_projects = getters.getProjects;
                     for(let i=0, len = user_projects.length; i<len; i++) {
-                        const proj_files_ref = firebase.firestore().collection('project_files').doc(user_projects[i].id)
+                        const proj_files_ref = firebase.firestore().collection('project_files').doc(user_projects[i].id).collection("files");
                         let project_files_response = await proj_files_ref.get();
-                        let proj_files_data = project_files_response.data();
-                        commit('setNewObjectForProject', {id: user_projects[i].id, data: proj_files_data})
 
-                        console.log("files", proj_files_data);
+                        console.log(project_files_response);
+
+                        //let proj_files_data = project_files_response.data();
+                        //commit('setNewObjectForProject', {id: user_projects[i].id, data: proj_files_data})
+
+                        //console.log("files", proj_files_data);
                     }
 
                     for(let i=0, len = user_projects.length; i<len; i++) {

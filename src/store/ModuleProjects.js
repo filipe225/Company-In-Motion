@@ -39,6 +39,8 @@ class Project {
         this.clients = [];
         this.associates = [];
         this.project_managers = [];
+        this.events = [];
+        this.files = [];
     }
 
     getObject() {
@@ -84,7 +86,8 @@ export default {
         setNewObjectForProject: function(state, payload) {
             let desired_project_index = state.projects.findIndex( proj => proj.id === payload.id);
             if(desired_project_index > -1) {
-                Object.assign(state.projects[desired_project_index], payload.data);
+                console.log("Object.assign", payload.data);
+                //Object.assign(state.projects[desired_project_index], payload.data);
                 //state.projects[desired_project_index][key] = payload.data;
             }else {
                 console.log(payload);
