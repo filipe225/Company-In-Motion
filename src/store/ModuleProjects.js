@@ -56,6 +56,12 @@ class Project {
     }
 }
 
+class File {
+    constructor() {
+
+    }
+}
+
 export default {
     state: {
         projects: [],
@@ -63,6 +69,23 @@ export default {
     },
 
     mutations: {
+        addFilesToProject: function(state, payload) {
+            let desired_project_index = state.projects.findIndex( proj => proj.id === payload.id);
+            if(desired_project_index > -1) {
+                if(!state.projects[desired_project_index].files) {
+                    state.projects[desired_project_index].files = [];
+                }
+                state.projects[desired_project_index].files.push(payload.file);
+            }
+        },
+
+        addEventsToProject: function(state, payload) {
+            let desired_project_index = state.projects.findIndex( proj => proj.id === payload.id);
+            if(desired_project_index > -1) {
+                state.projects[desired_project_index].events = payload.events;
+            }
+        },
+
         deleteProject: function(state, payload) {
             let project_id = payload.project_id;
             let project_index = state.projects.findIndex(project => project.id === payload.project_id);
@@ -81,18 +104,6 @@ export default {
 
         setLoadedProject: function(state, payload) {
             state.projects.push(payload);
-        },
-
-        setNewObjectForProject: function(state, payload) {
-            let desired_project_index = state.projects.findIndex( proj => proj.id === payload.id);
-            if(desired_project_index > -1) {
-                console.log("Object.assign", payload.data);
-                //Object.assign(state.projects[desired_project_index], payload.data);
-                //state.projects[desired_project_index][key] = payload.data;
-            }else {
-                console.log(payload);
-            }
-            
         },
 
         setNewEventToProject: function(state, payload) {
@@ -334,10 +345,12 @@ export default {
 
         firebaseAproveFile: function({commit, getters}, payload) {
             let projects = getters.getProjects;
-            let project_index = projects.findIndex( project => project.name === project_name);
+            let project_index = projects.findIndex( project => project.name === payload.project_name);
             if(project_index === -1) return;
             let project = state.projects[project_index];
-            let file = project.files.find( file => file.fileId === file_id);
+            let file = project.files.find( file => file.fileId === payload.file_id);
+            let file_index = project.files.find( file => file.fileId === payload.file_id);
+            project.files[file_index].state = "aproved";
             
             try {
                 const fileRef = firebase.firestore().collection('project_files').doc(project.id).collection("files").doc(file.id);
@@ -349,17 +362,34 @@ export default {
             }
         },
 
-        firebaseDisaproveFile: function({commit, getters}, payload) {
+        firebaseRejectFile: function({commit, getters}, payload) {
             let projects = getters.getProjects;
-            let project_index = projects.findIndex( project => project.name === project_name);
+            let project_index = projects.findIndex( project => project.name === payload.project_name);
             if(project_index === -1) return;
             let project = state.projects[project_index];
-            let file = project.files.find( file => file.fileId === file_id);
+            let file_index = project.files.find( file => file.fileId === payload.file_id);
+            project.files[file_index].state = "rejected";
             
             try {
-                commit('setNewHttpCall', { response: "success", msg: `${file.fileName} was successfully disaproved!!`})
+                commit('setNewHttpCall', { response: "success", msg: `${file.fileName} was successfully rejected!!`})
             } catch(error) {
-                commit('setNewHttpCall', { response: "error", msg: `Error Disaproving File ${file.fileName}. Try again or contact support.`})
+                commit('setNewHttpCall', { response: "error", msg: `Error rejecting file ${file.fileName}. Try again or contact support.`})
+            }
+        },
+
+        // NOT IN USE
+        firebasePendingFile: function({commit, getters}, payload) {
+            let projects = getters.getProjects;
+            let project_index = projects.findIndex( project => project.name === payload.project_name);
+            if(project_index === -1) return;
+            let project = state.projects[project_index];
+            let file_index = project.files.find( file => file.fileId === payload.file_id);
+            project.files[file_index].state = "pending";
+            
+            try {
+                commit('setNewHttpCall', { response: "success", msg: `${file.fileName} was successfully rejected!!`})
+            } catch(error) {
+                commit('setNewHttpCall', { response: "error", msg: `Error rejecting file ${file.fileName}. Try again or contact support.`})
             }
         },
 

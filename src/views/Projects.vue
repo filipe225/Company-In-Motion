@@ -15,7 +15,7 @@
                         ></v-text-field>
                     </v-card-text>
                     <v-card-actions>
-                        <v-btn flat @click="dialogNewProjectManager=false">Close</v-btn>
+                        <v-btn flat @click="dialogNewProjectManager=false; projectSelectedIndex = null">Close</v-btn>
                         <v-btn color="primary" flat @click="inviteProjectManager">Send Invite</v-btn>
                     </v-card-actions>
                 </v-card>
@@ -34,7 +34,7 @@
                         ></v-text-field>
                     </v-card-text>
                     <v-card-actions>
-                        <v-btn flat @click="dialogNewClient=false">Close</v-btn>
+                        <v-btn flat @click="dialogNewClient=false; projectSelectedIndex = null">Close</v-btn>
                         <v-btn color="primary" flat @click="inviteClient">Send Invite</v-btn>
                     </v-card-actions>
                 </v-card>
@@ -53,7 +53,7 @@
                         ></v-text-field>
                     </v-card-text>
                     <v-card-actions>
-                        <v-btn flat @click="dialogNewAssociate=false">Close</v-btn>
+                        <v-btn flat @click="dialogNewAssociate=false; projectSelectedIndex = null">Close</v-btn>
                         <v-btn color="primary" flat @click="inviteAssociate">Send Invite</v-btn>
                     </v-card-actions>
                 </v-card>
@@ -148,7 +148,7 @@
                                         <v-btn 
                                             ref="invite_project_manager"
                                             v-bind:data-pid="project.id" 
-                                            @click="dialogNewProjectManager = true" flat>
+                                            @click="dialogNewProjectManager = true; projectSelectedIndex = index" flat>
                                                 Invite Project Manager</v-btn>
                                     </v-list-tile>
                                     <v-divider></v-divider>
@@ -156,7 +156,7 @@
                                         <v-btn  
                                             ref="invite_client"
                                             v-bind:data-pid="project.id" 
-                                            @click="dialogNewClient = true" flat>
+                                            @click="dialogNewClient = true; projectSelectedIndex = index" flat>
                                                 Invite Client</v-btn>
                                     </v-list-tile>
                                     <v-divider></v-divider>
@@ -164,7 +164,7 @@
                                         <v-btn 
                                             ref="invite_associate"
                                             v-bind:data-pid="project.id" 
-                                            @click="dialogNewAssociate = true" flat>
+                                            @click="dialogNewAssociate = true; projectSelectedIndex = index" flat>
                                                 Invite Associate</v-btn>
                                     </v-list-tile>
                                     <v-divider></v-divider>
@@ -193,7 +193,7 @@
                                         <v-btn flat>
                                             <router-link tag="span" v-bind:to="'/projects/' + project.name + '/project_files'">
                                                 Project Files</router-link> 
-                                        </v-btn>    
+                                        </v-btn>
                                     </v-list-tile>
                                     <v-divider></v-divider>
                                     <v-list-tile v-if="userDB.type === 'admin'">
@@ -219,8 +219,15 @@
                             </v-list-tile>
                             <v-divider></v-divider>
                             <v-list-tile >
+                                Project Managers:
+                                <v-list-tile-title v-for="(project_manager, index) in project.project_managers" v-bind:key="index">
+                                    {{ project_manager.name }}
+                                </v-list-tile-title>
+                            </v-list-tile>
+                            <v-divider></v-divider>
+                            <v-list-tile >
                                 Associates:
-                                <v-list-tile-title v-for="(associate, i) in project.associates" v-bind:key="i">
+                                <v-list-tile-title v-for="(associate, index) in project.associates" v-bind:key="index">
                                     {{ associate.name }}
                                 </v-list-tile-title>
                             </v-list-tile>
@@ -292,6 +299,7 @@ export default {
             newUserEmail: '',
             newProjectCreation: false,
             newProjectValid: false,
+            projectSelectedIndex: null,
             project_creation: {
                 name: '',
                 nameRules : [
@@ -328,8 +336,8 @@ export default {
     },
 
     mounted: function() {
-        console.log(this.projects);
-        console.log(this.userDB);
+        //console.log(this.projects);
+        //console.log(this.userDB);
     },
 
     methods: {
@@ -386,7 +394,11 @@ export default {
                 project_name: projectName,
                 main_link: "http://localhost:8080/projects/" + projectID + "/project_manager/invitation/" + this.userDB.id            
             };
-            this.$store.dispatch('firebaseInviteAssociateClientManager', obj)
+            this.$store.dispatch('firebaseInviteAssociateClientManager', obj);
+
+            this.dialogNewProjectManager = false;
+            this.newUserEmail = "";
+
 
         },
         deleteProject: function() {

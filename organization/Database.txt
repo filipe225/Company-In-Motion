@@ -48,7 +48,7 @@ PROJECT_FILES:
             title: String,
             description: String,
             comments: [],
-            state: "pending" || "aprove" || "disapproved",
+            state: "pending" || "aproved" || "rejected",
             uploaderUserId: String
             uploaderUserType: current_user.type,
             created_in: new Date().toISOString()

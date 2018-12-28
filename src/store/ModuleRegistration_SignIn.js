@@ -87,19 +87,18 @@ export default {
                         const proj_files_ref = firebase.firestore().collection('project_files').doc(user_projects[i].id).collection("files");
                         let project_files_response = await proj_files_ref.get();
 
-                        console.log(project_files_response);
-
-                        //let proj_files_data = project_files_response.data();
-                        //commit('setNewObjectForProject', {id: user_projects[i].id, data: proj_files_data})
-
-                        //console.log("files", proj_files_data);
+                        let project_files_docs = project_files_response.docs;
+                        project_files_docs.forEach( file => {
+                            let file_data = file.data();
+                            commit('addFilesToProject', {id: user_projects[i].id, file: file_data})
+                        });
                     }
 
                     for(let i=0, len = user_projects.length; i<len; i++) {
                         const proj_events_ref = firebase.firestore().collection('project_events').doc(user_projects[i].id)
                         let project_events_response = await proj_events_ref.get();
                         let proj_events_data = project_events_response.data();
-                        commit('setNewObjectForProject', {id: user_projects[i].id, data: proj_events_data})
+                        commit('addEventsToProject', {id: user_projects[i].id, events: proj_events_data})
                         console.log("events", proj_events_data);
                     }
 
