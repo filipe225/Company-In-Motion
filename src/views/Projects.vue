@@ -362,6 +362,7 @@ export default {
             let projectName = this.projects[project_index].name;
 
             let obj =  {
+                inviter: this.userDB.id,
                 mail_to: this.newUserEmail,
                 project_name: projectName,
                 main_link: "http://localhost:8080/projects/" + projectID + "/associate/invitation/" + this.userDB.id            
@@ -375,6 +376,7 @@ export default {
             let projectName = this.projects[project_index].name;
 
             let obj =  {
+                inviter: this.userDB.id,
                 mail_to: this.newUserEmail,
                 project_name: projectName,
                 main_link: "http://localhost:8080/projects/" + projectID + "/client/invitation/" + this.userDB.id            
@@ -390,6 +392,7 @@ export default {
             let projectName = this.projects[project_index].name;
 
             let obj =  {
+                inviter: this.userDB.id,
                 mail_to: this.newUserEmail,
                 project_name: projectName,
                 main_link: "http://localhost:8080/projects/" + projectID + "/project_manager/invitation/" + this.userDB.id            
@@ -406,7 +409,6 @@ export default {
 
             this.$store.dispatch('firebaseDeleteProject', {project_index: this.selectedIndex});
             this.selectedIndex = -1;
-
 
         },
         showDeleteProjectDialog: function(index) {

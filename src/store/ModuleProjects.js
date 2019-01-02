@@ -171,6 +171,8 @@ export default {
                 let fourthResponse = await proj_budget_refs.set({budget: []});
                 const proj_events_refs = firebase.firestore().collection('project_events').doc(project_id)
                 let fifthResponse = await proj_events_refs.set({ events })
+                const proj_invites_refs = firebase.firestore().collection('project_invites').doc(project_id)
+                let sixthResponse = await proj_invites_refs.collection('invites').doc("teste");
 
                 commit('setNewProject', {name: payload.name, description: payload.description, admin: signed_user.id, events: events});
                 commit('setNewHttpCall', {response: 200, msg: 'New project created!'})
@@ -298,7 +300,47 @@ export default {
             }
         },
 
-        firebaseInviteAssociateClientManager: function({commit}, payload) {
+        firebaseInviteAssociateClientManager: async function({commit, getters}, payload) {
+            let projects = getters.getProjects; 
+            let project_index = projects.findIndex( project =>  project.name === payload.project_name ); 
+            let project_uid = projects[project_index].id;
+
+            let firebase_ref = firebase.firestore().collection("project_invites").doc(project_uid).collection('invites');
+
+            let invite = {
+                inviter: payload.inviter,
+                invitee: payload.mail_to,
+                date: new Date().toISOString(),
+                state: "pending"
+            }
+
+            try {
+                let invite_response = await firebase_ref.add(invite);
+                let invite_id = invite_response.uid;
+                console.log("INVITE ID", invite_id);
+                let mail_response = await fetch('https://us-central1-companysimplify-1992.cloudfunctions.net/invitePersonToProject' +
+                                        '?mail_to=' + payload.mail_to +
+                                        '&project_name=' + payload.project_name +
+                                        '&main_link=' + payload.main_link , {
+                                    method: "POST", // *GET, POST, PUT, DELETE, etc.
+                                    mode: "cors", // no-cors, cors, *same-origin
+                                    cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
+                                    credentials: "same-origin", // include, *same-origin, omit
+                                    headers: {
+                                        "Content-Type": "application/json; charset=utf-8",
+                                        // "Content-Type": "application/x-www-form-urlencoded",
+                                    },
+                                    redirect: "follow", // manual, *follow, error
+                                    referrer: "no-referrer", // no-referrer, *client
+                                    body: JSON.stringify(payload), // body data type must match "Content-Type" header           
+                                })
+
+                commit('setNewHttpCall', { response: "success", msg: "Email sent"})
+            }catch (error) {
+                commit('setNewHttpCall', { response: "error", msg: "Error sending email. Try again or contact support."})
+            }
+
+            /*             
             fetch('https://us-central1-companysimplify-1992.cloudfunctions.net/inviteAssociateClient' +
                     '?mail_to=' + payload.mail_to +
                     '&project_name=' + payload.project_name +
@@ -317,12 +359,11 @@ export default {
             })
             .then(response => {
                 if(response.status === 200) {
-                    commit('setNewHttpCall', { response: "success", msg: "Email sent"})
                 }
             })
             .catch( error => {
-                commit('setNewHttpCall', { response: "error", msg: "Error sending email. Try again or contact support."})
-            })
+            }) 
+            */
         },
 
         firebaseAddUserToProject: async function({commit, getters}, payload) {
