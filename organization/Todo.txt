@@ -10,6 +10,11 @@ BACKEND / FIREBASE FUNCTIONS
 
 
 FRONT END
+
+    UI
+        -- decidir cores dos botoes
+        -- ajustar elevação dos cards
+
     REGISTO / LOGIN
         -- enviar email de registo
         -- enviar mail com palavra passe perdida
