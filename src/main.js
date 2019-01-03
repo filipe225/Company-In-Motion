@@ -45,6 +45,8 @@ new Vue({
             this.$store.dispatch('firebaseAutoSignIn', user);
             this.$store.dispatch('firebaseGetUserDB', user.uid);
             //this.$store.dispatch('firebaseLoadProjects');     
+        } else {
+            this.$store.dispatch('firebaseUserLogout');
         }
     })
     console.log("El store", this.$store);
