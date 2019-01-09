@@ -62,3 +62,16 @@ FRONT END
 
     RELAX
         -- criar playlist
+
+OTHERS
+
+    BUDGET
+        -- estruturar pagina de orçamento para um projecto
+
+    CALENDAR
+        -- estruturar possiveis opçoes de um calendario
+        -- usar TOAST UI calendar?
+
+    PUSH NOTIFICATIONS
+        -- criar servico de notificações desktop
+        -- permitir escolher recebe-las ou não

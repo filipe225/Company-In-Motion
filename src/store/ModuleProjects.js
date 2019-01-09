@@ -121,16 +121,6 @@ export default {
     },
 
     actions: {
-        firebaseProjectAddUse: function({ commit}, payload) {
-            let ref = firebase.firestore().collection('projects').where('name', '==', payload.project_name)
-            let coiso = ref.get().then( data => {
-
-            })
-            .catch( error => {
-
-            });
-        },
-
         firebaseLoadProjects: function ({ commit, getters }, payload) {
             console.log("firebaseLoadProjects");
             let projects = getters.getProjects;
@@ -316,12 +306,13 @@ export default {
 
             try {
                 let invite_response = await firebase_ref.add(invite);
-                let invite_id = invite_response.uid;
+                console.log(invite_response);
+                let invite_id = invite_response.id;
                 console.log("INVITE ID", invite_id);
                 let mail_response = await fetch('https://us-central1-companysimplify-1992.cloudfunctions.net/invitePersonToProject' +
                                         '?mail_to=' + payload.mail_to +
                                         '&project_name=' + payload.project_name +
-                                        '&main_link=' + payload.main_link , {
+                                        '&main_link=' + payload.main_link + "/" + invite_id , {
                                     method: "POST", // *GET, POST, PUT, DELETE, etc.
                                     mode: "cors", // no-cors, cors, *same-origin
                                     cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
@@ -372,11 +363,33 @@ export default {
             let project = projects[project_index];
             
             try {
-                let user_type = paylaod.user_type;
+                let project_inv_ref = firebase.firestore().collection('project_invites').doc(project.id).collection('invites').doc(payload.invite_id);
+                let project_invite_resp = await project_inv_ref.get();
 
-                const projectReference = firebase.firestore().collection('projects').doc(project.id);
-                let response = await projectReference.update();
-                commit('setNewHttpCall', { response: "success", msg: "User added to project!"})
+                let project_invite_data = project_invite_resp.data();
+
+                if( project_invite_data.state === "pending") {
+                    let user_type = payload.user_type;
+
+                    // user ja registado? 
+                    // se nao registar e adicionar a projecto
+                    const newUser = {
+                        id: userData.user.uid,
+                        displayName: payload.displayName,
+                        email: payload.email,
+                        type: payload.type,
+                        created_in: new Date().toISOString(),
+                        photo_url: 'https://firebasestorage.googleapis.com/v0/b/companysimplify-1992.appspot.com/o/users_avatars%2Fdefault%2Fuser_avatar_default.png?alt=media&token=b6883e32-5b03-48d2-9d9a-3c802e0e359b',
+                        notes: []                      
+                    }
+
+                    const projectReference = firebase.firestore().collection('projects').doc(project.id);
+                    let response = await projectReference.update();
+                    commit('setNewHttpCall', { response: "success", msg: "User added to project!"})                    
+                } else {
+                    throw new Error();
+                }
+
             } catch(error) {
                 console.log(error);
                 commit('setNewHttpCall', { response: "error", msg: "Error adding user to project. Try again or contact support."})
@@ -391,7 +404,7 @@ export default {
             let project = state.projects[project_index];
             let file = project.files.find( file => file.fileId === payload.file_id);
             let file_index = project.files.find( file => file.fileId === payload.file_id);
-            project.files[file_index].state = "aproved";
+            project.files[file_index].state = "approved";
             
             try {
                 const fileRef = firebase.firestore().collection('project_files').doc(project.id).collection("files").doc(file.id);

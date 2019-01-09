@@ -172,7 +172,8 @@ export default {
     created: function() {
         this.project_id = this.$route.params.project_id;
         let user_type = this.$route.params.user_type;
-        this.user_id = this.$route.params.user_id;
+        this.inviter_id = this.$route.params.inviter_id;
+        this.invite_id = this.$route.params.fb_invite_id;
         let user_email = this.$route.params.email;
 
         this.register.email = user_email;
@@ -190,7 +191,8 @@ export default {
             this.$store.dispatch('firebaseAddUserToProject', { 
                 project_name: this.project_name, 
                 user_type: this.user_type, 
-                user_id: this.user_id
+                inviter_id: this.inviter_id,
+                invite_id: this.invite_id
             });
         },
 
@@ -199,7 +201,8 @@ export default {
                 project_id: this.project_id,
                 project_name: this.project_name, 
                 user_type: this.user_type, 
-                user_id: this.user_id
+                inviter_id: this.inviter_id,
+                invite_id: this.invite_id
             });
         }
     }

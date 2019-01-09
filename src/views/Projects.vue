@@ -368,7 +368,10 @@ export default {
                 main_link: "http://localhost:8080/projects/" + projectID + "/associate/invitation/" + this.userDB.id            
             };
             console.log(obj);
-            this.$store.dispatch('firebaseInviteAssociateClientManager', obj)
+            this.$store.dispatch('firebaseInviteAssociateClientManager', obj);
+
+            this.dialogNewAssociate = false;
+            this.newUserEmail = "";
         },
         inviteClient: function() {
             let projectID = this.$refs.invite_client[0].$el.dataset.pid;
@@ -382,7 +385,10 @@ export default {
                 main_link: "http://localhost:8080/projects/" + projectID + "/client/invitation/" + this.userDB.id            
             };
             console.log(obj);
-            this.$store.dispatch('firebaseInviteAssociateClientManager', obj)
+            this.$store.dispatch('firebaseInviteAssociateClientManager', obj);
+
+            this.dialogNewClient = false;
+            this.newUserEmail = "";
         },
         inviteProjectManager: function() {
             console.log(this.$refs);
@@ -401,7 +407,6 @@ export default {
 
             this.dialogNewProjectManager = false;
             this.newUserEmail = "";
-
 
         },
         deleteProject: function() {
