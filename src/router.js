@@ -62,7 +62,7 @@ export default new Router({
         beforeEnter: AuthGuard
     },
     {
-        path: '/projects/:project_id/:user_type/invitation/:user_id',
+        path: '/projects/:project_id/:user_type/invitation/:inviter_id/:fb_invite_id',
         name: 'user_invitation',
         component: ProjectUserInvited
     },

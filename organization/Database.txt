@@ -60,3 +60,11 @@ PROJECT_FILES:
 
 PROJECT_BUDGET:
     project_uid:
+
+
+PROJECT_INVITES:
+    project_uid:
+        inviter: String (invinter id),
+        invitee: String,
+        date: String,
+        status: String

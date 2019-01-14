@@ -112,7 +112,7 @@
                 </v-card>
             </v-dialog>
 
-            <v-layout row wrap>
+            <v-layout row wrap class="mt-5">
                 <v-flex xs12 v-if="userDB.type === 'admin'">
                     <v-layout row wrap>
                         <v-flex xs6>
@@ -362,12 +362,16 @@ export default {
             let projectName = this.projects[project_index].name;
 
             let obj =  {
+                inviter: this.userDB.id,
                 mail_to: this.newUserEmail,
                 project_name: projectName,
                 main_link: "http://localhost:8080/projects/" + projectID + "/associate/invitation/" + this.userDB.id            
             };
             console.log(obj);
-            this.$store.dispatch('firebaseInviteAssociateClientManager', obj)
+            this.$store.dispatch('firebaseInviteAssociateClientManager', obj);
+
+            this.dialogNewAssociate = false;
+            this.newUserEmail = "";
         },
         inviteClient: function() {
             let projectID = this.$refs.invite_client[0].$el.dataset.pid;
@@ -375,12 +379,16 @@ export default {
             let projectName = this.projects[project_index].name;
 
             let obj =  {
+                inviter: this.userDB.id,
                 mail_to: this.newUserEmail,
                 project_name: projectName,
                 main_link: "http://localhost:8080/projects/" + projectID + "/client/invitation/" + this.userDB.id            
             };
             console.log(obj);
-            this.$store.dispatch('firebaseInviteAssociateClientManager', obj)
+            this.$store.dispatch('firebaseInviteAssociateClientManager', obj);
+
+            this.dialogNewClient = false;
+            this.newUserEmail = "";
         },
         inviteProjectManager: function() {
             console.log(this.$refs);
@@ -390,6 +398,7 @@ export default {
             let projectName = this.projects[project_index].name;
 
             let obj =  {
+                inviter: this.userDB.id,
                 mail_to: this.newUserEmail,
                 project_name: projectName,
                 main_link: "http://localhost:8080/projects/" + projectID + "/project_manager/invitation/" + this.userDB.id            
@@ -399,14 +408,12 @@ export default {
             this.dialogNewProjectManager = false;
             this.newUserEmail = "";
 
-
         },
         deleteProject: function() {
             console.log("deleteProject");
 
             this.$store.dispatch('firebaseDeleteProject', {project_index: this.selectedIndex});
             this.selectedIndex = -1;
-
 
         },
         showDeleteProjectDialog: function(index) {
@@ -416,84 +423,6 @@ export default {
     }
 }
 </script>
-
-<!--
-[
-    {
-        name: 'Project #1',
-        date: new Date().toDateString("yyyy-MM-dd"),
-        client: {
-            name: 'Client #1',
-            profile: "/"
-        },
-        associates: [
-            {
-                name: 'Associate #1',
-                profile: "/"
-            },
-            {
-                name: 'Associate #2',
-                profile: "/"
-            },
-            {
-                name: 'Associate #3',
-                profile: "/"
-            }
-        ],
-        filesAwatingApproval: 2,
-        filesApproved: 4
-    },
-    {
-        name: 'Project #2',
-        date: new Date().toDateString("yyyy-MM-dd"),
-        client: {
-            name: 'Client #2',
-            profile: "/"
-        },
-        associates: [
-            {
-                name: 'Associate #1',
-                profile: "/"
-            },
-            {
-                name: 'Associate #2',
-                profile: "/"
-            },
-            {
-                name: 'Associate #3',
-                profile: "/"
-            }
-        ],
-        filesAwatingApproval: 3,
-        filesApproved: 5
-    },
-    {
-        name: 'Project #3',
-        date: new Date().toDateString("yyyy-MM-dd"),
-        client: {
-            name: 'Client #3',
-            profile: "/"
-        },
-        associates: [
-            {
-                name: 'Associate #1',
-                profile: "/"
-            },
-            {
-                name: 'Associate #2',
-                profile: "/"
-            },
-            {
-                name: 'Associate #3',
-                profile: "/"
-            }
-        ],
-        filesAwatingApproval: 1,
-        filesApproved: 6
-    }
-]
-
--->
 
 <style scoped>
     .v-card__title {

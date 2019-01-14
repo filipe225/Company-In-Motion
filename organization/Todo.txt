@@ -1,53 +1,82 @@
 
 EVERYTHING THAT STILL NEEDS TO BE DONE
 
--- ABOUT US
-    [] CRIAR PAGINA COM CONTEUDO ALEATORIO
+BACKEND / FIREBASE FUNCTIONS
+    -- receber dados pelo body do request em vez de ser por query params
+    -- enviar email para admin apos insercao de um membro
+    -- enviar email para admin, project_manager e clientes, após inserção de um novo ficheiros
+    -- enviar email para admin, project_manager e clientes, após aprovação ou rejeição de um ficheiro
+    -- enviar email para assignee da tarefa criada
 
--- CONTACT US
-    [] CRIAR PAGINA COM FORMULARIO (email, subject, content)
-    [] CRIAR BACKEND FUNCTION TO SEND EMAIL
 
--- STORE (vuex)
-    [ ] FAZER DISPATCH (DOS LOADS NECESSÁRIOS) NA STORE APOS LOGIN DO UTILIZADOR
+FRONT END
 
--- NOVAS PAGINAS
-    [ ] CRIAR PAGINA PARA ASSOCIAR CLIENTE OU PROGRAMADOR A UM PROJECTO (atraves de link no email)
+    ALERTA
+        -- ALTERAR CODIGO DE INTEIRO PARA SUCESSO E ERROR
 
--- BACKEND
-    [X] CRIAR EMAIL PARA ASSOCIAR CLIENTE E PROGRAMADORES
+    UI
+        -- decidir cores dos botoes
+        -- ajustar elevação dos cards
+        -- AO CONVIDAR ALGUEM NAO APARECE ALERTA DE ERROR OU SUCESSO
+        -- MELHORAR UI DOS CARTOES DE PROJECTO
 
--- UI GERAL
-    [X] CORRIGIR UI BASICO DAS PAGINAS (PRINCIPALMENTE NAVBAR)
-    [ ] COLOCAR BOTÕES COM CORES
-    [ ] PENSAR EM CORE DE FUNDO PARA CARDS?
-
--- NOTES
-    [ ] CORRIGIR UI DAS NOTES
-    [ ] PERMITIR EDITAR E GUARDAR ALTERAÇÕES
-    [ ] PERMITIR APAGAR E GUARDAR ALTERAÇÕES
-
--- TASKS
-    [ ] CORRIGIR UI DAS TASKS
-    [ ] MELHORAR TASKS COM STATUS DATE ASSIGNE E CREATOR
-    [ ] GUARDAR TASKS NO FIREBASE
-
--- PROJECTS
-    [X] CRIAR MODAL PARA CRIAÇÃO DE PROJECTO 
-    [X] CRIAR PAGINA DE PROJECTOS COM ESTES EM LISTA
-    [X] CADA PROJECTO TEM BOTOES ASSOCIADOS
-    [X] BOTOES DE TIMELINE, APAGAR PROJETO, ASSOCIAR CLIENTE/TRABALHADOR, VER TASKS, APROVAR NOVO FICHEIRO
-    [ ] COLOCAR BOTÕES ASSOCIADOS AO PROJECTO A FUNCIONAR
-
--- PROJECT PAGE
-    [X] CRIAR PAGINA DE PROJETO
-    [ ] CRIAR EVENTOS PARA TIMELINE DE PROJETO
-    [ ] ASSOCIAR TASKS E TIMELINE A UM PROJETO
-    [ ] ASSOCIAR BUDGET A UM PROJECTO
-    [X] PERMITIR TER UM ADMIN, ASSOCIADOS E UM CLIENTE NUM PROJETO
-    [ ] GUARDAR TODAS AS INFORMAÇÕES NO FIREBASE
+    REGISTO / LOGIN
+        -- enviar email de registo
+        -- enviar mail com palavra passe perdida
     
--- FILE APPROVAL
-    [X] CRIAR FORMULARIO PARA APROVAÇÃO DE FICHEIRO
-    [ ] PERMITIR QUE O CLIENTE APROVE OU REPROVE O FICHEIRO
-    [ ] PERMITIR QUE O CLIENTE DEIXE COMENTARIOS EM RELAÇÃO AO FICHEIRO
+    PAGINA DE PERFIL
+        -- criar pagina de perfil privada
+        -- permitir alterar email
+        -- permitir alterar password
+
+    DASHBOARD
+        -- carregar todos os dados necessarios
+        -- tornar esta a pagina inicial apos LOGIN
+        -- mostrar loader enquanto todos os dados do firebase são carregados
+        -- colocar graficos com informação variada
+
+    CONTACT US
+        -- enviar dados do formulario para o backend
+
+    PROJECTS 
+        -- melhorar UI dos projects
+        -- permitir adicionar clientes, associados ou project managers
+        -- colocar informação sobre numero de ficheiros para aprovação e nº de ficheiros aprovados
+    
+    PROJECT EVENTS
+        -- criar todos os eventos possiveis
+    
+    PROJECT FILES
+        -- colocar a extensao do ficheiro em texto em vez de imagens
+        -- colocar restrinção no tamanho maximo do ficheiro
+        -- permitir remover um ficheiro
+        -- permitir fazer o download do ficheiro
+    
+    PROJECT FILE
+        -- permitir aprovar ou reprovar um ficheiro
+        -- permitir adicionar comentario a cada ficheiro
+        -- permitir remover um ficheiro
+        -- melhorar UI 
+
+    PROJECT TASKS
+        -- criar tudo
+
+    TASKS
+        -- criar CRUD para notas de utlizador
+        -- melhorar UI das notas
+
+    RELAX
+        -- criar playlist
+
+OTHERS
+
+    BUDGET
+        -- estruturar pagina de orçamento para um projecto
+
+    CALENDAR
+        -- estruturar possiveis opçoes de um calendario
+        -- usar TOAST UI calendar?
+
+    PUSH NOTIFICATIONS
+        -- criar servico de notificações desktop
+        -- permitir escolher recebe-las ou não

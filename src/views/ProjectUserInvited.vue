@@ -14,27 +14,28 @@
 									<v-form v-model="registerValid" class="mt-4">
                                         <v-text-field
 											v-model="register.displayName"
-											label="Display Name"
+                                            v-bind:rules="register.displayNameRules"
+											label="Display Name *"
 											required>
 										</v-text-field>               
 										<v-text-field
 											v-model="register.email"
 											v-bind:rules="register.emailRules"
-											label="E-mail"
+											label="E-mail *"
 											required>
 										</v-text-field>
 										<v-text-field
 											type="password"
 											v-model="register.password"
 											v-bind:rules="register.passwordRules"
-											label="Password"
+											label="Password *"
 											required>
 										</v-text-field>
 										<v-text-field
 											type="password"
 											v-model="register.confirmPassword"
 											v-bind:rules="[comparePasswords]"
-											label="Confirm Password"
+											label="Confirm Password *"
 											required>
 										</v-text-field>
 
@@ -43,7 +44,7 @@
                                         </v-checkbox>
 
 										<v-btn large @click="userRegister" 
-                                                v-bind:disabled="registerValid"
+                                                v-bind:disabled="!registerValid"
                                                 dark class="mx-0 right teal darken-1">Register</v-btn>
 									</v-form>
 								</v-flex>
@@ -144,6 +145,9 @@ export default {
             registerValid: false,
             register: {
                 displayName: "",
+                displayNameRules: [
+                    v => !!v || "Display name is required"
+                ],
                 email: "",
                 emailRules: [
                 v => !!v || "E-mail is required",
@@ -163,8 +167,8 @@ export default {
     computed: {
         comparePasswords: function() {
             return this.register.password !== this.register.confirmPassword
-                ? "Password do not match!"
-                : "";
+                ? "Password do not match!" : true;
+;
         }
 
     },
@@ -172,7 +176,8 @@ export default {
     created: function() {
         this.project_id = this.$route.params.project_id;
         let user_type = this.$route.params.user_type;
-        this.user_id = this.$route.params.user_id;
+        this.inviter_id = this.$route.params.inviter_id;
+        this.invite_id = this.$route.params.fb_invite_id;
         let user_email = this.$route.params.email;
 
         this.register.email = user_email;
@@ -188,18 +193,30 @@ export default {
             // corresponde ao pedido enviado por email.
 
             this.$store.dispatch('firebaseAddUserToProject', { 
-                project_name: this.project_name, 
+                project_id: this.project_id,
                 user_type: this.user_type, 
-                user_id: this.user_id
+                inviter_id: this.inviter_id,
+                invite_id: this.invite_id,
+                userData: {
+                    email: this.signin.email,
+                    password: this.signin.password
+                },
+                callToAction: 'signin'
             });
         },
 
         userRegister: function() {
             this.$store.dispatch('firebaseAddUserToProject', { 
                 project_id: this.project_id,
-                project_name: this.project_name, 
-                user_type: this.user_type, 
-                user_id: this.user_id
+                user_type: this.register.userType, 
+                inviter_id: this.inviter_id,
+                invite_id: this.invite_id,
+                userData: {
+                    email: this.register.email,
+                    password: this.register.password,
+                    displayName: this.register.displayName
+                },
+                callToAction: 'registration'
             });
         }
     }

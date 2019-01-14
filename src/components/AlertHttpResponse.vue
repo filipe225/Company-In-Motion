@@ -1,6 +1,7 @@
 <template>
     <v-alert v-model="show" dismissible class="fix-alert" 
-             v-bind:type="alertType" transition="scale-transition">
+             v-bind:type="alertType" transition="scale-transition"
+             style="z-index: 10000">
         {{msg}}
     </v-alert>
 </template>
@@ -26,7 +27,7 @@ export default {
         newHttpCall: {
             handler: function(value, oldValue) {
                 //console.log('newHttpCall Watcher');
-                //console.log(arguments);
+                console.log(value, oldValue);
                 switch(value.response) {
                     case 200:
                         this.show = true;
@@ -63,7 +64,6 @@ export default {
 </script>
 
 <style scoped>
-    /*
     .fix-alert {
         width: 60%;
         margin: 5px auto;
@@ -72,13 +72,13 @@ export default {
         border: 1px solid gray;
         background-color: lawngreen;
     }
-    */
+
+    /*
     .fix-alert[data-v-682f81e5] {
         width: 300px;
         margin: 5px auto;
         padding: 10px 16px;
         height: 200px;
-        /* max-height: 50px; */
         border: 1px solid gray;
         background-color: lawngreen;
         position: absolute;
@@ -86,5 +86,6 @@ export default {
         top: 10px;
         z-index: 999;
     }
+    */
 </style>
 
