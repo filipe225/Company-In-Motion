@@ -1,6 +1,7 @@
 <template>
     <v-alert v-model="show" dismissible class="fix-alert" 
-             v-bind:type="alertType" transition="scale-transition">
+             v-bind:type="alertType" transition="scale-transition"
+             style="z-index: 10000">
         {{msg}}
     </v-alert>
 </template>
@@ -26,7 +27,7 @@ export default {
         newHttpCall: {
             handler: function(value, oldValue) {
                 //console.log('newHttpCall Watcher');
-                //console.log(arguments);
+                console.log(value, oldValue);
                 switch(value.response) {
                     case 200:
                         this.show = true;

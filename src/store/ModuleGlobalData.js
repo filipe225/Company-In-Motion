@@ -11,7 +11,7 @@ export default {
 
     mutations: {
         setNewHttpCall: function(state, payload) {
-            console.log('setNewHttpCall');
+            console.log('setNewHttpCall', payload);
             state.newHttpCall = payload;
         }
     },

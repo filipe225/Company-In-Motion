@@ -120,7 +120,7 @@ export default {
             commit('setProjects', []);
         },
 
-        firebaseSignInUser: function({commit}, payload) {
+        firebaseSignInUser: function({commit, dispatch}, payload) {
             firebase.auth()
                     .setPersistence(firebase.auth.Auth.Persistence.SESSION)
                     .then(function() {
@@ -135,21 +135,12 @@ export default {
                     .then( user => {
                         console.log("signed", user);
                         const newUser = {
-                            id: user.uid
+                            id: user.user.uid
                         }
                         commit("setUser", newUser);
+                        //dispatch('firebaseAutoSignIn', user);
+                        dispatch('firebaseGetUserDB', user.user.uid);
                     });
-            /*
-            firebase.auth().signInWithEmailAndPassword(payload.email, payload.password)
-                .then( user => {
-                    console.log("signed", user);
-                    const newUser = {
-                        id: user.uid
-                    }
-                    commit("setUser", newUser);
-                })
-                .catch( error => console.log(error));
-            */
         },
 
         firebaseRegisterUser: function( {commit}, payload) {

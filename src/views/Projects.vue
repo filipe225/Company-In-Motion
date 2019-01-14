@@ -112,7 +112,7 @@
                 </v-card>
             </v-dialog>
 
-            <v-layout row wrap>
+            <v-layout row wrap class="mt-5">
                 <v-flex xs12 v-if="userDB.type === 'admin'">
                     <v-layout row wrap>
                         <v-flex xs6>
@@ -423,84 +423,6 @@ export default {
     }
 }
 </script>
-
-<!--
-[
-    {
-        name: 'Project #1',
-        date: new Date().toDateString("yyyy-MM-dd"),
-        client: {
-            name: 'Client #1',
-            profile: "/"
-        },
-        associates: [
-            {
-                name: 'Associate #1',
-                profile: "/"
-            },
-            {
-                name: 'Associate #2',
-                profile: "/"
-            },
-            {
-                name: 'Associate #3',
-                profile: "/"
-            }
-        ],
-        filesAwatingApproval: 2,
-        filesApproved: 4
-    },
-    {
-        name: 'Project #2',
-        date: new Date().toDateString("yyyy-MM-dd"),
-        client: {
-            name: 'Client #2',
-            profile: "/"
-        },
-        associates: [
-            {
-                name: 'Associate #1',
-                profile: "/"
-            },
-            {
-                name: 'Associate #2',
-                profile: "/"
-            },
-            {
-                name: 'Associate #3',
-                profile: "/"
-            }
-        ],
-        filesAwatingApproval: 3,
-        filesApproved: 5
-    },
-    {
-        name: 'Project #3',
-        date: new Date().toDateString("yyyy-MM-dd"),
-        client: {
-            name: 'Client #3',
-            profile: "/"
-        },
-        associates: [
-            {
-                name: 'Associate #1',
-                profile: "/"
-            },
-            {
-                name: 'Associate #2',
-                profile: "/"
-            },
-            {
-                name: 'Associate #3',
-                profile: "/"
-            }
-        ],
-        filesAwatingApproval: 1,
-        filesApproved: 6
-    }
-]
-
--->
 
 <style scoped>
     .v-card__title {

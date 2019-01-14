@@ -40,7 +40,9 @@ new Vue({
         projectId: "companysimplify-1992",
         storageBucket: "companysimplify-1992.appspot.com"
     });
+    /*     
     firebase.auth().onAuthStateChanged( user => {
+        console.log("Auth Changed", user);
         if (user) {
             this.$store.dispatch('firebaseAutoSignIn', user);
             this.$store.dispatch('firebaseGetUserDB', user.uid);
@@ -49,29 +51,8 @@ new Vue({
             this.$store.dispatch('firebaseUserLogout');
         }
     })
-    console.log("El store", this.$store);
-    
-    //this.$store.dispatch('loadProfile');
+    console.log("El store", this.$store); 
+    */
 
   }
 }).$mount('#app')
-
-
-// https://www.dailycodingproblem.com/?ref=csdojo
-
-/*
-firebase.auth().setPersistence(firebase.auth.Auth.Persistence.SESSION)
-  .then(function() {
-    // Existing and future Auth states are now persisted in the current
-    // session only. Closing the window would clear any existing state even
-    // if a user forgets to sign out.
-    // ...
-    // New sign-in will be persisted with session persistence.
-    return firebase.auth().signInWithEmailAndPassword(email, password);
-  })
-  .catch(function(error) {
-    // Handle Errors here.
-    var errorCode = error.code;
-    var errorMessage = error.message;
-  });
-*/

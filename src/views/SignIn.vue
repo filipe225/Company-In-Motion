@@ -73,7 +73,7 @@ export default {
     watch: {
         user: function(value) {
             if(value !== null) {
-                this.$router.push('/');
+                this.$router.push('/dashboard');
             }
         }
     },
@@ -82,10 +82,6 @@ export default {
 
     methods: {
         userSignIn: function() {
-            console.log( {
-                email: this.signin.email,
-                password: this.signin.password
-            })
             this.$store.dispatch('firebaseSignInUser', {
                 email: this.signin.email,
                 password: this.signin.password

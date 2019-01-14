@@ -38,43 +38,39 @@
                     <v-card-title primary-title>
                         <span class="headline">{{ project_name}}</span>
                     </v-card-title>
+                    <v-form ref="form_new_file" v-model="valid" lazy-validation>
                     <v-layout row>
                         <v-flex xs12 md8 offset-md2>
-                            <v-form ref="form_new_file" v-model="valid" lazy-validation>
-                                <v-text-field
-                                    v-model="title"
-                                    label="Title"
-                                    required></v-text-field>
-                                <v-textarea
-                                    v-model="description"
-                                    label="Description"
-                                    required></v-textarea>
-                                <v-layout row>
-                                    <v-flex x12>
-                                        <v-btn raised @click="pickFile" class="ml-0"> Upload File</v-btn>
-                                        <label>{{ imageFileName }}</label>
-                                        <input ref="fileInput" 
-                                            type="file"
-                                            required
-                                            accept="image/*"
-                                            style="display: none"
-                                            @change="onFilePicked" />
-                                    </v-flex>
-                                </v-layout>
-                                <v-layout row>
-                                    <v-flex x12>
-                                        <img v-bind:src="imageUrl" style="width: 200px; height: 200px;border: 1px solid black;" />
-                                    </v-flex>
-                                </v-layout>
-                                <v-layout row>
-                                    <v-flex x12>
-                                        <v-btn type="reset" info class="left">Reset</v-btn>
-                                        <v-btn type="submit" primary @click.prevent="newFileToApproval" class="right">Submit</v-btn>
-                                    </v-flex>
-                                </v-layout>
-                            </v-form>                            
+                            <v-text-field
+                                v-model="title"
+                                label="Title"
+                                required></v-text-field>
+                            <v-textarea
+                                v-model="description"
+                                label="Description"
+                                required></v-textarea>
+                            <v-layout row>
+                                <v-flex x12>
+                                    <v-btn raised @click="pickFile" class="ml-0"> Upload File</v-btn>
+                                    <label>{{ imageFileName }}</label>
+                                    <input ref="fileInput" 
+                                        type="file"
+                                        required
+                                        accept="image/*"
+                                        style="display: none"
+                                        @change="onFilePicked" />
+                                </v-flex>
+                            </v-layout>                 
                         </v-flex>
                     </v-layout>
+                    <v-layout row class="pt-5">
+                        <v-flex x12>
+                            <v-btn type="reset" info class="left">Reset</v-btn>
+                            <v-btn type="submit" primary @click.prevent="newFileToApproval" class="right">Submit</v-btn>
+                        </v-flex>
+                    </v-layout>
+                </v-form>  
+
                 </v-card>
             </v-flex>
         </v-layout>

@@ -11,9 +11,14 @@ BACKEND / FIREBASE FUNCTIONS
 
 FRONT END
 
+    ALERTA
+        -- ALTERAR CODIGO DE INTEIRO PARA SUCESSO E ERROR
+
     UI
         -- decidir cores dos botoes
         -- ajustar elevação dos cards
+        -- AO CONVIDAR ALGUEM NAO APARECE ALERTA DE ERROR OU SUCESSO
+        -- MELHORAR UI DOS CARTOES DE PROJECTO
 
     REGISTO / LOGIN
         -- enviar email de registo
