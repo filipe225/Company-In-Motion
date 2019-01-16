@@ -17,6 +17,26 @@
         height: fit-content;
         max-height: 100%;
     }
+
+    .my-card {
+        border-top: 4px solid #009688!important;
+    }
+
+    .bg-transparent {
+        background-color: transparent!important;
+    }
+
+    .v-content {
+        background-image: linear-gradient(120deg, #89f7fe 0%, #66a6ff 100%);
+        height: 100%;
+    }
+
+    .v-card {
+        -webkit-box-shadow: 2px 2px 1px -1px rgba(0,0,0,0.2), 0px 1px 1px 2px rgba(0,0,0,0.14), 0px 1px 3px 0px rgba(0,0,0,0.12);
+        box-shadow: 2px 2px 1px -1px rgba(0,0,0,0.2), 0px 1px 1px 2px rgba(0,0,0,0.14), 0px 1px 3px 0px rgba(0,0,0,0.12);
+    }
+
+    /* CENAS PARA APAGAR */
     .texto-primario {
         color: black!important;
     }
@@ -47,24 +67,6 @@
 
     .gorgeous-background {
         background-image: linear-gradient(to right, #4facfe 0%, #00f2fe 100%);
-    }
-
-    .v-content {
-        background-image: linear-gradient(120deg, #89f7fe 0%, #66a6ff 100%);
-        height: 100%;
-    }
-
-    .theme--light.v-card {
-        background-color: transparent;
-    }
-
-    .v-dialog .v-card.theme--light {
-        background-color: #FFF;
-    }
-
-    .v-card {
-        -webkit-box-shadow: 2px 2px 1px -1px rgba(0,0,0,0.2), 0px 1px 1px 2px rgba(0,0,0,0.14), 0px 1px 3px 0px rgba(0,0,0,0.12);
-        box-shadow: 2px 2px 1px -1px rgba(0,0,0,0.2), 0px 1px 1px 2px rgba(0,0,0,0.14), 0px 1px 3px 0px rgba(0,0,0,0.12);
     }
 
     form .container { padding-top: 0; }

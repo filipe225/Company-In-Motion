@@ -32,10 +32,6 @@ export default {
             console.log('firebaseGetUserDB');
             //const signed_user = getters.getUser;
 
-            const firestore = firebase.firestore();
-            const settings = {/* your settings... */ timestampsInSnapshots: true};
-            firestore.settings(settings);
-
             //console.log(payload)
             const signed_user = payload;
             //const userdb = firebase.firestore().collection('users').where('id', '==', signed_user)

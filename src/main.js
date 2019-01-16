@@ -40,7 +40,11 @@ new Vue({
         projectId: "companysimplify-1992",
         storageBucket: "companysimplify-1992.appspot.com"
     });
-    /*     
+
+    const firestore = firebase.firestore();
+    const settings = {/* your settings... */ timestampsInSnapshots: true};
+    firestore.settings(settings);
+   
     firebase.auth().onAuthStateChanged( user => {
         console.log("Auth Changed", user);
         if (user) {
@@ -52,7 +56,6 @@ new Vue({
         }
     })
     console.log("El store", this.$store); 
-    */
 
   }
 }).$mount('#app')

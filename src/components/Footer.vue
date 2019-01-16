@@ -1,5 +1,5 @@
 <template>
-    <v-container fluid>
+    <v-container fluid style="padding: 0;">
         <v-footer dark height="auto">
             <v-card class="flex" flat tile>
                 <v-card-title class="teal">
@@ -28,7 +28,10 @@
                 </v-card-title>
 
                 <v-card-actions class="grey darken-3 justify-center">
-                    &copy;2018 — <strong><v-btn flat href="www.linkedin.com" style="text-decoration: underline;">@ Filipe Sousa</v-btn></strong>
+                    &copy; 2018 — {{ new Date().getFullYear() }}
+                    <strong>
+                        <v-btn flat href="www.linkedin.com" style="text-decoration: underline;">@ Filipe Sousa</v-btn>
+                    </strong>
                 </v-card-actions>
             </v-card>
         </v-footer>

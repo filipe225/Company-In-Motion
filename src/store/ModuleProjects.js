@@ -353,9 +353,9 @@ export default {
             }
         },
 
-        firebaseAddUserToProject: async function ({ commit, getters }, payload) {
+        firebaseAddUserToProject: async function ({ commit, dispatch, getters }, payload) {
             let project_id = payload.project_id;
-            console.log(payload);
+            //console.log(payload);
             try {
                 // user ja registado? 
                 // se nao, registar e adicionar a projecto
@@ -370,7 +370,7 @@ export default {
                 } else if (payload.callToAction === "registration") {
                     let userData = payload.userData;
                     let userCreationResp = await firebase.auth().createUserWithEmailAndPassword(userData.email, userData.password);
-                    console.log(userCreationResp);
+                    //console.log(userCreationResp);
 
                     newUserId = userCreationResp.user.uid;
 
@@ -395,7 +395,9 @@ export default {
                 console.log(project_invite_data);
 
                 if (project_invite_data.state === "pending") {
-                    let user_type = payload.user_type;
+                    // get user type and add a "s" to it to update the designated array
+                    let user_type = payload.user_type + "s";
+                    console.log("USER TYPE", user_type);
 
                     let invite_update_resp = project_inv_ref.update({
                         state: "accepted"
@@ -403,15 +405,18 @@ export default {
 
                     // VERIFICAR TIPO DE UTILIZADOR
                     const projectReference = firebase.firestore().collection('projects').doc(project_id);
-                    let response = await projectReference.update("project_managers", firebase.firestore.FieldValue.arrayUnion(newUserId));
+                    let response = await projectReference.update(user_type, firebase.firestore.FieldValue.arrayUnion(newUserId));
                     console.log(response);
 
+                    // Send mail to owner of project about new member
+                    //newEmail();
                     commit('setNewHttpCall', { response: 200, msg: "User added to project!" })          
                 } else {
                     throw new Error();
                 }
 
                 //APOS LOGIN FAZER LOAD DOS PROJECTOS
+                dispatch('firebaseGetUserDB', newUserId);
 
             } catch (error) {
                 commit('setNewHttpCall', { response: 500, msg: "Error adding user to project. Try again or contact support." })
@@ -421,34 +426,62 @@ export default {
 
         },
 
-        firebaseAproveFile: function ({ commit, getters }, payload) {
+        firebaseAproveFile: async function ({ commit, getters }, payload) {
             let projects = getters.getProjects;
             let project_index = projects.findIndex(project => project.name === payload.project_name);
-            if (project_index === -1) return;
+            
+            if (project_index === -1) {
+                console.log("Error finding index of project");
+                commit('setNewHttpCall', { response: 500, msg: `Error Aproving File ${file.fileName}. Try again or contact support.` })
+                return;
+            }
+
             let project = state.projects[project_index];
             let file = project.files.find(file => file.fileId === payload.file_id);
             let file_index = project.files.find(file => file.fileId === payload.file_id);
             project.files[file_index].state = "approved";
 
             try {
+                // UPDATE DOCUMENT COORESPONDING TO FILE ID
                 const fileRef = firebase.firestore().collection('project_files').doc(project.id).collection("files").doc(file.id);
-                // UPDATE ARRAY IN SPECIFIC INDEX
-                console.log(fileRef);
+                const fileResp = await fileRef.update({
+                    state: 'approved',
+                    updateDate: new Date().toISOString()
+                });
+                console.log(fileResp);
+                
+                // SEND EMAIL TO OWNER, PROJECT_MANAGERS AND CLIENTS OF PROJECT
+                //sendEmail();
+
                 commit('setNewHttpCall', { response: 200, msg: `${file.fileName} was successfully aproved!` })
             } catch (error) {
                 commit('setNewHttpCall', { response: 500, msg: `Error Aproving File ${file.fileName}. Try again or contact support.` })
             }
         },
 
-        firebaseRejectFile: function ({ commit, getters }, payload) {
+        firebaseRejectFile: async function ({ commit, getters }, payload) {
             let projects = getters.getProjects;
             let project_index = projects.findIndex(project => project.name === payload.project_name);
-            if (project_index === -1) return;
+            
+            if (project_index === -1) {
+                console.log("Error finding index of project");
+                commit('setNewHttpCall', { response: 500, msg: `Error rejecting file ${file.fileName}. Try again or contact support.` })
+                return;
+            }
+
             let project = state.projects[project_index];
             let file_index = project.files.find(file => file.fileId === payload.file_id);
             project.files[file_index].state = "rejected";
 
             try {
+                // UPDATE DOCUMENT COORESPONDING TO FILE ID
+                const fileRef = firebase.firestore().collection('project_files').doc(project.id).collection("files").doc(file.id);
+                const fileResp = await fileRef.update({
+                    state: 'rejected',
+                    updateDate: new Date().toISOString()
+                });
+                console.log(fileResp);
+
                 commit('setNewHttpCall', { response: 200, msg: `${file.fileName} was successfully rejected!!` })
             } catch (error) {
                 commit('setNewHttpCall', { response: 500, msg: `Error rejecting file ${file.fileName}. Try again or contact support.` })
@@ -487,6 +520,9 @@ export default {
             if (fileObj.fileId === file_id) {
                 const filesRef = firebase.storage().ref(projects[project_index].id);
                 //filesRef.delete();
+
+                // SEND EMAIL TO TEAM MEMBERS REPORTING FILE DELETION
+                // if the file uploaded was a mistake should everyone get an email?
             }
 
         }
