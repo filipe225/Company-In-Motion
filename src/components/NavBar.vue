@@ -25,7 +25,7 @@
         <v-toolbar app color="teal" dark>
             <v-toolbar-side-icon class="hidden-md-and-up" @click.native.stop="sideNav = !sideNav"></v-toolbar-side-icon>
             <v-toolbar-title>
-                <router-link to="/" tag="span" style="cursor: pointer"> Company Simplicity </router-link>
+                <router-link to="/" tag="span" style="cursor: pointer"> Company In Motion </router-link>
             </v-toolbar-title>
             <v-spacer></v-spacer>
             <v-toolbar-items class="hidden-sm-and-down" >
@@ -34,15 +34,15 @@
                     {{ menuItem.title }}
                 </v-btn>
                 <v-btn flat v-if="isUserAuthenticated">
-                    <v-menu open-on-hover top offset-y>
+                    <v-menu open-on-hover bottom offset-y z-index="9999">
                         <v-btn slot="activator" color="teal" flat dark>
                             <img width="50" 
                                 src="https://firebasestorage.googleapis.com/v0/b/companysimplify-1992.appspot.com/o/users_avatars%2Fdefault%2Fuser_avatar_default.png?alt=media&token=b6883e32-5b03-48d2-9d9a-3c802e0e359b" alt="avatar"> <!-- getUserDb.avatar -->
                         </v-btn>
 
                         <v-list color="teal" dark>
-                            <v-list-tile>
-                                <v-list-tile-action router v-bind:to="'/user_list/cWzernzqOQV7A3IV8IAeipK86iU2'" style="cursor: pointer;">
+                            <v-list-tile to="'/user_list/cWzernzqOQV7A3IV8IAeipK86iU2'">
+                                <v-list-tile-action>
                                     <v-icon class="pr-1">how_to_reg</v-icon>
                                 </v-list-tile-action>
                                 <v-list-tile-content>Profile</v-list-tile-content>                       
@@ -107,6 +107,11 @@ export default {
     
     created: function() {
 
+    },
+
+    mounted: function() {
+        console.log(this.isUserAuthenticated);
+        console.log(this.userDB);
     },
      
     methods: {

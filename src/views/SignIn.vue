@@ -4,29 +4,27 @@
             <v-flex xs12 sm6 offset-sm3>
                 <v-card>
                     <v-card-text>
-                        <v-container>
-                            <v-layout row>
-                                <v-flex xs12>
-                                    <h1>Sign In</h1>
-                                    <v-form v-model="signinValid" class="mt-4">     
-                                        <v-text-field
-                                            v-model="signin.email"
-                                            v-bind:rules="signin.emailRules"
-                                            label="E-mail"
-                                            required>
-                                        </v-text-field>
-                                        <v-text-field
-                                            type="password"
-                                            v-model="signin.password"
-                                            v-bind:rules="signin.passwordRules"
-                                            label="Password"
-                                            required>
-                                        </v-text-field>
-                                        <v-btn large @click="userSignIn" dark class="mx-0 right teal darken-1">Sign In</v-btn>
-                                    </v-form>
-                                </v-flex>
-                            </v-layout>
-                        </v-container>
+                        <v-layout row>
+                            <v-flex xs12>
+                                <h1>Sign In</h1>
+                                <v-form v-model="signinValid" class="mt-4">     
+                                    <v-text-field
+                                        v-model="signin.email"
+                                        v-bind:rules="signin.emailRules"
+                                        label="E-mail"
+                                        required>
+                                    </v-text-field>
+                                    <v-text-field
+                                        type="password"
+                                        v-model="signin.password"
+                                        v-bind:rules="signin.passwordRules"
+                                        label="Password"
+                                        required>
+                                    </v-text-field>
+                                    <v-btn large @click="userSignIn" dark class="mx-0 right teal darken-1">Sign In</v-btn>
+                                </v-form>
+                            </v-flex>
+                        </v-layout>
                     </v-card-text>
                 </v-card>
             </v-flex>

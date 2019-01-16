@@ -1,57 +1,8 @@
 <template>
-    <v-container fluid>
-        <v-layout row wrap grid-list-md>
+    <v-container fluid grid-list-lg>
+        <v-layout row wrap>
             <v-flex xs12 sm6>
-                <v-card class="elevation-24">
-                    <v-card-text>
-                        <v-container>
-							<v-layout>
-								<v-flex xs12>
-									<h1>Register</h1>
-									<v-form v-model="registerValid" class="mt-4">
-                                        <v-text-field
-											v-model="register.displayName"
-											label="Display Name"
-											required>
-										</v-text-field>               
-										<v-text-field
-											v-model="register.email"
-											v-bind:rules="register.emailRules"
-											label="E-mail"
-											required>
-										</v-text-field>
-										<v-text-field
-											type="password"
-											v-model="register.password"
-											v-bind:rules="register.passwordRules"
-											label="Password"
-											required>
-										</v-text-field>
-										<v-text-field
-											type="password"
-											v-model="register.confirmPassword"
-											v-bind:rules="[comparePasswords]"
-											label="Confirm Password"
-											required>
-										</v-text-field>
-                                        <v-radio-group v-model="register.userType">
-                                            <v-radio label="Project Admin" value="admin"></v-radio>
-                                            <v-radio label="Project Manager" value="project_manager"></v-radio>
-                                            <v-radio label="Project Associate" value="associate" ></v-radio>
-                                            <v-radio label="Project Client" value="client"></v-radio>
-                                        </v-radio-group>
-										<v-btn large @click="userRegister" 
-                                                v-bind:disabled="registerValid"
-                                                dark class="mx-0 right teal darken-1">Register</v-btn>
-									</v-form>
-								</v-flex>
-							</v-layout>
-						</v-container>
-                    </v-card-text>
-                </v-card>
-            </v-flex>
-            <v-flex xs12 sm6>
-                <v-card>
+                <v-card class="elevation-2 pb-3">
                     <v-card-title> <h3>User Comparison</h3> </v-card-title>
                     <table class="check-table">
                         <thead>
@@ -124,7 +75,54 @@
                     </table>
                 </v-card>
             </v-flex>
-            <v-flex xs12 sm6 class="text-xs-right">
+            <v-flex xs12 sm6>
+                <v-card class="elevation-6">
+                    <v-card-text>
+                        <v-layout>
+                            <v-flex xs12>
+                                <h1>Register</h1>
+                                <v-form v-model="registerValid" class="mt-4">
+                                    <v-text-field
+                                        v-model="register.displayName"
+                                        label="Display Name"
+                                        required>
+                                    </v-text-field>               
+                                    <v-text-field
+                                        v-model="register.email"
+                                        v-bind:rules="register.emailRules"
+                                        label="E-mail"
+                                        required>
+                                    </v-text-field>
+                                    <v-text-field
+                                        type="password"
+                                        v-model="register.password"
+                                        v-bind:rules="register.passwordRules"
+                                        label="Password"
+                                        required>
+                                    </v-text-field>
+                                    <v-text-field
+                                        type="password"
+                                        v-model="register.confirmPassword"
+                                        v-bind:rules="[comparePasswords]"
+                                        label="Confirm Password"
+                                        required>
+                                    </v-text-field>
+                                    <v-radio-group v-model="register.userType">
+                                        <v-radio label="Project Admin" value="admin"></v-radio>
+                                        <v-radio label="Project Manager" value="project_manager"></v-radio>
+                                        <v-radio label="Project Associate" value="associate" ></v-radio>
+                                        <v-radio label="Project Client" value="client"></v-radio>
+                                    </v-radio-group>
+                                    <v-btn large @click="userRegister" 
+                                            v-bind:disabled="registerValid"
+                                            dark class="mx-0 right teal darken-1">Register</v-btn>
+                                </v-form>
+                            </v-flex>
+                        </v-layout>
+                    </v-card-text>
+                </v-card>
+            </v-flex>
+            <v-flex xs12 sm6 offset-sm6 class="text-xs-right">
                 <p>Already registered ?
                     <v-btn flat>
                         <router-link tag="span" v-bind:to="'/signin'" style="color: blue;">

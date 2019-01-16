@@ -6,25 +6,33 @@
             :items="files" name="data_iterator" item-key="files.fileId"
             :rows-per-page-items="rowsPerPageItems" 
             :pagination.sync="pagination">
-            <v-toolbar slot="header" class="mb-2" color="indigo darken-5" dark flat>        
-                <v-toolbar-title>This is a header</v-toolbar-title>
+            <v-toolbar slot="header" class="mb-2" flat>        
+                <v-toolbar-title>{{ project_name }} Files</v-toolbar-title>
             </v-toolbar>
                 <v-flex slot="item" slot-scope="props" xs12 sm3 md3 lg3>
                     <v-card class="elevation-12 hover-me">
 
-                        <v-card-title ref="ref_file_id" v-bind:data-fileId="props.item.fileId"><h4>{{ props.item.title }}</h4></v-card-title>
+                        <v-card-title ref="ref_file_id" v-bind:data-fileId="props.item.fileId">
+                            <h4 class="normal">{{ props.item.title }}</h4>
+                        </v-card-title>
                         <v-divider></v-divider>
 
                         <img src="@/assets/file_placeholder_html.png" class="files-images" />
                         <v-divider></v-divider>
 
-                        <v-card-title><h5>{{ props.item.fileId }}</h5></v-card-title>
+                        <v-card-title>
+                            <h5 class="normal">{{ props.item.fileId }}</h5>
+                        </v-card-title>
                         <v-divider></v-divider>
 
-                        <v-card-title><h5>{{ new Date().toDateString('yyyy-MM-dd') }}</h5></v-card-title>
+                        <v-card-title>
+                            <h5 class="normal">{{ new Date().toDateString('yyyy-MM-dd') }}</h5>
+                        </v-card-title>
                         <v-divider></v-divider>
 
-                        <v-card-title><h5 v-bind:class="props.item.state">{{ props.item.state.toUpperCase() }}</h5></v-card-title>
+                        <v-card-title>
+                            <h5 v-bind:class="props.item.state + ' normal'">{{ props.item.state.toUpperCase() }}</h5>
+                        </v-card-title>
                         <v-divider></v-divider>  
 
                         <v-card-actions>
@@ -154,10 +162,10 @@ export default {
     .pending {
         color: darkgoldenrod;
     }
-    .aproved {
+    .approved {
         color: darkgreen;
     }
-    .disaproved {
+    .rejected {
         color: darkred;
     }
 

@@ -112,7 +112,7 @@
                 </v-card>
             </v-dialog>
 
-            <v-layout row wrap class="mt-5">
+            <v-layout row wrap>
                 <v-flex xs12 v-if="userDB.type === 'admin'">
                     <v-layout row wrap>
                         <v-flex xs6>
@@ -131,145 +131,171 @@
                     <p> NO PROJECTS JOINED. BECOME THE CLIENT OF A NEW ONE</p>
                     <v-btn @click="newProjectCreation = true">JOIN PROJECT</v-btn>
                 </v-flex>
-                <v-flex xs12 sm4 offset-sm1  v-for="(project, index) in projects" v-bind:key="index" style="margin-top: 10px; margin-bottom: 10px;">
-                    <v-card class="orange darken-1" dark>
-                        <v-card-title>
-                            <span class="headline">{{ project.name}}</span>
+            </v-layout>
 
-                            <v-spacer></v-spacer>
+            <v-layout row wrap align-start justify-space-around fill-height>  
+                <v-flex xs12 sm5 offset-sm1  v-for="(project, index) in projects" v-bind:key="index" class="my-2">
+                    <v-card class="bg-transparent my-card">
+                        <v-layout row wrap align-center="true" justify-center="true">
+                            <v-flex xs8>
+                                <h2 class="pl-2">{{ project.name }}</h2>
+                            </v-flex>
+                            <v-flex xs3 align-self-center="true">
+                                <v-responsive>
+                                    <v-avatar size=65 style="text-align: center;">
+                                        <img src="/logo.png" alt="">    
+                                    </v-avatar>    
+                                </v-responsive> 
+                            </v-flex>
+                            <v-flex xs1>
+                                <v-menu bottom right>
+                                    <v-btn slot="activator" dark icon>
+                                        <v-icon>more_vert</v-icon>
+                                    </v-btn>
 
-                            <v-menu bottom right>
-                                <v-btn slot="activator" dark icon>
-                                    <v-icon>more_vert</v-icon>
-                                </v-btn>
+                                    <v-list>
+                                        <v-list-tile v-if="userDB.type === 'admin' || userDB.type === 'project_manager'">
+                                            <v-btn 
+                                                ref="invite_project_manager"
+                                                v-bind:data-pid="project.id" 
+                                                @click="dialogNewProjectManager = true; projectSelectedIndex = index" flat>
+                                                    Invite Project Manager</v-btn>
+                                        </v-list-tile>
+                                        <v-divider></v-divider>
+                                        <v-list-tile v-if="userDB.type === 'admin' || userDB.type === 'project_manager'">
+                                            <v-btn  
+                                                ref="invite_client"
+                                                v-bind:data-pid="project.id" 
+                                                @click="dialogNewClient = true; projectSelectedIndex = index" flat>
+                                                    Invite Client</v-btn>
+                                        </v-list-tile>
+                                        <v-divider></v-divider>
+                                        <v-list-tile v-if="userDB.type === 'admin' || userDB.type === 'project_manager'">
+                                            <v-btn 
+                                                ref="invite_associate"
+                                                v-bind:data-pid="project.id" 
+                                                @click="dialogNewAssociate = true; projectSelectedIndex = index" flat>
+                                                    Invite Associate</v-btn>
+                                        </v-list-tile>
+                                        <v-divider></v-divider>
+                                        <v-list-tile v-if="userDB.type === 'admin' || userDB.type === 'project_manager' || userDB.type === 'client'">
+                                            <v-btn flat>
+                                                <router-link tag="span" v-bind:to="'/projects/' + project.name + '/send_file_to_approval'">
+                                                    Send File to Approval</router-link>
+                                            </v-btn>
+                                        </v-list-tile>
+                                        <v-divider></v-divider>
+                                        <v-list-tile v-if="userDB.type == 'admin' || userDB.type === 'associate' || userDB.type === 'project_manager'">
+                                            <v-btn flat>
+                                                <router-link tag="span" v-bind:to="'/projects/' + project.name + '/project_tasks'">
+                                                    View Tasks</router-link> 
+                                            </v-btn>    
+                                        </v-list-tile>
+                                        <v-divider></v-divider>
+                                        <v-list-tile v-if="userDB.type === 'admin' || userDB.type === 'project_manager' || userDB.type === 'client'">
+                                            <v-btn flat>
+                                                <router-link tag="span" v-bind:to="'/projects/' + project.name + '/file_approval'">
+                                                    Approve File</router-link> 
+                                            </v-btn>    
+                                        </v-list-tile>
+                                        <v-divider></v-divider>
+                                        <v-list-tile>
+                                            <v-btn flat>
+                                                <router-link tag="span" v-bind:to="'/projects/' + project.name + '/project_files'">
+                                                    Project Files</router-link> 
+                                            </v-btn>
+                                        </v-list-tile>
+                                        <v-divider></v-divider>
+                                        <v-list-tile v-if="userDB.type === 'admin'">
+                                            <v-btn flat @click="showDeleteProjectDialog(index)">
+                                                Delete Project</v-btn>
+                                        </v-list-tile>
+                                    </v-list>
+                                </v-menu>
+                            </v-flex>
+                        </v-layout>
+                        <!--
+                            <v-list-tile
+                            v-else
+                            :key="item.title"
+                            avatar
+                            @click=""
+                            >
+                            <v-list-tile-avatar>
+                                <img :src="item.avatar">
+                            </v-list-tile-avatar>
 
-                                <v-list>
-                                    <v-list-tile v-if="userDB.type === 'admin' || userDB.type === 'project_manager'">
-                                        <v-btn 
-                                            ref="invite_project_manager"
-                                            v-bind:data-pid="project.id" 
-                                            @click="dialogNewProjectManager = true; projectSelectedIndex = index" flat>
-                                                Invite Project Manager</v-btn>
-                                    </v-list-tile>
-                                    <v-divider></v-divider>
-                                    <v-list-tile v-if="userDB.type === 'admin' || userDB.type === 'project_manager'">
-                                        <v-btn  
-                                            ref="invite_client"
-                                            v-bind:data-pid="project.id" 
-                                            @click="dialogNewClient = true; projectSelectedIndex = index" flat>
-                                                Invite Client</v-btn>
-                                    </v-list-tile>
-                                    <v-divider></v-divider>
-                                    <v-list-tile v-if="userDB.type === 'admin' || userDB.type === 'project_manager'">
-                                        <v-btn 
-                                            ref="invite_associate"
-                                            v-bind:data-pid="project.id" 
-                                            @click="dialogNewAssociate = true; projectSelectedIndex = index" flat>
-                                                Invite Associate</v-btn>
-                                    </v-list-tile>
-                                    <v-divider></v-divider>
-                                    <v-list-tile v-if="userDB.type === 'admin' || userDB.type === 'project_manager' || userDB.type === 'client'">
-                                        <v-btn flat>
-                                            <router-link tag="span" v-bind:to="'/projects/' + project.name + '/send_file_to_approval'">
-                                                Send File to Approval</router-link>
-                                        </v-btn>
-                                    </v-list-tile>
-                                    <v-divider></v-divider>
-                                    <v-list-tile v-if="userDB.type == 'admin' || userDB.type === 'associate' || userDB.type === 'project_manager'">
-                                        <v-btn flat>
-                                            <router-link tag="span" v-bind:to="'/projects/' + project.name + '/project_tasks'">
-                                                View Tasks</router-link> 
-                                        </v-btn>    
-                                    </v-list-tile>
-                                    <v-divider></v-divider>
-                                    <v-list-tile v-if="userDB.type === 'admin' || userDB.type === 'project_manager' || userDB.type === 'client'">
-                                        <v-btn flat>
-                                            <router-link tag="span" v-bind:to="'/projects/' + project.name + '/file_approval'">
-                                                Approve File</router-link> 
-                                        </v-btn>    
-                                    </v-list-tile>
-                                    <v-divider></v-divider>
-                                    <v-list-tile>
-                                        <v-btn flat>
-                                            <router-link tag="span" v-bind:to="'/projects/' + project.name + '/project_files'">
-                                                Project Files</router-link> 
-                                        </v-btn>
-                                    </v-list-tile>
-                                    <v-divider></v-divider>
-                                    <v-list-tile v-if="userDB.type === 'admin'">
-                                        <v-btn flat @click="showDeleteProjectDialog(index)">
-                                            Delete Project</v-btn>
-                                    </v-list-tile>
-                                </v-list>
-                            </v-menu>
-                        </v-card-title>
-                        <v-list>
+                            <v-list-tile-content>
+                                <v-list-tile-title v-html="item.title"></v-list-tile-title>
+                                <v-list-tile-sub-title v-html="item.subtitle"></v-list-tile-sub-title>
+                            </v-list-tile-content>
+                            </v-list-tile>
+                        -->
+
+                                
+                        <v-list class="bg-transparent">
                             <v-list-tile>
                                 <v-list-tile-content>
-                                    <v-list-tile-sub-title>Description:</v-list-tile-sub-title>
                                     <v-list-tile-title>{{ project.description }}</v-list-tile-title>
                                     <v-list-tile-sub-title><small>{{ new Date(project.created_in).toDateString('yyyy-MM-dd') }}</small></v-list-tile-sub-title>
                                 </v-list-tile-content>
                             </v-list-tile>
-                            <v-list-tile>
-                                Clients:
-                                <v-list-tile-title v-for="(client, index) in project.clients" v-bind:key="index">
-                                    {{ project.client.name}}
-                                </v-list-tile-title>
-                            </v-list-tile>
-                            <v-divider></v-divider>
-                            <v-list-tile >
-                                Project Managers:
-                                <v-list-tile-title v-for="(project_manager, index) in project.project_managers" v-bind:key="index">
-                                    {{ project_manager.name }}
-                                </v-list-tile-title>
-                            </v-list-tile>
-                            <v-divider></v-divider>
-                            <v-list-tile >
-                                Associates:
-                                <v-list-tile-title v-for="(associate, index) in project.associates" v-bind:key="index">
-                                    {{ associate.name }}
-                                </v-list-tile-title>
-                            </v-list-tile>
-                            <!-- CONTENT FOR LIST OF CLIENTS AND ASSOCIATES -->
-                            <!-- 
-                                <v-divider
-                                v-else-if="item.divider"
-                                :inset="item.inset"
-                                :key="index"
-                                ></v-divider>
+                        </v-list>
 
-                                <v-list-tile
-                                v-else
-                                :key="item.title"
-                                avatar
-                                @click=""
-                                >
-                                <v-list-tile-avatar>
-                                    <img :src="item.avatar">
-                                </v-list-tile-avatar>
-
-                                <v-list-tile-content>
-                                    <v-list-tile-title v-html="item.title"></v-list-tile-title>
-                                    <v-list-tile-sub-title v-html="item.subtitle"></v-list-tile-sub-title>
-                                </v-list-tile-content>
+                        <h6 class="text-xs-center mb-2" style="display: block;width: 100%;">Clients:</h6>
+                        <v-list v-if="project.clients.length == 0" class="bg-transparent">
+                            <p class="text-xs-center"><em>No clients in this project...</em></p>
+                        </v-list>
+                        <v-list v-else avatar class="bg-transparent">
+                            <template v-for="(client, index) in project.clients">
+                                <v-list-tile  v-bind:key="index">
+                                    <v-list-tile-avatar>
+                                        <img src="logo.png">
+                                    </v-list-tile-avatar>
+                                    <v-list-tile-content>
+                                        <v-list-tile-title v-html="client.displayName"></v-list-tile-title>
+                                        <v-list-tile-sub-title v-html="new Date().toDateString()"></v-list-tile-sub-title>
+                                    </v-list-tile-content>
                                 </v-list-tile>
-                            -->
+                            </template>
+                        </v-list>
+                        <v-divider></v-divider>
 
-                            <!--
-                            <v-divider></v-divider>
-                            <v-list-tile>
-                                <v-list-tile-title>
-                                    Files to Approve: {{ project.filesAwatingApproval }}
-                                </v-list-tile-title>
-                            </v-list-tile>
-                            <v-list-tile>
-                                <v-list-tile-title>
-                                    Files Approved: {{ project.filesApproved }}
-                                </v-list-tile-title>
-                            </v-list-tile>
-                            -->
-                            
+                        <h6 class="text-xs-center mb-2" style="display: block;width: 100%;">Project Managers:</h6>
+                        <v-list v-if="project.project_managers.length == 0" class="bg-transparent">
+                            <p class="text-xs-center"><em>No project managers in this project...</em></p>
+                        </v-list>
+                        <v-list v-else avatar class="bg-transparent">
+                            <template v-for="(project_manager, index) in project.project_managers">
+                                <v-list-tile  v-bind:key="index">
+                                    <v-list-tile-avatar>
+                                        <img src="logo.png">
+                                    </v-list-tile-avatar>
+                                    <v-list-tile-content>
+                                        <v-list-tile-title v-html="project_manager.displayName"></v-list-tile-title>
+                                        <v-list-tile-sub-title v-html="new Date().toDateString()"></v-list-tile-sub-title>
+                                    </v-list-tile-content>
+                                </v-list-tile>
+                            </template>
+                        </v-list>
+                        <v-divider></v-divider>
+
+                        <h6 class="text-xs-center mb-2" style="display: block;width: 100%;">Associates:</h6>
+                        <v-list v-if="project.associates.length == 0" class="bg-transparent">
+                            <p class="text-xs-center"><em>No associates in this project...</em></p>
+                        </v-list>
+                        <v-list v-else avatar class="bg-transparent">
+                            <template v-for="(associate, index) in projects.associates">
+                                <v-list-tile  v-bind:key="index">
+                                    <v-list-tile-avatar>
+                                        <img src="logo.png">
+                                    </v-list-tile-avatar>
+                                    <v-list-tile-content>
+                                        <v-list-tile-title v-html="associate.displayName"></v-list-tile-title>
+                                        <v-list-tile-sub-title v-html="new Date().toDateString()"></v-list-tile-sub-title>
+                                    </v-list-tile-content>
+                                </v-list-tile>
+                            </template>
                         </v-list>
                     </v-card>
                 </v-flex>
@@ -277,7 +303,85 @@
 
         </v-container>
     </v-layout>
+
+<!--
+    <v-menu bottom right>
+        <v-btn slot="activator" dark icon>
+            <v-icon>more_vert</v-icon>
+        </v-btn>
+
+        <v-list>
+            <v-list-tile v-if="userDB.type === 'admin' || userDB.type === 'project_manager'">
+                <v-btn 
+                    ref="invite_project_manager"
+                    v-bind:data-pid="project.id" 
+                    @click="dialogNewProjectManager = true; projectSelectedIndex = index" flat>
+                        Invite Project Manager</v-btn>
+            </v-list-tile>
+            <v-divider></v-divider>
+            <v-list-tile v-if="userDB.type === 'admin' || userDB.type === 'project_manager'">
+                <v-btn  
+                    ref="invite_client"
+                    v-bind:data-pid="project.id" 
+                    @click="dialogNewClient = true; projectSelectedIndex = index" flat>
+                        Invite Client</v-btn>
+            </v-list-tile>
+            <v-divider></v-divider>
+            <v-list-tile v-if="userDB.type === 'admin' || userDB.type === 'project_manager'">
+                <v-btn 
+                    ref="invite_associate"
+                    v-bind:data-pid="project.id" 
+                    @click="dialogNewAssociate = true; projectSelectedIndex = index" flat>
+                        Invite Associate</v-btn>
+            </v-list-tile>
+            <v-divider></v-divider>
+            <v-list-tile v-if="userDB.type === 'admin' || userDB.type === 'project_manager' || userDB.type === 'client'">
+                <v-btn flat>
+                    <router-link tag="span" v-bind:to="'/projects/' + project.name + '/send_file_to_approval'">
+                        Send File to Approval</router-link>
+                </v-btn>
+            </v-list-tile>
+            <v-divider></v-divider>
+            <v-list-tile v-if="userDB.type == 'admin' || userDB.type === 'associate' || userDB.type === 'project_manager'">
+                <v-btn flat>
+                    <router-link tag="span" v-bind:to="'/projects/' + project.name + '/project_tasks'">
+                        View Tasks</router-link> 
+                </v-btn>    
+            </v-list-tile>
+            <v-divider></v-divider>
+            <v-list-tile v-if="userDB.type === 'admin' || userDB.type === 'project_manager' || userDB.type === 'client'">
+                <v-btn flat>
+                    <router-link tag="span" v-bind:to="'/projects/' + project.name + '/file_approval'">
+                        Approve File</router-link> 
+                </v-btn>    
+            </v-list-tile>
+            <v-divider></v-divider>
+            <v-list-tile>
+                <v-btn flat>
+                    <router-link tag="span" v-bind:to="'/projects/' + project.name + '/project_files'">
+                        Project Files</router-link> 
+                </v-btn>
+            </v-list-tile>
+            <v-divider></v-divider>
+            <v-list-tile v-if="userDB.type === 'admin'">
+                <v-btn flat @click="showDeleteProjectDialog(index)">
+                    Delete Project</v-btn>
+            </v-list-tile>
+        </v-list>
+    </v-menu>
+-->
 </template>
+
+
+<script>
+export default {
+
+}
+</script>
+
+<style>
+
+</style>
 
 
 <script>
