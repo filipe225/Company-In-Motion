@@ -2,7 +2,7 @@
     <v-container>
         <v-layout row wrap>
             <v-flex xs12 sm6 offset-sm3>
-                <v-card>
+                <v-card class="bg-transparent">
                     <v-card-text>
                         <v-layout row>
                             <v-flex xs12>

@@ -1,7 +1,7 @@
 <template>
 
     <v-card transition="slide-x-transition">
-        <v-toolbar color="orange darken-1" dark>
+        <v-toolbar dark>
             <v-toolbar-title>Notes</v-toolbar-title>
             <v-spacer></v-spacer>
             <v-btn icon @click="dialogNotes = true">
