@@ -12,13 +12,13 @@ BACKEND / FIREBASE FUNCTIONS
 FRONT END
 
     ALERTA
-        -- ALTERAR CODIGO DE INTEIRO PARA SUCESSO E ERROR
+        -- usar sucesso: 200 e erro: 500 em todos os casos ✔
 
     UI
-        -- decidir cores dos botoes
+        -- decidir cores dos botoes ✔
         -- ajustar elevação dos cards
-        -- AO CONVIDAR ALGUEM NAO APARECE ALERTA DE ERROR OU SUCESSO
-        -- MELHORAR UI DOS CARTOES DE PROJECTO
+        -- AO CONVIDAR ALGUEM NAO APARECE ALERTA DE ERROR OU SUCESSO ✔
+        -- MELHORAR UI DOS CARTOES DE PROJECTO ✔
 
     REGISTO / LOGIN
         -- enviar email de registo
@@ -64,11 +64,13 @@ FRONT END
     TASKS
         -- criar CRUD para notas de utlizador
         -- melhorar UI das notas
+        -- melhorar UI das Tasks
+
+
+OTHERS
 
     RELAX
         -- criar playlist
-
-OTHERS
 
     BUDGET
         -- estruturar pagina de orçamento para um projecto

@@ -137,20 +137,13 @@
                 <v-flex xs12 sm5 v-for="(project, index) in projects" v-bind:key="index" class="my-3 green-light-bg">
                     <v-card class="bg-transparent my-card">
                         <v-layout row wrap align-center="true" justify-center="true">
-                            <v-flex xs8>
-                                <h2 class="pl-2">{{ project.name }}</h2>
+                            <v-flex xs12>
+                                <h2 class="text-xs-center">{{ project.name }}</h2>
                             </v-flex>
-                            <v-flex xs3 align-self-center="true">
-                                <v-responsive>
-                                    <v-avatar size=65 style="text-align: center;">
-                                        <img src="/logo.png" alt="">    
-                                    </v-avatar>    
-                                </v-responsive> 
-                            </v-flex>
-                            <v-flex xs1>
+                            <div class="corner-menu">
                                 <v-menu bottom right>
-                                    <v-btn slot="activator" dark icon>
-                                        <v-icon>more_vert</v-icon>
+                                    <v-btn slot="activator" light icon>
+                                        <v-icon style="font-size: 2.2em;">more_vert</v-icon>
                                     </v-btn>
 
                                     <v-list>
@@ -212,9 +205,16 @@
                                         </v-list-tile>
                                     </v-list>
                                 </v-menu>
-                            </v-flex>
+                            </div>
                         </v-layout>
                                 
+                        <v-list class="bg-transparent">
+                            <v-list-tile justify-center>
+                                <!--<v-flex xs3 align-self-center="true">-->
+                                <image-with-dashes></image-with-dashes>
+                            </v-list-tile>
+                        </v-list>
+
                         <v-list class="bg-transparent">
                             <v-list-tile>
                                 <v-list-tile-content>
@@ -228,16 +228,32 @@
                         <v-list v-if="project.clients.length == 0" class="bg-transparent">
                             <p class="text-xs-center"><em>No clients in this project...</em></p>
                         </v-list>
-                        <v-list v-else avatar class="bg-transparent">
+                        <v-list v-else class="bg-transparent">
                             <template v-for="(client, index) in project.clients">
-                                <v-list-tile  v-bind:key="index">
+                                <v-list-tile avatar v-bind:key="index">
                                     <v-list-tile-avatar>
-                                        <img src="logo.png">
+                                        <img v-bind:src="client.photo_url">
                                     </v-list-tile-avatar>
                                     <v-list-tile-content>
                                         <v-list-tile-title v-html="client.displayName"></v-list-tile-title>
-                                        <v-list-tile-sub-title v-html="new Date().toDateString()"></v-list-tile-sub-title>
+                                        <v-list-tile-sub-title v-html="new Date(client.created_in).toDateString()"></v-list-tile-sub-title>
                                     </v-list-tile-content>
+                                    <v-list-tile-action>
+                                        <v-menu bottom right>
+                                            <v-btn slot="activator" light icon>
+                                                <v-icon style="font-size: 2.2em;">more_vert</v-icon>
+                                            </v-btn>
+                                            <v-list>
+                                                <v-list-tile>
+                                                    <v-btn flat>View Profile</v-btn>
+                                                </v-list-tile>
+                                                <v-divider></v-divider>
+                                                <v-list-tile v-if="userDB.type === 'admin' || userDB.type === 'project_manager'">
+                                                    <v-btn flat>Remove From Project</v-btn>
+                                                </v-list-tile>
+                                            </v-list>
+                                        </v-menu>
+                                    </v-list-tile-action>
                                 </v-list-tile>
                             </template>
                         </v-list>
@@ -249,14 +265,30 @@
                         </v-list>
                         <v-list v-else avatar class="bg-transparent">
                             <template v-for="(project_manager, index) in project.project_managers">
-                                <v-list-tile  v-bind:key="index">
+                                <v-list-tile avatar v-bind:key="index">
                                     <v-list-tile-avatar>
-                                        <img src="logo.png">
+                                        <img v-bind:src="project_manager.photo_url">
                                     </v-list-tile-avatar>
                                     <v-list-tile-content>
                                         <v-list-tile-title v-html="project_manager.displayName"></v-list-tile-title>
-                                        <v-list-tile-sub-title v-html="new Date().toDateString()"></v-list-tile-sub-title>
+                                        <v-list-tile-sub-title v-html="new Date(project_manager.created_in).toDateString()"></v-list-tile-sub-title>
                                     </v-list-tile-content>
+                                    <v-list-tile-action>
+                                        <v-menu bottom right>
+                                            <v-btn slot="activator" light icon>
+                                                <v-icon style="font-size: 2.2em;">more_vert</v-icon>
+                                            </v-btn>
+                                            <v-list>
+                                                <v-list-tile>
+                                                    <v-btn flat>View Profile</v-btn>
+                                                </v-list-tile>
+                                                <v-divider></v-divider>
+                                                <v-list-tile v-if="userDB.type === 'admin' || userDB.type === 'project_manager'">
+                                                    <v-btn flat>Remove From Project</v-btn>
+                                                </v-list-tile>
+                                            </v-list>
+                                        </v-menu>
+                                    </v-list-tile-action>
                                 </v-list-tile>
                             </template>
                         </v-list>
@@ -268,14 +300,30 @@
                         </v-list>
                         <v-list v-else avatar class="bg-transparent">
                             <template v-for="(associate, index) in projects.associates">
-                                <v-list-tile  v-bind:key="index">
+                                <v-list-tile avatar v-bind:key="index">
                                     <v-list-tile-avatar>
-                                        <img src="logo.png">
+                                        <img v-bind:src="associate.photo_url">
                                     </v-list-tile-avatar>
                                     <v-list-tile-content>
                                         <v-list-tile-title v-html="associate.displayName"></v-list-tile-title>
-                                        <v-list-tile-sub-title v-html="new Date().toDateString()"></v-list-tile-sub-title>
+                                        <v-list-tile-sub-title v-html="new Date(associate.created_in).toDateString()"></v-list-tile-sub-title>
                                     </v-list-tile-content>
+                                    <v-list-tile-action>
+                                        <v-menu bottom right>
+                                            <v-btn slot="activator" light icon>
+                                                <v-icon style="font-size: 2.2em;">more_vert</v-icon>
+                                            </v-btn>
+                                            <v-list>
+                                                <v-list-tile>
+                                                    <v-btn flat>View Profile</v-btn>
+                                                </v-list-tile>
+                                                <v-divider></v-divider>
+                                                <v-list-tile v-if="userDB.type === 'admin' || userDB.type === 'project_manager'">
+                                                    <v-btn flat>Remove From Project</v-btn>
+                                                </v-list-tile>
+                                            </v-list>
+                                        </v-menu>
+                                    </v-list-tile-action>
                                 </v-list-tile>
                             </template>
                         </v-list>
@@ -289,7 +337,7 @@
 </template>
 
 <script>
-
+import { ImageWithDashes } from "@/components/ImageWithDashes.vue";
 export default {
     data: function() {
         return {
@@ -435,4 +483,9 @@ export default {
         background-color: #c5f7f2;        
     }
 
+    .corner-menu {
+        position: absolute;
+        top: 0;
+        right: 0;
+    }
 </style>

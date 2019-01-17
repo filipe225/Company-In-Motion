@@ -113,6 +113,21 @@ export default {
             state.projects.splice(payload.project_index, 1);
         },
 
+        setUsersInProjectByType: function(state, payload) {
+            let project_index = payload.project_index;
+            switch(payload.user_types) {
+                case "clients":
+                    state.projects[project_index].clients = payload.clients;
+                    break;
+                case "project_managers":
+                    state.projects[project_index].project_managers = payload.project_managers;
+                    break;
+                case "associates":
+                    state.projects[project_index].associates = payload.associates;
+                    break;
+            }
+        },
+
         setProjects: function (state, payload) {
             state.projects = payload;
         },

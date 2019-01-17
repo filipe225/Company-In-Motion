@@ -79,6 +79,65 @@ export default {
                     console.log("projects", getters.getProjects);
 
                     let user_projects = getters.getProjects;
+
+                    // LOAD USERS IN EACH PROJECT
+                    for(let i=0; i<user_projects.length; i++) {
+                        let clients = user_projects[i].clients;
+                        let project_managers = user_projects[i].project_managers;
+                        let associates = user_projects[i].associates;
+
+                        let user_clients = [];
+                        let user_project_managers = [];
+                        let user_associates = [];
+
+                        if(clients.length > 0) {
+                            for(let y=0; y<clients.length; y++) {
+                                let user_id = clients[y];
+                                let userRef = firebase.firestore().collection('users').doc(user_id);
+                                let userResp = await userRef.get();
+                                let userData = userResp.data();
+
+                                user_clients.push(userData);
+                            }
+                            commit('setUsersInProjectByType', {
+                                project_index: i,
+                                user_types: 'clients',
+                                clients: user_clients
+                            });
+
+                        }
+                        if(project_managers.length > 0) {
+                            for(let y=0; y<project_managers.length; y++) {
+                                let user_id = project_managers[y];
+                                let userRef = firebase.firestore().collection('users').doc(user_id);
+                                let userResp = await userRef.get();
+                                let userData = userResp.data();
+
+                                user_project_managers.push(userData);
+                            }
+                            commit('setUsersInProjectByType', {
+                                project_index: i,
+                                user_types: 'project_managers',
+                                project_managers: user_project_managers
+                            });
+                        }
+                        if(associates.length > 0) {
+                            for(let y=0; y<associates.length; y++) {
+                                let user_id = associates[y];
+                                let userRef = firebase.firestore().collection('users').doc(user_id);
+                                let userResp = await userRef.get();
+                                let userData = userResp.data();
+
+                                user_associates.push(userData);
+                            }
+                            commit('setUsersInProjectByType', {
+                                project_index: i,
+                                user_types: 'associates',
+                                associates: user_associates
+                            });
+                        }
+                    }
+
                     for(let i=0, len = user_projects.length; i<len; i++) {
                         const proj_files_ref = firebase.firestore().collection('project_files').doc(user_projects[i].id).collection("files");
                         let project_files_response = await proj_files_ref.get();
@@ -135,7 +194,7 @@ export default {
                         }
                         commit("setUser", newUser);
                         //dispatch('firebaseAutoSignIn', user);
-                        dispatch('firebaseGetUserDB', user.user.uid);
+                        //dispatch('firebaseGetUserDB', user.user.uid);
                     });
         },
 

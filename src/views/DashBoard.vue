@@ -1,6 +1,9 @@
 
 <template>
     <v-container>
+        <div class="block-ui" ref="myblock">
+
+        </div>
         DASHBOARD
             <fusioncharts
                 :type="firstChart.type"
@@ -58,12 +61,26 @@ export default {
             }                
         }
 
+    },
+
+    mounted: function() {
+        setTimeout(function() {
+            console.log(this.$refs);
+        }.bind(this), 3000);
     }
 }
 </script>
 
 
 <style scoped>
-
+    .block-ui {
+        position: relative;
+        width: 100vw;
+        height: 100vh;
+        background-color: #ddd;
+        border:1px solid red;
+        box-sizing: border-box;
+        z-index: 999;
+    }
 </style>
 

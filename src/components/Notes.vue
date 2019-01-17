@@ -2,8 +2,11 @@
 
     <v-card transition="slide-x-transition">
         <v-toolbar dark>
-            <v-toolbar-title>Notes</v-toolbar-title>
+            <v-toolbar-title><h4>Notes</h4></v-toolbar-title>
             <v-spacer></v-spacer>
+            <v-btn icon @click="toggleNotes">
+                <v-icon ref="btn_toggle_notes">visibility_off</v-icon>
+            </v-btn>
             <v-btn icon @click="dialogNotes = true">
                 <v-icon>add_circle</v-icon>
             </v-btn>
@@ -15,13 +18,13 @@
                         v-model="newNoteContent"
                         label="Name"
                         required></v-text-field>
-                
+
                     <v-btn small v-bind:disabled="!valid" @click.prevent="addNewNote">submit</v-btn>
                 </v-form>               
             </v-flex>
         </v-layout>
 
-        <v-list three-line> 
+        <v-list three-line ref="notes_list" class="hidden"> 
             <template v-for="(item, index) in items">
                 <v-list-tile  :key="item.title" ripple>
                     <v-list-tile-content>
@@ -159,6 +162,19 @@ export default {
         },
         clear: function() {
             this.$refs.form.reset()
+        },
+        toggleNotes: function() {
+            let notes_list = this.$refs.notes_list.$el;
+            let btn_toggle_notes = this.$refs.btn_toggle_notes.$el;
+            console.dir(btn_toggle_notes);
+            if(notes_list.classList.contains("hidden")) {
+                notes_list.classList.remove("hidden");
+                btn_toggle_notes.innerText = "visibility";
+            }else {
+                notes_list.classList.add("hidden");
+                btn_toggle_notes.innerText = "visibility_off";
+            }
+
         }
     }
 }

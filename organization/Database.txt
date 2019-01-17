@@ -5,7 +5,7 @@ USERS:
         type: "admin" || "associate" || "client" || "Project Manager"
         created_in: _
         last_login: _
-        avatar: filename
+        photo_url: String
         company_title: _
         description: _
         newsletter: _
@@ -28,7 +28,6 @@ PROJECTS:
 PROJECT_TASKS:
     project_uid:
         tasks:
-
 
 
 PROJECT_EVENTS:

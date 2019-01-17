@@ -18,6 +18,7 @@ import navbar from './components/NavBar'
 //import Footer from './components/Footer'
 import Alert from './components/AlertHttpResponse.vue'
 import Footer from './components/Footer.vue'
+import ImageWithDashes from './components/ImageWithDashes.vue'
 
 // register VueFusionCharts component
 Vue.use(VueFusionCharts, FusionCharts, Charts, FusionTheme)
@@ -25,6 +26,7 @@ Vue.use(VueFusionCharts, FusionCharts, Charts, FusionTheme)
 Vue.component('navbar', navbar)
 Vue.component('my-alert', Alert)
 Vue.component('footer-bar', Footer)
+Vue.component('image-with-dashes', ImageWithDashes)
 
 Vue.config.productionTip = false
 
