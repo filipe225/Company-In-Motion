@@ -1,9 +1,7 @@
 
 <template>
     <v-container>
-        <div class="block-ui" ref="myblock">
-
-        </div>
+        <v-progress-linear v-model="progressValue"></v-progress-linear>
         DASHBOARD
             <fusioncharts
                 :type="firstChart.type"
@@ -61,6 +59,12 @@ export default {
             }                
         }
 
+    },
+
+    computed: {
+        progressValue: function() {
+            return 10;
+        }
     },
 
     mounted: function() {

@@ -24,6 +24,10 @@ export default {
 
     },
 
+    beforeDestroy () {
+        clearTimeout(this.myTimeout);
+    },
+
     mounted: function() {
         this.changeBackground();
     },
@@ -34,7 +38,7 @@ export default {
 
             let el = this.$refs.div_background_content;
             console.log(el);
-            setTimeout(function() {
+            this.myTimeout = setTimeout(function() {
                 this.$refs.div_background_content.style.backgroundImage = "none";
                 //this.$refs.div_background_content.style.-webkit-transition: background-image 0.2s ease-in-out;
                 this.$refs.div_background_content.style.transition = "background-image 1s ease-in-out";
