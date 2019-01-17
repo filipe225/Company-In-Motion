@@ -1,13 +1,13 @@
 <template>
 
     <v-card transition="slide-x-transition">
-        <v-toolbar dark>
+        <v-toolbar style="background-color: #C5F7F2;">
             <v-toolbar-title><h4>Notes</h4></v-toolbar-title>
             <v-spacer></v-spacer>
-            <v-btn icon @click="toggleNotes">
+            <v-btn icon @click="toggleNotes" title="Toggle Notes">
                 <v-icon ref="btn_toggle_notes">visibility_off</v-icon>
             </v-btn>
-            <v-btn icon @click="dialogNotes = true">
+            <v-btn icon @click="dialogNotes = true" title="Add New Note">
                 <v-icon>add_circle</v-icon>
             </v-btn>
         </v-toolbar>
