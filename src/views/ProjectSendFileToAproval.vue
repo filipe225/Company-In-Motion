@@ -1,5 +1,6 @@
 <template>
     <v-container fluid grid-list-md>
+
         <v-layout>
             <!-- FILE UPLOAD PROGRESS -->
             <v-dialog v-model="dialogFileUpload" max-width="500px">
@@ -23,20 +24,21 @@
                 </v-card>
             </v-dialog>
         </v-layout>
+
         <v-layout row wrap>
             <v-flex sm5 class="hidden-xs-only">
-                <v-card class="pa-3">
+                <v-card class="pa-3 card-main-bgcolor">
                     <v-card-title primary-title>
-                        <span class="headline">{{ project_name }}</span>
+                        <h3>{{ project_name }} Timeline</h3>
                     </v-card-title>
                     <!--<project-timeline v-bind:timeline="timeline"></project-timeline>-->
                     <project-timeline v-bind:events="projectEvents"></project-timeline>
                 </v-card>
             </v-flex>
             <v-flex xs12 sm7>
-                <v-card class="pa-3">
-                    <v-card-title primary-title>
-                        <span class="headline">{{ project_name}}</span>
+                <v-card class="pa-3 card-main-bgcolor">
+                    <v-card-title>
+                        <h3>{{ project_name}} File Upload</h3>
                     </v-card-title>
                     <v-form ref="form_new_file" v-model="valid" lazy-validation>
                     <v-layout row>
@@ -173,3 +175,83 @@ export default {
 <style scoped>
 
 </style>
+
+
+<!--
+angular.module('HelloWorldApp', [])
+   .controller('HelloWorldController', function($scope, $http, $window, $sce) {
+  
+  $scope.extensao = '';
+  
+  $scope.uploadImagem = function (element) {
+        var photofile = element.files[0];
+        var reader = new FileReader();
+
+        $scope.files = []
+        $scope.files.push(element.files[0])
+
+        $scope.extensao = element.files[0].name;
+        $scope.type = '';
+
+        reader.onload = function (e) {
+            $scope.imagem = e.target.result;
+            $scope.$apply();
+        };
+        reader.readAsDataURL(photofile);
+    };
+  
+
+function dataURItoBlob(dataURI) {
+
+	// convert base64/URLEncoded data component to raw binary data held in a string
+	var byteString;
+	if (dataURI.split(',')[0].indexOf('base64') >= 0)
+		byteString = atob(dataURI.split(',')[1]);
+	else
+		byteString = unescape(dataURI.split(',')[1]);
+
+	// separate out the mime component
+	var mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
+
+	// write the bytes of the string to a typed array
+	var ia = new Uint8Array(byteString.length);
+	for (var i = 0; i < byteString.length; i++) {
+		ia[i] = byteString.charCodeAt(i);
+	}
+
+	return new Blob([ia], {type:mimeString});
+}
+
+$scope.showImage = function () {
+
+    $scope.extensao = '';
+	var imagem = $scope.imagem;
+
+    if (imagem.toLowerCase().indexOf('image/jpeg') > 0) {
+        $scope.type = 'image/jpeg';
+        $scope.extensao = '.jpg';
+    } else
+        if (imagem.toLowerCase().indexOf('image/png') > 0) {
+            $scope.type = 'image/png';
+            $scope.extensao = '.png';
+        } else
+            if (imagem.toLowerCase().indexOf('application/pdf') > 0) {
+                $scope.type = 'application/pdf';
+                $scope.extensao = '.pdf';
+            } else
+                if (imagem.toLowerCase().indexOf('application/msword') > 0) {
+                    $scope.type = 'application/msword';
+                    $scope.extensao = '.doc';
+                } else {
+                        $scope.type = 'application/octet-stream';
+                        $scope.extensao = '.docx';
+                    }
+
+    var decodedImage = dataURItoBlob(imagem);
+    var blob = new Blob([decodedImage], { type: $scope.type });
+    var fileURL = URL.createObjectURL(blob);
+    $scope.pdfContent = $sce.trustAsResourceUrl(fileURL);
+
+}
+});
+-->

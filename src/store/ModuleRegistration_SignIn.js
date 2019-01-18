@@ -70,10 +70,14 @@ export default {
                     //console.log(projectsResponse);
                     let projectDocs = projectsResponse.docs;
                     console.log(projectDocs);
+                    const projects_count = projectDocs.length;
+                    const step = 100 / (projects_count * 4);
+                    commit('setLoadingProgressStep', step);
                     projectDocs.forEach( doc => {
                         let project_id = doc.id;
                         let project_data = doc.data();                       
                         commit('setLoadedProject', {id: project_id, ...project_data});   
+                        commit('incrementProgressValue', true);
                     });
 
                     console.log("projects", getters.getProjects);
@@ -136,6 +140,7 @@ export default {
                                 associates: user_associates
                             });
                         }
+                        commit('incrementProgressValue', true);
                     }
 
                     for(let i=0, len = user_projects.length; i<len; i++) {
@@ -147,6 +152,7 @@ export default {
                             let file_data = file.data();
                             commit('addFilesToProject', {id: user_projects[i].id, file: file_data})
                         });
+                        commit('incrementProgressValue', true);
                     }
 
                     for(let i=0, len = user_projects.length; i<len; i++) {
@@ -155,9 +161,11 @@ export default {
                         let proj_events_data = project_events_response.data();
                         commit('addEventsToProject', {id: user_projects[i].id, events: proj_events_data})
                         console.log("events", proj_events_data);
+                        commit('incrementProgressValue', true);
                     }
 
 
+                    commit('incrementProgressValue', false);
                     commit('setNewHttpCall', {response: 200, msg: 'Projects loaded'})
 
                 }

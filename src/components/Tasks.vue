@@ -1,7 +1,7 @@
 <template>
-  <v-card transition="slide-x-reverse-transition">
-    <v-toolbar dark>
-		<v-toolbar-title>Tasks</v-toolbar-title>
+  <v-card transition="slide-x-reverse-transition card-main-bgcolor" >
+    <v-toolbar class="card-main-bgcolor">
+		<v-toolbar-title><h3>Tasks</h3></v-toolbar-title>
 		<v-spacer></v-spacer>
 		<v-btn icon>
 			<v-icon>add_circle</v-icon>
@@ -14,7 +14,7 @@
 		</v-card-text>
 	</v-card>
 
-    <v-list two-line>
+    <v-list class="hidden">
 		<template v-for="(item, index) in items">
 			<v-list-tile :key="item.title" avatar ripple>
 				<v-list-tile-content>

@@ -1,7 +1,11 @@
 
 <template>
     <v-container>
-        <v-progress-linear v-model="progressValue"></v-progress-linear>
+        <div class="text-xs-center" id="loading_progress_bar">
+            <h3 class="normal">Loading Data. Please wait... </h3>
+            <v-progress-linear height="15" v-model="progressData.value" v-if="progressData.value > -1"></v-progress-linear>          
+        </div>
+
         DASHBOARD
             <fusioncharts
                 :type="firstChart.type"
@@ -62,15 +66,26 @@ export default {
     },
 
     computed: {
-        progressValue: function() {
-            return 10;
+        progressData: function() {
+            return this.$store.getters.getLoadingProgress;
         }
     },
 
+    watch: {
+        progressData: {
+            handler: function(newVal, oldVal) {
+                if(newVal.value >= 100) {
+                    document.getElementById('loading_progress_bar').style.display = "none";
+                }
+            }.bind(this),
+            deep: true
+        } 
+    },
+
     mounted: function() {
-        setTimeout(function() {
-            console.log(this.$refs);
-        }.bind(this), 3000);
+        setTimeout(() => {
+            console.log(this.progressData);
+        }, 3000);
     }
 }
 </script>

@@ -1,7 +1,7 @@
 <template>
 
-    <v-card transition="slide-x-transition">
-        <v-toolbar style="background-color: #C5F7F2;">
+    <v-card transition="slide-x-transition card-main-bgcolor" >
+        <v-toolbar class="card-main-bgcolor">
             <v-toolbar-title><h4>Notes</h4></v-toolbar-title>
             <v-spacer></v-spacer>
             <v-btn icon @click="toggleNotes" title="Toggle Notes">
@@ -24,7 +24,7 @@
             </v-flex>
         </v-layout>
 
-        <v-list three-line ref="notes_list" class="hidden"> 
+        <v-list ref="notes_list" class="hidden"> 
             <template v-for="(item, index) in items">
                 <v-list-tile  :key="item.title" ripple>
                     <v-list-tile-content>

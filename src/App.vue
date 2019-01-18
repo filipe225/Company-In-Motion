@@ -18,6 +18,10 @@
         max-height: 100%;
     }
 
+    .card-main-bgcolor {
+        background-color: #C5F7F2!important;
+    }
+
     .my-card {
         border-top: 4px solid #009688!important;
     }
