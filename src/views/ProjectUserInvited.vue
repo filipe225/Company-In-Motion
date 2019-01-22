@@ -45,7 +45,9 @@
 
 										<v-btn large @click="userRegister" 
                                                 v-bind:disabled="!registerValid"
-                                                dark class="mx-0 right teal darken-1">Register</v-btn>
+                                                dark class="mx-0 right page-main-button">
+                                                Register
+                                        </v-btn>
 									</v-form>
 								</v-flex>
                                 <v-flex xs12 class="text-xs-right">
@@ -59,7 +61,6 @@
                 </v-card>
             </v-flex>            
         </v-layout>
-
 
         <!-- SIGN IN FORM -->
         <v-layout row wrap v-else-if="!showRegistration && !userAddedToProject">
@@ -84,7 +85,8 @@
                                             label="Password"
                                             required>
                                         </v-text-field>
-                                        <v-btn large @click="userSignIn" dark class="mx-0 right teal darken-1">Sign In</v-btn>
+                                        <v-btn large @click="userSignIn" dark 
+                                        class="mx-0 right page-main-button">Sign In</v-btn>
                                     </v-form>
                                 </v-flex>
                                 <v-flex xs12 class="text-xs-right">

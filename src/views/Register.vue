@@ -2,9 +2,9 @@
     <v-container fluid grid-list-lg>
         <v-layout row wrap>
             <v-flex xs12 sm6>
-                <v-card class="elevation-2 pb-3">
+                <v-card class="bg-green-light elevation-2 pb-3">
                     <v-card-title> <h3>User Comparison</h3> </v-card-title>
-                    <table class="check-table">
+                    <table class="check-table pa-2">
                         <thead>
                             <tr>
                                 <th></th>
@@ -76,12 +76,12 @@
                 </v-card>
             </v-flex>
             <v-flex xs12 sm6>
-                <v-card class="elevation-6">
+                <v-card class="bg-green-light elevation-6">
                     <v-card-text>
                         <v-layout>
-                            <v-flex xs12>
+                            <v-flex xs12 class="bg-green-light">
                                 <h1>Register</h1>
-                                <v-form v-model="registerValid" class="mt-4">
+                                <v-form v-model="registerValid" class="mt-4 bg-transparent">
                                     <v-text-field
                                         v-model="register.displayName"
                                         label="Display Name"
@@ -115,7 +115,7 @@
                                     </v-radio-group>
                                     <v-btn large @click="userRegister" 
                                             v-bind:disabled="registerValid"
-                                            dark class="mx-0 right teal darken-1">Register</v-btn>
+                                            dark class="mx-0 right page-main-button">Register</v-btn>
                                 </v-form>
                             </v-flex>
                         </v-layout>

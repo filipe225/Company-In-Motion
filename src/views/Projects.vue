@@ -14,9 +14,9 @@
                             label="Email"
                         ></v-text-field>
                     </v-card-text>
-                    <v-card-actions>
+                    <v-card-actions style="justify-content: space-between">
                         <v-btn flat @click="dialogNewProjectManager=false; projectSelectedIndex = null">Close</v-btn>
-                        <v-btn color="primary" flat @click="inviteProjectManager">Send Invite</v-btn>
+                        <v-btn class="page-main-button" dark flat @click="inviteProjectManager">Send Invite</v-btn>
                     </v-card-actions>
                 </v-card>
             </v-dialog>
@@ -33,9 +33,9 @@
                             label="Email"
                         ></v-text-field>
                     </v-card-text>
-                    <v-card-actions>
+                    <v-card-actions style="justify-content: space-between">
                         <v-btn flat @click="dialogNewClient=false; projectSelectedIndex = null">Close</v-btn>
-                        <v-btn color="primary" flat @click="inviteClient">Send Invite</v-btn>
+                        <v-btn class="page-main-button" dark flat @click="inviteClient">Send Invite</v-btn>
                     </v-card-actions>
                 </v-card>
             </v-dialog>
@@ -52,9 +52,9 @@
                             label="Email"
                         ></v-text-field>
                     </v-card-text>
-                    <v-card-actions>
+                    <v-card-actions style="justify-content: space-between">
                         <v-btn flat @click="dialogNewAssociate=false; projectSelectedIndex = null">Close</v-btn>
-                        <v-btn color="primary" flat @click="inviteAssociate">Send Invite</v-btn>
+                        <v-btn class="page-main-button" dark flat @click="inviteAssociate">Send Invite</v-btn>
                     </v-card-actions>
                 </v-card>
             </v-dialog>
@@ -134,7 +134,8 @@
             </v-layout>
 
             <v-layout row wrap align-start justify-space-around fill-height>  
-                <v-flex xs12 sm5 v-for="(project, index) in projects" v-bind:key="index" class="my-3 green-light-bg">
+                <v-flex xs12 sm5 v-for="(project, index) in projects" 
+                    v-bind:key="index" class="my-3 bg-green-light">
                     <v-card class="bg-transparent my-card">
                         <v-layout row wrap align-center="true" justify-center="true">
                             <v-flex xs12>
@@ -149,24 +150,18 @@
                                     <v-list>
                                         <v-list-tile v-if="userDB.type === 'admin' || userDB.type === 'project_manager'">
                                             <v-btn 
-                                                ref="invite_project_manager"
-                                                v-bind:data-pid="project.id" 
                                                 @click="dialogNewProjectManager = true; projectSelectedIndex = index" flat>
                                                     Invite Project Manager</v-btn>
                                         </v-list-tile>
                                         <v-divider></v-divider>
                                         <v-list-tile v-if="userDB.type === 'admin' || userDB.type === 'project_manager'">
                                             <v-btn  
-                                                ref="invite_client"
-                                                v-bind:data-pid="project.id" 
                                                 @click="dialogNewClient = true; projectSelectedIndex = index" flat>
                                                     Invite Client</v-btn>
                                         </v-list-tile>
                                         <v-divider></v-divider>
                                         <v-list-tile v-if="userDB.type === 'admin' || userDB.type === 'project_manager'">
                                             <v-btn 
-                                                ref="invite_associate"
-                                                v-bind:data-pid="project.id" 
                                                 @click="dialogNewAssociate = true; projectSelectedIndex = index" flat>
                                                     Invite Associate</v-btn>
                                         </v-list-tile>
@@ -224,7 +219,7 @@
                             </v-list-tile>
                         </v-list>
 
-                        <h6 class="text-xs-center mb-2" style="display: block;width: 100%;">Clients:</h6>
+                        <h6 class="text-xs-center" style="display: block;width: 100%;">Clients:</h6>
                         <v-list v-if="project.clients.length == 0" class="bg-transparent">
                             <p class="text-xs-center"><em>No clients in this project...</em></p>
                         </v-list>
@@ -259,7 +254,7 @@
                         </v-list>
                         <v-divider></v-divider>
 
-                        <h6 class="text-xs-center mb-2" style="display: block;width: 100%;">Project Managers:</h6>
+                        <h6 class="text-xs-center" style="display: block;width: 100%;">Project Managers:</h6>
                         <v-list v-if="project.project_managers.length == 0" class="bg-transparent">
                             <p class="text-xs-center"><em>No project managers in this project...</em></p>
                         </v-list>
@@ -294,7 +289,7 @@
                         </v-list>
                         <v-divider></v-divider>
 
-                        <h6 class="text-xs-center mb-2" style="display: block;width: 100%;">Associates:</h6>
+                        <h6 class="text-xs-center" style="display: block;width: 100%;">Associates:</h6>
                         <v-list v-if="project.associates.length == 0" class="bg-transparent">
                             <p class="text-xs-center"><em>No associates in this project...</em></p>
                         </v-list>
@@ -333,7 +328,10 @@
 
         </v-container>
     </v-layout>
-
+<!--
+ref="invite_associate"
+v-bind:data-pid="project.id" 
+-->
 </template>
 
 <script>
@@ -406,58 +404,66 @@ export default {
             return index === -1;
         },
         inviteAssociate: function() {
-            console.log(this.$refs);
-            let projectID = this.$refs.invite_associate[0].$el.dataset.pid;
-            let project_index = this.projects.findIndex(project => project.id === projectID);
-            let projectName = this.projects[project_index].name;
+            let project_index = this.projectSelectedIndex;
+            console.log(project_index);
+            if(project_index !== null) {
+                let projectID = this.projects[project_index].id;
+                let projectName = this.projects[project_index].name;
 
-            let obj =  {
-                inviter: this.userDB.id,
-                mail_to: this.newUserEmail,
-                project_name: projectName,
-                main_link: "http://localhost:8080/projects/" + projectID + "/associate/invitation/" + this.userDB.id            
-            };
-            console.log(obj);
-            this.$store.dispatch('firebaseInviteAssociateClientManager', obj);
+                let obj =  {
+                    inviter: this.userDB.id,
+                    mail_to: this.newUserEmail,
+                    project_name: projectName,
+                    main_link: "http://localhost:8080/projects/" + projectID + "/associate/invitation/" + this.userDB.id            
+                };
+                console.log(obj);
+                this.$store.dispatch('firebaseInviteAssociateClientManager', obj);
 
-            this.dialogNewAssociate = false;
-            this.newUserEmail = "";
+                this.dialogNewAssociate = false;
+                this.newUserEmail = "";
+                this.projectSelectedIndex = null;
+            }
         },
         inviteClient: function() {
-            let projectID = this.$refs.invite_client[0].$el.dataset.pid;
-            let project_index = this.projects.findIndex(project => project.id === projectID);
-            let projectName = this.projects[project_index].name;
+            let project_index = this.projectSelectedIndex;
+            console.log(project_index);
+            if(project_index !== null) {
+                let projectID = this.projects[project_index].id;
+                let projectName = this.projects[project_index].name;
 
-            let obj =  {
-                inviter: this.userDB.id,
-                mail_to: this.newUserEmail,
-                project_name: projectName,
-                main_link: "http://localhost:8080/projects/" + projectID + "/client/invitation/" + this.userDB.id            
-            };
-            console.log(obj);
-            this.$store.dispatch('firebaseInviteAssociateClientManager', obj);
+                let obj =  {
+                    inviter: this.userDB.id,
+                    mail_to: this.newUserEmail,
+                    project_name: projectName,
+                    main_link: "http://localhost:8080/projects/" + projectID + "/client/invitation/" + this.userDB.id            
+                };
+                console.log(obj);
+                this.$store.dispatch('firebaseInviteAssociateClientManager', obj);
 
-            this.dialogNewClient = false;
-            this.newUserEmail = "";
+                this.dialogNewClient = false;
+                this.newUserEmail = "";
+                this.projectSelectedIndex = null;      
+            }
         },
         inviteProjectManager: function() {
-            console.log(this.$refs);
+            let project_index = this.projectSelectedIndex;
+            console.log(project_index);
+            if(project_index !== null) {
+                let projectID = this.projects[project_index].id;
+                let projectName = this.projects[project_index].name;
 
-            let projectID = this.$refs.invite_project_manager[0].$el.dataset.pid;
-            let project_index = this.projects.findIndex(project => project.id === projectID);
-            let projectName = this.projects[project_index].name;
+                let obj =  {
+                    inviter: this.userDB.id,
+                    mail_to: this.newUserEmail,
+                    project_name: projectName,
+                    main_link: "http://localhost:8080/projects/" + projectID + "/project_manager/invitation/" + this.userDB.id            
+                };
+                this.$store.dispatch('firebaseInviteAssociateClientManager', obj);
 
-            let obj =  {
-                inviter: this.userDB.id,
-                mail_to: this.newUserEmail,
-                project_name: projectName,
-                main_link: "http://localhost:8080/projects/" + projectID + "/project_manager/invitation/" + this.userDB.id            
-            };
-            this.$store.dispatch('firebaseInviteAssociateClientManager', obj);
-
-            this.dialogNewProjectManager = false;
-            this.newUserEmail = "";
-
+                this.dialogNewProjectManager = false;
+                this.newUserEmail = "";
+                this.projectSelectedIndex = null;      
+            }
         },
         deleteProject: function() {
             console.log("deleteProject");
@@ -477,10 +483,6 @@ export default {
 <style scoped>
     .v-card__title {
         padding: 8px 10px;
-    }
-
-    .green-light-bg {
-        background-color: #c5f7f2;        
     }
 
     .corner-menu {

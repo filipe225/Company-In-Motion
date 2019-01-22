@@ -377,8 +377,10 @@ export default {
                 var newUserId = null;
 
                 if (payload.callToAction === "signin") {
-                    let userData = payload.userData;
-                    let resp = await firebase.auth().signInWithEmailAndPassword(userData.email, userData.password);
+                    let userData = payload.userData;     
+                    let resp = await firebase.auth()
+                                            .setPersistence(firebase.auth.Auth.Persistence.NONE)
+                                            .signInWithEmailAndPassword(userData.email, userData.password);
                     
                     newUserId = resp.user.uid;
 

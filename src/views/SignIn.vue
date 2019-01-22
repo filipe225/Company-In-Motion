@@ -1,7 +1,7 @@
 <template>
     <v-container>
         <v-layout row wrap>
-            <v-flex xs12 sm6 offset-sm3>
+            <v-flex xs12 sm6 offset-sm3 class="bg-green-light">
                 <v-card class="bg-transparent">
                     <v-card-text>
                         <v-layout row>
@@ -21,7 +21,8 @@
                                         label="Password"
                                         required>
                                     </v-text-field>
-                                    <v-btn large @click="userSignIn" dark class="mx-0 right teal darken-1">Sign In</v-btn>
+                                    <v-btn large @click="userSignIn" 
+                                        dark class="mx-0 right page-main-button">Sign In</v-btn>
                                 </v-form>
                             </v-flex>
                         </v-layout>

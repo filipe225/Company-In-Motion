@@ -18,8 +18,17 @@
         max-height: 100%;
     }
 
+    .page-main-button {
+        background-color: #00897b !important;
+        border-color: #00897b !important;
+    }
+
     .card-main-bgcolor {
         background-color: #C5F7F2!important;
+    }
+
+    .bg-green-light {
+        background-color: #c5f7f2!important;        
     }
 
     .my-card {

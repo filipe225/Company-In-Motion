@@ -2,8 +2,8 @@
 <template>
     <v-container>
         <v-layout row wrap>
-            <v-flex xs12>
-                <v-card>
+            <v-flex xs12 class="bg-green-light">
+                <v-card class="bg-transparent">
                     <v-card-title><h1>Contact Us</h1></v-card-title>
                     <v-card-text>
                         <v-container>
@@ -17,7 +17,7 @@
 										<v-card-actions>
 											<v-spacer></v-spacer>
 											<v-btn type="reset" color="blue darken-1" flat >Reset</v-btn>
-											<v-btn color="teal darken-1" flat @click="sendEmailContactUs" v-bind:disabled="!valid">Send Email</v-btn>
+											<v-btn class="page-main-button" flat @click="sendEmailContactUs" v-bind:disabled="!valid">Send Email</v-btn>
 										</v-card-actions>
 
 									</v-form>   
