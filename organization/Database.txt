@@ -23,7 +23,9 @@ PROJECTS:
         admin: _
         associates: []
         clients: []
-        project_managers: []
+        project_managers: [],
+        files: [], // to use with separate documents
+        tasks: [], // to use with separate documents
 
 PROJECT_TASKS:
     project_uid:

@@ -51,7 +51,9 @@ class Project {
             admin: this.admin,
             clients: this.clients,
             associates: this.associates,
-            project_managers: this.project_managers
+            project_managers: this.project_managers,
+            files: this.files,
+            tasks: this.tasks
         }
     }
 }
@@ -101,9 +103,10 @@ export default {
         },
 
         addEventsToProject: function (state, payload) {
+
             let desired_project_index = state.projects.findIndex(proj => proj.id === payload.id);
             if (desired_project_index > -1) {
-                state.projects[desired_project_index].events = payload.events;
+                state.projects[desired_project_index].events = payload.events.events;
             }
         },
 
