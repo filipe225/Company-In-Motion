@@ -6,14 +6,14 @@
             :items="files" name="data_iterator" item-key="files.fileId"
             :rows-per-page-items="rowsPerPageItems" 
             :pagination.sync="pagination">
-            <v-toolbar slot="header" class="mb-2" flat>        
-                <v-toolbar-title>{{ project_name }} Files</v-toolbar-title>
+            <v-toolbar slot="header" class="mb-2 bg-transparent" flat>        
+                <v-toolbar-title><h4>{{ project_name }} Files</h4></v-toolbar-title>
             </v-toolbar>
                 <v-flex slot="item" slot-scope="props" xs12 sm3 md3 lg3>
-                    <v-card class="elevation-12 hover-me">
+                    <v-card class="elevation-4 hover-me bg-green-light">
 
                         <v-card-title ref="ref_file_id" v-bind:data-fileId="props.item.fileId">
-                            <h4 class="normal">{{ props.item.title }}</h4>
+                            <h5 class="normal" @click="openFileDetails">{{ props.item.title }}</h5>
                         </v-card-title>
                         <v-divider></v-divider>
 
@@ -21,17 +21,17 @@
                         <v-divider></v-divider>
 
                         <v-card-title>
-                            <h5 class="normal">{{ props.item.fileId }}</h5>
+                            <p class="bigger">{{ props.item.fileId }}</p>
                         </v-card-title>
                         <v-divider></v-divider>
 
                         <v-card-title>
-                            <h5 class="normal">{{ new Date().toDateString('yyyy-MM-dd') }}</h5>
+                            <p class="bigger">{{ new Date().toDateString('yyyy-MM-dd') }}</p>
                         </v-card-title>
                         <v-divider></v-divider>
 
                         <v-card-title>
-                            <h5 v-bind:class="props.item.state + ' normal'">{{ props.item.state.toUpperCase() }}</h5>
+                            <p v-bind:class="props.item.state + ' bigger'">{{ props.item.state.toUpperCase() }}</p>
                         </v-card-title>
                         <v-divider></v-divider>  
 
@@ -156,7 +156,12 @@ export default {
     }
 
     .hover-me:hover {
-        background-color: aqua;
+        background-color: #009688 !important;
+    }
+
+    .bigger {
+        font-size: 1.3em;
+        margin-bottom: 0px;
     }
 
     .pending {
