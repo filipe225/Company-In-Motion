@@ -16,6 +16,7 @@ import ProjectFiles from './views/ProjectFiles.vue'
 import ProjectTasks from './views/ProjectTasks.vue'
 import ProjectSendFileToAproval from './views/ProjectSendFileToAproval.vue'
 import ProjectReviewFile from './views/ProjectReviewFile.vue'
+import ProjectCalendar from './views/ProjectCalendar.vue'
 import Relax from './views/Relax.vue'
 import UserProfile from './views/UserProfile.vue'
 
@@ -65,6 +66,12 @@ export default new Router({
         path: '/projects/:project_id/:user_type/invitation/:inviter_id/:fb_invite_id',
         name: 'user_invitation',
         component: ProjectUserInvited
+    },
+    {
+        path: '/projects/:project_name/calendar',
+        name: 'project_calendar',
+        component: ProjectCalendar,
+        beforeEnter: AuthGuard
     },
     {
         path: '/projects/:project_name/project_tasks',

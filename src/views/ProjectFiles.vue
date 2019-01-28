@@ -3,25 +3,41 @@
     <v-container fluid grid-list-md>
 
         <v-data-iterator content-tag="v-layout" content-class="layout"
-            :items="files" name="data_iterator" item-key="files.fileId"
+            :items="filteredFiles" name="data_iterator" item-key="files.fileId"
             :rows-per-page-items="rowsPerPageItems" 
             :pagination.sync="pagination">
             <v-toolbar slot="header" class="mb-2 bg-transparent" flat>        
                 <v-toolbar-title><h4>{{ project_name }} Files</h4></v-toolbar-title>
+                <v-spacer></v-spacer>
+                <v-btn small flat class="btn-filter-all" @click="selectedFilter = 'all'">All</v-btn>
+                <v-btn small flat class="btn-filter-pending" @click="selectedFilter = 'pending'">Pending</v-btn>
+                <v-btn small flat class="btn-filter-approved" @click="selectedFilter = 'approved'">Approved</v-btn>
+                <v-btn small flat class="btn-filter-rejected" @click="selectedFilter = 'rejected'">Rejected</v-btn>
+                
             </v-toolbar>
                 <v-flex slot="item" slot-scope="props" xs12 sm3 md3 lg3>
-                    <v-card class="elevation-4 hover-me bg-green-light">
+                    <v-card class="elevation-4 hover-me bg-green-light my-card">
 
-                        <v-card-title ref="ref_file_id" v-bind:data-fileId="props.item.fileId">
-                            <h5 class="normal" @click="openFileDetails">{{ props.item.title }}</h5>
+                        <v-card-title ref="ref_file_id" style="padding: 10px;"
+                            v-bind:data-fileId="props.item.fileId">
+                            <h5 class="normal" >
+                                <v-btn class="file-title" 
+                                    v-bind:to="'/projects/My Precious/project_files/file_review/' + props.item.fileId" flat>
+                                    {{ props.item.title }}
+                                </v-btn>
+                            </h5>
                         </v-card-title>
                         <v-divider></v-divider>
-
-                        <img src="@/assets/file_placeholder_html.png" class="files-images" />
+                        <v-card-title>
+                            <div class="file-extension">
+                                <p class="bigger">{{ props.item.description }}</p>
+                            </div>
+                        </v-card-title>
+                        <!-- <img src="@/assets/file_placeholder_html.png" class="files-images" /> -->
                         <v-divider></v-divider>
 
                         <v-card-title>
-                            <p class="bigger">{{ props.item.fileId }}</p>
+                            <p class="bigger">.{{ props.item.fileExtension }}</p>
                         </v-card-title>
                         <v-divider></v-divider>
 
@@ -36,12 +52,15 @@
                         <v-divider></v-divider>  
 
                         <v-card-actions>
-                            <v-btn icon title="Download file" v-bind:data-fileIndex="props.index"><v-icon>cloud_download</v-icon></v-btn>
+                            <v-btn icon title="Download file" :href="props.item.fileDownloadUrl"
+                                v-bind:data-fileIndex="props.index">
+                                <v-icon>cloud_download</v-icon>
+                            </v-btn>
                             <v-btn icon title="Delete file from Project" v-bind:data-fileIndex="props.index"><v-icon>delete_forever</v-icon></v-btn>
                             <v-btn icon title="Send Email for file revisition"
                                 v-if="props.item.state === 'pending'"
                                 v-bind:data-fileIndex="props.index"><v-icon>email</v-icon></v-btn>
-                            <v-btn icon title="View File Comments" @click="openFileDetails" v-bind:data-fileIndex="props.index"><v-icon>pageview</v-icon></v-btn>                      
+                            <v-btn icon title="View File Comments" v-bind:to="'/projects/My Precious/project_files/file_review/' + props.item.fileId" v-bind:data-fileIndex="props.index"><v-icon>pageview</v-icon></v-btn>                      
                         </v-card-actions>
 
                     </v-card>
@@ -91,7 +110,8 @@ export default {
             pagination: {
                 rowsPerPage: 8
             },
-            selectedFile: null,           
+            selectedFile: null,
+            selectedFilter: 'all'           
         };
     },
 
@@ -99,8 +119,18 @@ export default {
         files: function() {
             return this.$store.getters.getProjectFiles(this.project_name);
         },
-        fileteredFiles: function() {
-            return this.$store.getters.getProjectFiles(this.project_name);
+        filteredFiles: function() {
+            let copy = this.files.slice();
+
+            let filter = this.selectedFilter;
+
+            if(filter === "all") return copy;
+
+            let filtered = copy.filter( file => {
+                return file.state === filter;
+            });
+
+            return filtered;
         }
     },
 
@@ -115,6 +145,7 @@ export default {
     },
 
     methods: {
+        // NOT IN USE 
         openFileDetails: function(e) {
             const target = e.target;
             let file_index = null;
@@ -130,12 +161,10 @@ export default {
                     button_clicked = target;
             }
 
-            //console.log(e.target)
-            //console.log(button_clicked);
             file_index = button_clicked.dataset.fileindex;
             let ref_file_id = this.files[file_index].fileId;
             let coiso = this.files[file_index].title;
-            //console.log(ref_file_id);
+
             this.$router.push('/projects/'+  this.project_name + '/project_files/file_review/' + ref_file_id);
         },
         deleteFileFromProject: function() {
@@ -148,11 +177,29 @@ export default {
 
 <style scoped>
 
+    .file-extension {
+        width: 100%;
+        height: 60px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
     .files-images {
         width: 100%;
         max-width: 150px;
         max-height: 150px;
         margin: 5px auto;
+    }
+
+    .file-title {
+        padding: 0;
+        font-size: 1.4rem;
+        word-break: break-word;
+        text-decoration: underline;
+        text-decoration-color: black;
+        display: inline-block;
+        margin: 0 10px;
     }
 
     .hover-me:hover {
@@ -163,6 +210,11 @@ export default {
         font-size: 1.3em;
         margin-bottom: 0px;
     }
+
+    .btn-filter-all { border: 1px solid black; }
+    .btn-filter-pending { border: 1px solid darkgoldenrod; }
+    .btn-filter-approved { border: 1px solid darkgreen; }
+    .btn-filter-rejected { border: 1px solid darkred; }
 
     .pending {
         color: darkgoldenrod;

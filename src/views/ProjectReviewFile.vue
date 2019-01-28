@@ -1,7 +1,7 @@
 <template>
-    <v-container fluid>
+    <v-container fluid grid-list-md>
         <v-layout row wrap>
-            <v-flex xs10 offset-xs1>
+            <v-flex xs12 sm8>
                 <v-list class="no-background elevation-12">
 
                     <v-list-tile>
@@ -31,33 +31,39 @@
                     </v-list-tile-action>
 
                 </v-list>
-            </v-flex>
-            <v-flex xs10 offset-xs1>
-                <v-textarea v-model="newComment" placeholder="New Comment"></v-textarea>
-            </v-flex>
-            <v-flex xs10 offset-xs1 v-for="(comment, index) in testcomments" v-bind:key="index">
-                <v-list class="no-background">
-                    <v-list-tile avatar>
-                        <v-list-tile-avatar>
-                            <img :src="comment.user.avatar">
-                        </v-list-tile-avatar>
-                        <v-list-tile-title>
-                            {{ comment.user.display_name }}
-                        </v-list-tile-title>
+                <v-layout row wrap>
+                    <v-flex xs10 offset-xs1>
+                        <v-textarea v-model="newComment" placeholder="New Comment"></v-textarea>
+                    </v-flex>
+                    <v-flex xs10 offset-xs1 v-for="(comment, index) in testcomments" v-bind:key="index">
+                        <v-list class="no-background">
+                            <v-list-tile avatar>
+                                <v-list-tile-avatar>
+                                    <img :src="comment.user.avatar">
+                                </v-list-tile-avatar>
+                                <v-list-tile-title>
+                                    {{ comment.user.display_name }}
+                                </v-list-tile-title>
 
-                        <v-list-tile-action>
-                            <label for="">{{ comment.created_in }}</label>
-                        </v-list-tile-action>
-                    </v-list-tile>
-                    <v-list-tile>
-                        <v-list-tile-content>
-                            <v-list-tile-title v-html="comment.content"></v-list-tile-title>
-                        </v-list-tile-content>
-                    </v-list-tile>
-                </v-list>
-                <v-divider></v-divider>
+                                <v-list-tile-action>
+                                    <label for="">{{ comment.created_in }}</label>
+                                </v-list-tile-action>
+                            </v-list-tile>
+                            <v-list-tile>
+                                <v-list-tile-content>
+                                    <v-list-tile-title v-html="comment.content"></v-list-tile-title>
+                                </v-list-tile-content>
+                            </v-list-tile>
+                        </v-list>
+                        <v-divider></v-divider>
 
+                    </v-flex>
+                </v-layout>
             </v-flex>
+            <v-flex sm4 hidden-xs-only fixed>
+                UPLOADER
+            </v-flex>
+
         </v-layout>
     </v-container>
 </template>
