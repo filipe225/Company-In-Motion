@@ -87,10 +87,11 @@
                         <small>*indicates required field</small>
                         </v-card-text>
                         <v-card-actions>
-                            <v-spacer></v-spacer>
                             <v-btn flat type="reset" ref="reset_project_creation">Reset Form</v-btn>
-                            <v-btn color="blue darken-1" flat @click.native="newProjectCreation = false">Close</v-btn>
-                            <v-btn color="teal darken-1" flat @click="createNewProject" v-bind:disabled="!newProjectValid">Create</v-btn>
+                            <v-btn color="" flat @click.native="newProjectCreation = false">Close</v-btn>
+                            <v-spacer></v-spacer>
+                            <v-btn class="page-main-button" flat @click="createNewProject" 
+                            v-bind:disabled="!newProjectValid" style="">Create</v-btn>
                         </v-card-actions>
                     </v-card>
                 </v-form>
@@ -105,9 +106,9 @@
                     <v-card-text>
                         ARE YOU SURE YOU WANT TO DELETE THIS PROJECT AND ALL ITS INFORMATION ?
                     </v-card-text>
-                    <v-card-actions>
+                    <v-card-actions style="justify-content: space-between;">
                         <v-btn flat @click="dialogDeleteProject = false">Cancel</v-btn>
-                        <v-btn color="primary" flat @click="deleteProject" class="right">DELETE</v-btn>
+                        <v-btn color="page-main-button" flat @click="deleteProject">DELETE</v-btn>
                     </v-card-actions>
                 </v-card>
             </v-dialog>
@@ -119,7 +120,7 @@
                             <v-btn left>REFRESH PROJECTS</v-btn>
                         </v-flex>
                         <v-flex xs6>
-                            <v-btn @click="newProjectCreation = true" class="right">CREATE NEW PROJECT</v-btn>
+                            <v-btn @click="newProjectCreation = true" class="page-main-button right">CREATE NEW PROJECT</v-btn>
                         </v-flex>
                     </v-layout>                  
                 </v-flex>
@@ -257,14 +258,14 @@
                         <!-- SPACE FOR ADMIN -->
                         <h6 class="text-xs-center" style="display: block;width: 100%;">Admin:</h6>
                         <v-list class="bg-transparent">
-                            <template v-for="(client, index) in project.clients">
+                            <template v-for="(a, index) in project.admin">
                                 <v-list-tile avatar v-bind:key="index">
                                     <v-list-tile-avatar>
-                                        <img v-bind:src="client.photo_url">
+                                        <img v-bind:src="a.photo_url">
                                     </v-list-tile-avatar>
                                     <v-list-tile-content>
-                                        <v-list-tile-title v-html="client.displayName"></v-list-tile-title>
-                                        <v-list-tile-sub-title v-html="new Date(client.created_in).toDateString()"></v-list-tile-sub-title>
+                                        <v-list-tile-title v-html="a.displayName"></v-list-tile-title>
+                                        <v-list-tile-sub-title v-html="new Date(a.created_in).toDateString()"></v-list-tile-sub-title>
                                     </v-list-tile-content>
                                     <v-list-tile-action>
                                         <v-menu bottom right>

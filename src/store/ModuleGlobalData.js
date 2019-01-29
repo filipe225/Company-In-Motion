@@ -29,7 +29,7 @@ export default {
             //console.log(state.loadingDataProgress.step, state.loadingDataProgress.value);
             if(!payload) {
                 state.loadingDataProgress.step = 0;
-                state.loadingDataProgress.value = 100;
+                state.loadingDataProgress.value = -1;
                 return;
             }
 

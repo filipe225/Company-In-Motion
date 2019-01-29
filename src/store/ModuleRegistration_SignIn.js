@@ -50,7 +50,7 @@ export default {
                     let projects = null;
                     switch (userData.type) {
                         case "admin":
-                            projects = proj_refs.where('admin', '==', userData.id);
+                            projects = proj_refs.where('admin', 'array-contains', userData.id);
                             break;
                         case "project_manager":
                             projects = proj_refs.where('project_managers', 'array-contains', userData.id);
@@ -67,7 +67,7 @@ export default {
                     }
 
                     let projectsResponse = await projects.get();
-                    //console.log(projectsResponse);
+                    console.log(projectsResponse);
                     let projectDocs = projectsResponse.docs;
                     console.log(projectDocs);
                     const projects_count = projectDocs.length;
@@ -86,14 +86,28 @@ export default {
 
                     // LOAD USERS IN EACH PROJECT
                     for(let i=0; i<user_projects.length; i++) {
+                        let admin = user_projects[i].admin;
                         let clients = user_projects[i].clients;
                         let project_managers = user_projects[i].project_managers;
                         let associates = user_projects[i].associates;
-
+                        
+                        let admin_info = [];
                         let user_clients = [];
                         let user_project_managers = [];
                         let user_associates = [];
 
+                        // cada projeto so pode ter um admin 
+                        let admin_id = admin[0]; 
+                        let adminRef = firebase.firestore().collection('users').doc(admin_id);
+                        let adminResp = await adminRef.get();
+                        let adminData = adminResp.data();
+                        admin_info.push(adminData);
+                        commit('setUsersInProjectByType', {
+                            project_index: i,
+                            user_types: 'admin',
+                            admin: admin_info
+                        });
+                        
                         if(clients.length > 0) {
                             for(let y=0; y<clients.length; y++) {
                                 let user_id = clients[y];

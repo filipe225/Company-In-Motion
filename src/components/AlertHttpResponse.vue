@@ -66,11 +66,13 @@ export default {
 <style scoped>
     .fix-alert {
         width: 60%;
-        margin: 5px auto;
         padding: 10px 16px;
         max-height: 50px;
         border: 1px solid gray;
         background-color: lawngreen;
+        position: absolute;
+        top: 10px;
+        right: 20%;
     }
 
     /*

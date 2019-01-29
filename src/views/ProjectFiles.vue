@@ -9,10 +9,10 @@
             <v-toolbar slot="header" class="mb-2 bg-transparent" flat>        
                 <v-toolbar-title><h4>{{ project_name }} Files</h4></v-toolbar-title>
                 <v-spacer></v-spacer>
-                <v-btn small flat class="btn-filter-all" @click="selectedFilter = 'all'">All</v-btn>
-                <v-btn small flat class="btn-filter-pending" @click="selectedFilter = 'pending'">Pending</v-btn>
-                <v-btn small flat class="btn-filter-approved" @click="selectedFilter = 'approved'">Approved</v-btn>
-                <v-btn small flat class="btn-filter-rejected" @click="selectedFilter = 'rejected'">Rejected</v-btn>
+                <v-btn small flat v-bind:class="'btn-filter-all ' + selectedFilter" @click="selectedFilter = 'all'">All</v-btn>
+                <v-btn small flat v-bind:class="'btn-filter-pending ' + selectedFilter" @click="selectedFilter = 'pending'">Pending</v-btn>
+                <v-btn small flat v-bind:class="'btn-filter-approved ' + selectedFilter" @click="selectedFilter = 'approved'">Approved</v-btn>
+                <v-btn small flat v-bind:class="'btn-filter-rejected ' + selectedFilter" @click="selectedFilter = 'rejected'">Rejected</v-btn>
                 
             </v-toolbar>
                 <v-flex slot="item" slot-scope="props" xs12 sm3 md3 lg3>
@@ -47,7 +47,7 @@
                         <v-divider></v-divider>
 
                         <v-card-title>
-                            <p v-bind:class="props.item.state + ' bigger'">{{ props.item.state.toUpperCase() }}</p>
+                            <p v-bind:class="'color-' + props.item.state + ' bigger'">{{ props.item.state.toUpperCase() }}</p>
                         </v-card-title>
                         <v-divider></v-divider>  
 
@@ -203,7 +203,7 @@ export default {
     }
 
     .hover-me:hover {
-        background-color: #009688 !important;
+        background-color: #20d3c1 !important;
     }
 
     .bigger {
@@ -216,13 +216,18 @@ export default {
     .btn-filter-approved { border: 1px solid darkgreen; }
     .btn-filter-rejected { border: 1px solid darkred; }
 
-    .pending {
+    .btn-filter-all.all { background-color: black; color: #FFF; }
+    .btn-filter-pending.pending { background-color: darkgoldenrod; color: #FFF; }
+    .btn-filter-approved.approved { background-color: darkgreen; color: #FFF; }
+    .btn-filter-rejected.rejected { background-color: darkred; color: #FFF; }
+
+    .color-pending {
         color: darkgoldenrod;
     }
-    .approved {
+    .color-approved {
         color: darkgreen;
     }
-    .rejected {
+    .color-rejected {
         color: darkred;
     }
 

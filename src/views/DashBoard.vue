@@ -74,8 +74,10 @@ export default {
     watch: {
         progressData: {
             handler: function(newVal, oldVal) {
-                if(newVal.value >= 100) {
+                if(newVal.value >= 100 || newVal.value === -1) {
                     document.getElementById('loading_progress_bar').style.display = "none";
+                }else {
+                    document.getElementById('loading_progress_bar').style.display = "block";
                 }
             }.bind(this),
             deep: true
@@ -83,9 +85,10 @@ export default {
     },
 
     mounted: function() {
-        setTimeout(() => {
-            console.log(this.progressData);
-        }, 3000);
+        console.log(this.progressData);
+        if(this.progressData.value === -1)
+            document.getElementById('loading_progress_bar').style.display = "none";
+
     }
 }
 </script>

@@ -1,5 +1,40 @@
 <template>
     <v-container fluid grid-list-md>
+
+        <!-- MODAL APPROVE FILE -->
+        <v-dialog v-model="dialogApproveFile" max-width="500px">
+            <v-card>
+                <v-card-title>
+                    <span class="headline">APPROVE FILE {{ viewingProjectFile.name }}</span>
+                </v-card-title>
+                <v-card-text>
+                    YOU CAN NOT REVERT THIS DECISION! <br/>
+                    ARE YOU SURE YOU WANT TO <span class="color-approve">APPROVE</span> THIS FILE ?
+                </v-card-text>
+                <v-card-actions style="justify-content: space-between;">
+                    <v-btn flat @click="dialogApproveFile = false">Cancel</v-btn>
+                    <v-btn color="page-main-button" flat @click="approveFile">DELETE</v-btn>
+                </v-card-actions>
+            </v-card>
+        </v-dialog>
+
+        <!-- MODAL REJECT FILE -->
+        <v-dialog v-model="dialogRejectFile" max-width="500px">
+            <v-card>
+                <v-card-title>
+                    <span class="headline">REJECT FILE {{ viewingProjectFile.name }}</span>
+                </v-card-title>
+                <v-card-text>
+                    YOU CAN NOT REVERT THIS DECISION! <br/>
+                    ARE YOU SURE YOU WANT TO <span class="color-reject">REJECT</span> THIS FILE ?
+                </v-card-text>
+                <v-card-actions style="justify-content: space-between;">
+                    <v-btn flat @click="dialogRejectFile = false">Cancel</v-btn>
+                    <v-btn color="page-main-button" flat @click="rejectFile">DELETE</v-btn>
+                </v-card-actions>
+            </v-card>
+        </v-dialog>
+
         <v-layout row wrap>
             <v-flex xs12 sm8>
                 <v-list class="no-background elevation-12">
@@ -26,8 +61,20 @@
 
                     <v-list-tile-action>
                         <v-btn flat @click="$router.back()">Cancel</v-btn>
-                        <v-btn v-if="userDB.type !== viewingProjectFile.uploaderUserType">APROVE</v-btn>
-                        <v-btn v-if="userDB.type !== viewingProjectFile.uploaderUserType">DISAPROVE</v-btn>
+                        <v-btn v-if="((viewingProjectFile.uploaderUserType === 'admin' ||
+                                      viewingProjectFile.uploaderUserType === 'project_manager') &&
+                                      userDB.type === 'client')  ||
+                                      (viewingProjectFile.uploaderUserType === 'client' &&
+                                      (userDB.type === 'project_manager' ||
+                                      userDB.type === 'admin'))" 
+                            @click="dialogApproveFile = true">APPROVE</v-btn>
+                        <v-btn v-if="((viewingProjectFile.uploaderUserType === 'admin' ||
+                                      viewingProjectFile.uploaderUserType === 'project_manager') &&
+                                      userDB.type === 'client')  ||
+                                      (viewingProjectFile.uploaderUserType === 'client' &&
+                                      (userDB.type === 'project_manager' ||
+                                      userDB.type === 'admin'))" 
+                            @click="dialogRejectFile = true;">Reject</v-btn>
                     </v-list-tile-action>
 
                 </v-list>
@@ -61,7 +108,17 @@
                 </v-layout>
             </v-flex>
             <v-flex sm4 hidden-xs-only fixed>
-                UPLOADER
+                <v-list class="bg-transparent">
+                    <v-list-tile-title class="text-xs-center mt-2">
+                        <h4 class="normal">{{ uploaderInfo.displayName }}</h4>
+                    </v-list-tile-title>
+                    <v-list-tile justify-center class="my-4">
+                        <image-with-dashes></image-with-dashes>
+                    </v-list-tile>
+                    <v-list-tile-title class="text-xs-center">
+                        <h6 class="normal">{{ new Date(viewingProjectFile.created_in).toDateString() }}</h6>
+                    </v-list-tile-title>
+                </v-list>
             </v-flex>
 
         </v-layout>
@@ -73,6 +130,8 @@
 export default {
     data: function() {
         return {
+            dialogApproveFile: false,
+            dialogRejectFile: false,
             newComment: null,
             testcomments: [
                 {
@@ -117,6 +176,9 @@ export default {
         },
         userDB: function() {
             return this.$store.getters.getUserDB;
+        },
+        uploaderInfo: function() {
+            return this.$store.getters.getUploaderInfo(this.project_name, this.viewingProjectFile.uploaderUserId);
         }
     },
 
@@ -127,23 +189,23 @@ export default {
     },
 
     mounted: function() {
-        console.log(this.viewingProjectFile);
+        console.log(this.viewingProjectFile, this.uploaderInfo);
     },
 
     methods: {
-        aproveFile: function() {
-            this.$store.dispatch('firebaseAproveFile', {
+        approveFile: function() {
+            /* this.$store.dispatch('firebaseAproveFile', {
                     project_name: this.project_name, 
                     file_id: this.file_id,
                     userDB: this.userDB
-                });
+                }); */
         },
-        disaproveFile: function() {
-            this.$store.dispatch('firebaseDisaproveFile', {
+        rejectFile: function() {
+            /* this.$store.dispatch('firebaseDisaproveFile', {
                     project_name: this.project_name, 
                     file_id: this.file_id,
                     userDB: this.userDB
-                });
+                }); */
         },
         addNewComment: function() {
             let commentObject = {
@@ -178,5 +240,14 @@ export default {
     }
     .disaproved {
         color: darkred;
+    }
+
+    .color-approve {
+        color: darkgreen;
+        text-decoration: underline;
+    }
+    .color-reject {
+        color: darkred;
+        text-decoration: underline;
     }
 </style>

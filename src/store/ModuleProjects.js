@@ -35,7 +35,7 @@ class Project {
         this.name = n;
         this.description = desc;
         this.created_in = new Date().toISOString();
-        this.admin = adminID;
+        this.admin = [adminID];
         this.clients = [];
         this.associates = [];
         this.project_managers = [];
@@ -127,6 +127,9 @@ export default {
                     break;
                 case "associates":
                     state.projects[project_index].associates = payload.associates;
+                    break;
+                case "admin":
+                    state.projects[project_index].admin = payload.admin;
                     break;
             }
         },
@@ -589,6 +592,16 @@ export default {
                         return state.projects[project_index].associates;
                     default:
                         return null;
+                }
+            }
+        },
+        getUploaderInfo: function(state) {
+            return function(project_name, uploader_id) {
+                let project = state.projects.filter( proj => {
+                    return proj.name === project_name;
+                });
+                if(project) {
+                    return project[0].admin[0];
                 }
             }
         }
