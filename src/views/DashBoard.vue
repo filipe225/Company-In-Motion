@@ -1,67 +1,39 @@
 
 <template>
-    <v-container>
+    <v-container grid-list-sm>
         <div class="text-xs-center" id="loading_progress_bar">
             <h3 class="normal">Loading Data. Please wait... </h3>
             <v-progress-linear height="15" v-model="progressData.value" v-if="progressData.value > -1"></v-progress-linear>          
         </div>
 
-        DASHBOARD
+        <v-layout row wrap>
+            <v-flex xs6  v-for="(project, index) in userProjects" :key="index">
+                <v-card class="mx-auto" dark>
+                    <v-list>
+                        <v-list-tile>
+                            <v-list-tile-action>
+                                <v-icon color="pink" x-large>star</v-icon>
+                            </v-list-tile-action>
+                            <v-list-tile-content>
+                                <v-list-tile-title >{{ project.name }} Number of users</v-list-tile-title>
+                            </v-list-tile-content>
+                            <v-list-tile-action>
+                                {{ projectNumberOfUsers(project) }}
+                            </v-list-tile-action>
+                        </v-list-tile>
+                    </v-list>
+                </v-card>
+            </v-flex>
+        </v-layout>
 
-        <v-card
-            class="mx-auto"
-            color="#26c6da"
-            dark
-            max-width="400"
-        >
-            <v-card-title>
-            <v-icon
-                large
-                left
-            >
-                mdi-twitter
-            </v-icon>
-            <span class="title font-weight-light">Twitter</span>
-            </v-card-title>
 
-            <v-card-text class="headline font-weight-bold">
-            "Turns out semicolon-less style is easier and safer in TS because most gotcha edge cases are type invalid as well."
-            </v-card-text>
-
-            <v-card-actions>
-            <v-list-tile class="grow">
-                <v-list-tile-avatar color="grey darken-3">
-                <v-img
-                    class="elevation-6"
-                    src="https://avataaars.io/?avatarStyle=Transparent&topType=ShortHairShortCurly&accessoriesType=Prescription02&hairColor=Black&facialHairType=Blank&clotheType=Hoodie&clotheColor=White&eyeType=Default&eyebrowType=DefaultNatural&mouthType=Default&skinColor=Light"
-                ></v-img>
-                </v-list-tile-avatar>
-
-                <v-list-tile-content>
-                <v-list-tile-title>Evan You</v-list-tile-title>
-                </v-list-tile-content>
-
-                <v-layout
-                align-center
-                justify-end
-                >
-                <v-icon class="mr-1">mdi-heart</v-icon>
-                <span class="subheading mr-2">256</span>
-                <span class="mr-1">·</span>
-                <v-icon class="mr-1">mdi-share-variant</v-icon>
-                <span class="subheading">45</span>
-                </v-layout>
-            </v-list-tile>
-            </v-card-actions>
-        </v-card>
-
-            <fusioncharts
-                :type="firstChart.type"
-                :width="firstChart.width"
-                :height="firstChart.height"
-                :dataFormat="firstChart.dataFormat"
-                :dataSource="firstChart">
-            </fusioncharts>
+<!--         <fusioncharts
+            :type="firstChart.type"
+            :width="firstChart.width"
+            :height="firstChart.height"
+            :dataFormat="firstChart.dataFormat"
+            :dataSource="firstChart">
+        </fusioncharts> -->
     </v-container>
 </template>
 
@@ -70,7 +42,7 @@
 export default {
     data: function() {
         return {
-            firstChart: {
+/*             firstChart: {
                 width: '100%',
                 height: '400',
                 type: 'column2d',
@@ -108,7 +80,7 @@ export default {
                     "label": "China",
                     "value": "30"
                 }]
-            }                
+            }  */               
         }
 
     },
@@ -116,6 +88,9 @@ export default {
     computed: {
         progressData: function() {
             return this.$store.getters.getLoadingProgress;
+        },
+        userProjects: function() {
+            return this.$store.getters.getProjects;
         }
     },
 
@@ -130,6 +105,20 @@ export default {
             }.bind(this),
             deep: true
         } 
+    },
+
+    methods: {
+        projectNumberOfUsers: function(project) {
+            const n_admin = project.admin.length;
+            const n_clients = project.clients.length;
+            const n_project_managers = project.project_managers.length;
+            const n_associates = project.associates.length;
+
+            return n_admin + n_clients + n_project_managers + n_associates;
+        },
+        projectNumberOfFiles: function(project) {
+            return project.files.length;
+        }
     },
 
     mounted: function() {
