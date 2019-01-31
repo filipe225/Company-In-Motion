@@ -274,9 +274,9 @@
                                             </v-btn>
                                             <v-list>
                                                 <v-list-tile>
-                                                    <v-btn flat>
+                                                    <v-btn flat :to="project.name + '/users_profile/' + a.id">
                                                         <v-btn flat icon>
-                                                            <v-icon>delete_forever</v-icon>
+                                                            <v-icon>account_circle</v-icon>
                                                         </v-btn>
                                                         View Profile</v-btn>
                                                 </v-list-tile>
@@ -318,9 +318,9 @@
                                             </v-btn>
                                             <v-list>
                                                 <v-list-tile>
-                                                    <v-btn flat>
+                                                    <v-btn flat :to="project.name + '/users_profile/' + client.id">
                                                         <v-btn flat icon>
-                                                            <v-icon>delete_forever</v-icon>
+                                                            <v-icon>account_circle</v-icon>
                                                         </v-btn>
                                                         View Profile</v-btn>
                                                 </v-list-tile>
@@ -362,11 +362,19 @@
                                             </v-btn>
                                             <v-list>
                                                 <v-list-tile>
-                                                    <v-btn flat>View Profile</v-btn>
+                                                    <v-btn flat :to="project.name + '/users_profile/' + project_manager.id">
+                                                        <v-btn flat icon>
+                                                            <v-icon>account_circle</v-icon>
+                                                        </v-btn>
+                                                        View Profile</v-btn>
                                                 </v-list-tile>
                                                 <v-divider></v-divider>
                                                 <v-list-tile v-if="userDB.type === 'admin' || userDB.type === 'project_manager'">
-                                                    <v-btn flat>Remove From Project</v-btn>
+                                                    <v-btn flat>
+                                                        <v-btn flat icon>
+                                                            <v-icon>delete_forever</v-icon>
+                                                        </v-btn>
+                                                        Remove From Project</v-btn>
                                                 </v-list-tile>
                                             </v-list>
                                         </v-menu>
@@ -398,11 +406,19 @@
                                             </v-btn>
                                             <v-list>
                                                 <v-list-tile>
-                                                    <v-btn flat>View Profile</v-btn>
+                                                    <v-btn flat :to="project.name + '/users_profile/' + associate.id">
+                                                        <v-btn flat icon>
+                                                            <v-icon>account_circle</v-icon>
+                                                        </v-btn>
+                                                        View Profile</v-btn>
                                                 </v-list-tile>
                                                 <v-divider></v-divider>
                                                 <v-list-tile v-if="userDB.type === 'admin' || userDB.type === 'project_manager'">
-                                                    <v-btn flat>Remove From Project</v-btn>
+                                                    <v-btn flat>
+                                                        <v-btn flat icon>
+                                                            <v-icon>delete_forever</v-icon>
+                                                        </v-btn>
+                                                        Remove From Project</v-btn>
                                                 </v-list-tile>
                                             </v-list>
                                         </v-menu>
@@ -472,7 +488,7 @@ export default {
     },
 
     mounted: function() {
-        //console.log(this.projects);
+        console.log(this.projects);
         //console.log(this.userDB);
     },
 

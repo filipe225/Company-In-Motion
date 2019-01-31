@@ -1,24 +1,24 @@
 
 <template>
-    <v-container grid-list-sm>
+    <v-container grid-list-lg>
         <div class="text-xs-center" id="loading_progress_bar">
             <h3 class="normal">Loading Data. Please wait... </h3>
             <v-progress-linear height="15" v-model="progressData.value" v-if="progressData.value > -1"></v-progress-linear>          
         </div>
 
         <v-layout row wrap>
-            <v-flex xs6  v-for="(project, index) in userProjects" :key="index">
-                <v-card class="mx-auto" dark>
-                    <v-list>
+            <v-flex xs6 v-for="(project, index) in userProjects" :key="index">
+                <v-card class="mx-auto my-3" dark v-for="(obj,i) in cards" :key="i">
+                    <v-list :style="'background-color:' + colors[index] + ';color:' + (hexToLuma(colors[index]) > 0.5 ? 'black' : 'white')">
                         <v-list-tile>
                             <v-list-tile-action>
-                                <v-icon color="pink" x-large>star</v-icon>
+                                <v-icon :color="(hexToLuma(colors[index]) > 0.5 ? 'black' : 'white')" x-large>{{ obj.icon }}</v-icon>
                             </v-list-tile-action>
                             <v-list-tile-content>
-                                <v-list-tile-title >{{ project.name }} Number of users</v-list-tile-title>
+                                <v-list-tile-title >{{ project.name + " " + obj.text}}</v-list-tile-title>
                             </v-list-tile-content>
                             <v-list-tile-action>
-                                {{ projectNumberOfUsers(project) }}
+                                {{ obj.func(project) }}
                             </v-list-tile-action>
                         </v-list-tile>
                     </v-list>
@@ -42,7 +42,38 @@
 export default {
     data: function() {
         return {
-/*             firstChart: {
+            colors: ['#336B87', '#BA5536', '#505160', '#598234', '#FFBB00', '#5BC8AC', '#F18D9E'],
+            cards: [
+                {
+                    icon: 'supervisor_account',
+                    text: 'Number of Users',
+                    func: function projectNumberOfUsers(project) {
+                            const n_admin = project.admin.length;
+                            const n_clients = project.clients.length;
+                            const n_project_managers = project.project_managers.length;
+                            const n_associates = project.associates.length;
+
+                            return n_admin + n_clients + n_project_managers + n_associates;
+                        }
+                },
+                {
+                    icon: 'insert_drive_file',
+                    text: 'Number of Files',
+                    func: function projectNumberOfFiles(project) {
+                            return project.files.length || 0;
+                        }
+                },
+                {
+                    icon: 'work',
+                    text: 'Number of Tasks',
+                    func: function projectNumberOfTasks(project) {
+                            return project.tasks.length || 0;
+                        }
+                }
+            ]
+
+            /*             
+            firstChart: {
                 width: '100%',
                 height: '400',
                 type: 'column2d',
@@ -80,7 +111,8 @@ export default {
                     "label": "China",
                     "value": "30"
                 }]
-            }  */               
+            }  
+            */               
         }
 
     },
@@ -118,6 +150,18 @@ export default {
         },
         projectNumberOfFiles: function(project) {
             return project.files.length;
+        },
+        hexToLuma: (colour) => {
+            const hex   = colour.replace(/#/, '');
+            const r     = parseInt(hex.substr(0, 2), 16);
+            const g     = parseInt(hex.substr(2, 2), 16);
+            const b     = parseInt(hex.substr(4, 2), 16);
+
+            return [
+                0.299 * r,
+                0.587 * g,
+                0.114 * b
+            ].reduce((a, b) => a + b) / 255;
         }
     },
 

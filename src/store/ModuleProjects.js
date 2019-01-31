@@ -595,6 +595,22 @@ export default {
                 }
             }
         },
+        getUserInProject: function(state) {
+            return function(projectName, userId) {
+                let viewing_user = null;
+                const projects = state.projects;
+                const viewing_project = projects.filter( p => p.name === projectName)[0];
+                if(viewing_project) {
+                    const users_in_project = [].concat(
+                            viewing_project.admin, 
+                            viewing_project.clients,
+                            viewing_project.associates,
+                            viewing_project.project_managers);
+                    viewing_user = users_in_project.filter( u => u.id === userId);
+                    return viewing_user;
+                }
+            }
+        },
         getUploaderInfo: function(state) {
             return function(project_name, uploader_id) {
                 let project = state.projects.filter( proj => {

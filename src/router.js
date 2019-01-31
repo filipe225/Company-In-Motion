@@ -103,7 +103,13 @@ export default new Router({
         component: Relax
     },
     {
-        path: "/user_profiles/:user_id",
+        path: "/users_profile/:user_id",
+        name: "user_profiles",
+        component: UserProfile,
+        beforeEnter: AuthGuard
+    },
+    {
+        path: "/:project_name/users_profile/:user_id",
         name: "user_profiles",
         component: UserProfile,
         beforeEnter: AuthGuard

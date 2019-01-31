@@ -107,7 +107,7 @@ export default {
                             user_types: 'admin',
                             admin: admin_info
                         });
-                        
+
                         if(clients.length > 0) {
                             for(let y=0; y<clients.length; y++) {
                                 let user_id = clients[y];

@@ -41,7 +41,7 @@
                         </v-btn>
 
                         <v-list color="teal" dark>
-                            <v-list-tile to="'/user_list/cWzernzqOQV7A3IV8IAeipK86iU2'">
+                            <v-list-tile :to="'/users_profile/' + userDB.id">
                                 <v-list-tile-action>
                                     <v-icon class="pr-1">how_to_reg</v-icon>
                                 </v-list-tile-action>

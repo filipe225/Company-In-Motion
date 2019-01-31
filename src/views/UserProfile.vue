@@ -9,8 +9,8 @@
 		<v-container>
 			<v-layout row wrap>
 				<v-flex xs12>
-					<v-card>
-						<v-card-title>{{ user}}</v-card-title>
+					<v-card class="bg-transparent">
+						<v-card-title>{{ viewing_user.toString() }}</v-card-title>
 					</v-card>
 				</v-flex>
 			</v-layout>
@@ -21,21 +21,29 @@
 
 <script>
 export default {
-  data: function() {
-    return {};
-  },
+	data: function() {
+		return {};
+	},
 
-  computed: {
-    userDB: function() {
-      this.$store.getters.getUserDB;
-    }
-  },
+	computed: {
+		userDB: function() {
+			return this.$store.getters.getUserDB;
+		}
+	},
 
-  created: function() {
-    this.viewing_user = this.$router.params.user_id;
-  },
+	created: function() {
+		this.viewing_user = null;
+		this.params_user = this.$route.params.user_id;
+		this.project_name = this.$route.params.project_name;
 
-  mounted: function() {}
+		if(this.project_name && this.params_user) {
+			this.viewing_user = this.$store.getters.getUserInProject(this.project_name, this.params_user);
+		}
+	},
+
+	mounted: function() {
+		console.log(this.$store);
+	}
 };
 </script>
 
