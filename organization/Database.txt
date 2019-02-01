@@ -7,8 +7,12 @@ USERS:
         last_login: _
         photo_url: String
         company_title: _
+        location: _
         description: _
-        newsletter: _
+        newsletter: boolean
+        email_new_file: boolean
+        email_new_task: boolean
+        email_new_appointment: boolean
         notes: [ {
             id: _
             title: _

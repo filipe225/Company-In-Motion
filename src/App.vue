@@ -21,7 +21,7 @@
     .page-main-button {
         background-color: #00897b !important;
         border-color: #00897b !important;
-        color: #FFF;
+        color: #FFF!important;
     }
 
     .card-main-bgcolor {

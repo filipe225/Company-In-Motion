@@ -215,6 +215,10 @@ export default {
                             id: user.user.uid
                         }
                         commit("setUser", newUser);
+                        const loginDateRef = firebase.firestore().collection('users').doc(newUser.id);
+                        const loginDateResp = loginDateRef.update({
+                            last_login: new Date().toISOString()
+                        });
                         //dispatch('firebaseAutoSignIn', user);
                         //dispatch('firebaseGetUserDB', user.user.uid);
                     });
@@ -230,7 +234,14 @@ export default {
                         type: payload.type,
                         created_in: new Date().toISOString(),
                         photo_url: 'https://firebasestorage.googleapis.com/v0/b/companysimplify-1992.appspot.com/o/users_avatars%2Fdefault%2Fuser_avatar_default.png?alt=media&token=b6883e32-5b03-48d2-9d9a-3c802e0e359b',
-                        notes: []                      
+                        notes: [],
+                        location: "",
+                        company_title: "",
+                        description: "",
+                        newsletter: false,
+                        email_new_file: true,
+                        email_new_task: true,
+                        email_new_appointment: true                     
                     }
                     console.log(newUser);                  
                     let reference = firebase.firestore().collection("users").doc(newUser.id)

@@ -1,5 +1,6 @@
-import { stat } from "fs";
-
+const CONSTANTES = {
+    
+}
 
 export default {
 
