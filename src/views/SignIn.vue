@@ -29,14 +29,29 @@
                     </v-card-text>
                 </v-card>
             </v-flex>
-            <v-flex xs12 sm6 offset-sm3 class="text-xs-right">
-                <p>Not registered yet?
-                    <v-btn flat>
-                        <router-link tag="span" v-bind:to="'/register'" style="color: blue;">
-                            Register Now!
-                        </router-link>
-                    </v-btn>
-                </p>
+            <v-flex xs12 sm6 offset-sm3 >
+                <v-layout row wrap>
+                    <v-flex xs6>
+                        <div class="text-xs-left">
+                            <p>
+                                <v-btn flat>
+                                    forgot password?
+                                </v-btn>
+                            </p>
+                        </div>                        
+                    </v-flex>
+                    <v-flex xs6>
+                        <div class="text-xs-right">
+                            <p>Not registered yet?
+                                <v-btn flat>
+                                    <router-link tag="span" v-bind:to="'/register'" style="color: blue;">
+                                        Register Now!
+                                    </router-link>
+                                </v-btn>
+                            </p>    
+                        </div>   
+                    </v-flex>
+                </v-layout>
             </v-flex>
         </v-layout>
     </v-container>
