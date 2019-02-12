@@ -1,5 +1,24 @@
-const CONSTANTES = {
-    
+const MY_CONSTS = {
+    PLANS: {
+        PLAN_FREE: {
+            MAX_PROJETOS: 1,
+            MAX_FILE_SIZE: 2048,
+            MAX_TASKS: 50,
+            MAX_APPOINTMENTS: 20
+        },
+        PLAN_BASIC: {
+            MAX_PROJECTS: 5,
+            MAX_FILE_SIZE: 10240,
+            MAX_TASKS: 100,
+            MAX_APPOINTMENTS: 50
+        },
+        PLAN_PREMIUM: {
+            MAX_PROJECTS: 10,
+            MAX_FILE_SIZE: 51200,
+            MAX_TASKS: 300,
+            MAX_APPOINTMENTS: 100
+        }
+    }
 }
 
 export default {
