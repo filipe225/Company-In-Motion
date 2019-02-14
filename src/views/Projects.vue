@@ -135,7 +135,7 @@
             </v-layout>
 
             <v-layout row wrap align-start justify-space-around fill-height>  
-                <v-flex xs12 sm5 v-for="(project, index) in projects" 
+                <v-flex xs12 sm5 md4 lg3 v-for="(project, index) in projects" 
                     v-bind:key="index" class="my-3 bg-green-light">
                     <v-card class="bg-transparent my-card">
                         <v-layout row wrap align-center="true" justify-center="true">
@@ -294,7 +294,6 @@
                                 </v-list-tile>
                             </template>
                         </v-list>
-                        <v-divider></v-divider>
 
                         <!-- SPACE FOR CLIENTS -->
                         <h6 class="text-xs-center" style="display: block;width: 100%;">Clients:</h6>
@@ -338,7 +337,6 @@
                                 </v-list-tile>
                             </template>
                         </v-list>
-                        <v-divider></v-divider>
 
                         <!-- SPACE FOR PROJECT MANAGERS -->
                         <h6 class="text-xs-center" style="display: block;width: 100%;">Project Managers:</h6>
@@ -382,7 +380,6 @@
                                 </v-list-tile>
                             </template>
                         </v-list>
-                        <v-divider></v-divider>
 
                         <!-- SPACE FOR ASSOCIATES -->
                         <h6 class="text-xs-center" style="display: block;width: 100%;">Associates:</h6>
