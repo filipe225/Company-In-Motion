@@ -68,15 +68,15 @@ export default new Router({
         component: ProjectUserInvited
     },
     {
-        path: '/projects/:project_name/calendar',
-        name: 'project_calendar',
-        component: ProjectCalendar,
-        beforeEnter: AuthGuard
-    },
-    {
         path: '/projects/:project_name/project_tasks',
         name: 'project_tasks',
         component: ProjectTasks,
+        beforeEnter: AuthGuard
+    },
+    {
+        path: '/projects/:project_name/project_calendar',
+        name: 'project_calendar',
+        component: ProjectCalendar,
         beforeEnter: AuthGuard
     },
     {

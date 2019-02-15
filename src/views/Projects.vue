@@ -225,7 +225,16 @@
                                                     View Tasks</router-link> 
                                             </v-btn>    
                                         </v-list-tile>
-
+                                        <v-divider></v-divider>
+                                        <v-list-tile v-if="userDB.type !== 'client'">
+                                            <v-btn flat>
+                                                <router-link tag="span" v-bind:to="'/projects/' + project.name + '/project_calendar'">
+                                                    <v-btn flat icon>
+                                                        <v-icon>schedule</v-icon>
+                                                    </v-btn>
+                                                    Calendar</router-link> 
+                                            </v-btn>    
+                                        </v-list-tile>
                                         <v-divider></v-divider>
                                         <v-list-tile v-if="userDB.type === 'admin'">
                                             <v-btn flat @click="showDeleteProjectDialog(index)">

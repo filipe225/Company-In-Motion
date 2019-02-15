@@ -1,6 +1,6 @@
 <template>
     <v-container>
-        <calendar style="height: 800px;"
+        <calendar style="height: 800px;overflow-x: auto;"
             :calendars="calendarList"
             :schedules="scheduleList"
             :view="view"
@@ -47,8 +47,8 @@ export default {
                     title: 'my schedule',
                     category: 'time',
                     dueDateClass: '',
-                    start: '2018-10-18T22:30:00+09:00',
-                    end: '2018-10-19T02:30:00+09:00'
+                    start: '2019-02-15T10:30:00',
+                    end: '2019-02-15T19:30:00'
                 },
                 {
                     id: '2',
@@ -56,13 +56,13 @@ export default {
                     title: 'second schedule',
                     category: 'time',
                     dueDateClass: '',
-                    start: '2018-10-18T17:30:00+09:00',
-                    end: '2018-10-19T17:31:00+09:00'
+                    start: new Date().toISOString(),
+                    end: new Date().toISOString()
                 }
             ],
-            view: 'day',
+            view: 'week',
             taskView: false,
-            scheduleView: ['time'],
+            scheduleView: true,
             theme: {
                 'month.dayname.height': '30px',
                 'month.dayname.borderLeft': '1px solid #ff0000',
@@ -81,17 +81,18 @@ export default {
                 startDayOfWeek: 1
             },
             timezones: [{
-                timezoneOffset: 540,
-                displayLabel: 'GMT+09:00',
-                tooltip: 'Seoul'
-            }, {
-                timezoneOffset: -420,
-                displayLabel: 'GMT-08:00',
-                tooltip: 'Los Angeles'
+                timezoneOffset: 0,
+                displayLabel: 'GMT+00:00',
+                tooltip: 'Greenwich'
             }],
             disableDblClick: true,
             isReadOnly: false,
             template: {
+                monthGridHeader: function(model) {
+                    var date = new Date(model.date);
+                    var template = '<span class="tui-full-calendar-weekday-grid-date">' + date.getDate() + '</span>';
+                    return template;
+                },
                 milestone: function(schedule) {
                     return `<span style="color:red;">${schedule.title}</span>`;
                 },
@@ -101,6 +102,29 @@ export default {
             },
             useCreationPopup: true,
             useDetailPopup: false,
+        }
+    },
+    methods: {
+        onAfterRenderSchedule(e) {
+            // implement your code
+        },
+        onBeforeCreateSchedule(e) {
+            // implement your code
+        },
+        onBeforeDeleteSchedule(e) {
+            // implement your code
+        },
+        onBeforeUpdateSchedule(e) {
+            // implement your code
+        },
+        onClickDayname(e) {
+            // implement your code
+        },
+        onClickSchedule(e) {
+            // implement your code
+        },
+        onClickTimezonesCollapseBtn(e) {
+            // implement your code
         }
     }
 }
