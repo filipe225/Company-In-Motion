@@ -69,6 +69,13 @@ export default {
                     func: function projectNumberOfTasks(project) {
                             return project.tasks.length || 0;
                         }
+                },
+                {
+                    icon: 'calendar_today',
+                    text: 'Number of appointments',
+                    func: function projectNumberOfAppointments(project) {
+                        return project.appointments.length || 0;
+                    }
                 }
             ]
 

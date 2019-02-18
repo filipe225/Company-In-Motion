@@ -41,6 +41,8 @@ class Project {
         this.project_managers = [];
         this.events = [];
         this.files = [];
+        this.tasks = [];
+        this.appointments = [];
     }
 
     getObject() {
@@ -53,7 +55,8 @@ class Project {
             associates: this.associates,
             project_managers: this.project_managers,
             files: this.files,
-            tasks: this.tasks
+            tasks: this.tasks,
+            appointments: this.appointments
         }
     }
 }

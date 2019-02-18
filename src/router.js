@@ -18,6 +18,7 @@ import ProjectSendFileToAproval from './views/ProjectSendFileToAproval.vue'
 import ProjectReviewFile from './views/ProjectReviewFile.vue'
 import ProjectCalendar from './views/ProjectCalendar.vue'
 import Relax from './views/Relax.vue'
+import Focus from './views/Focus.vue'
 import UserProfile from './views/UserProfile.vue'
 
 Vue.use(Router)
@@ -100,7 +101,14 @@ export default new Router({
     {
         path: "/relax",
         name: "relax",
-        component: Relax
+        component: Relax,
+        beforeEnter: AuthGuard
+    },
+    {
+        path: '/focus',
+        name: "focus",
+        component: Focus,
+        beforeEnter: AuthGuard
     },
     {
         path: "/users_profile/:user_id",
