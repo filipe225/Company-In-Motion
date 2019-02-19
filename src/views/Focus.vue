@@ -2,6 +2,20 @@
     <v-container>
 		<v-layout row wrap>
 			<v-flex xs12>
+				<div>
+					<div>
+						<label for="select_timer">Counter</label>
+						<select name="select_timer" id="select_timer" v-model="focusTime">
+							<option v-for="(v) in 59" :key="v" :value="v">{{ v }}</option>
+						</select>
+					</div>
+					<div>
+						<label for="select_timer_break">Break Time</label>
+						<select name="select_timer_break" id="select_timer_break" v-model="breakTime">
+							<option v-for="v in 59" :key="v" value="v">{{ v }}</option>
+						</select>
+					</div>
+				</div>
 				<div class="main-div pa-5" style="border:1px solid black; background-color: lightgreen;">
 					<div class="counter-div">
 						<p>{{ displayTimeLeft() }}</p>
@@ -53,6 +67,17 @@ export default {
 		this.timeIntervalId = null;
 		this.timeTimeoutId = null;
 	},
+
+	beforeDestroy: function() {
+		if(this.timeIntervalId) {
+			clearInterval(this.timeIntervalId);
+			this.timeIntervalId = null;
+		}
+		if(this.timeTimeoutId) {
+			clearTimeout(this.timeTimeoutId);
+			this.timeTimeoutId = null;
+		}
+	},
 	
 	methods: {
 		displayTimeLeft: function() {
@@ -66,6 +91,8 @@ export default {
 			return minutes + ":" + seconds;
 		},
 		startTimer: function() {
+			this.minutesLeft = this.focusTime;
+			this.secondsLeft = 0;
 			this.timeIntervalId = setInterval(function() {
 				this.secondsLeft -= 1;
 				console.log(this.secondsLeft);
@@ -95,14 +122,31 @@ export default {
 				clearTimeout(this.timeTimeoutId);
 				this.timeTimeoutId = null;
 			}
+			this.playing = false;
+			this.paused = true;
 		},
 		continueTimer: function() {
 			this.timeIntervalId = setInterval(function() {
-				this.seconds -= 1;
+				this.secondsLeft -= 1;
+				console.log(this.secondsLeft);
+				if(this.secondsLeft < 0) {
+					this.minutesLeft--;
+					this.secondsLeft = 59;
+				}
+				if(this.minutesLeft <= 0) {
+					this.isBreak =  true;
+					// stop this;
+				}
+
+				this.playing = true;
 			}.bind(this), 1000);
+			
 			this.timeTimeoutId = setTimeout(function() {
 				this.isBreak = true;
-			}.bind(this), 10000);
+			}.bind(this), this.focusTime * 60 * 1000);
+
+			this.playing = true;
+			this.paused = false;
 		},
 		stopTimer: function() {
 			if(this.timeIntervalId) {
@@ -116,6 +160,9 @@ export default {
 
 			this.seconds = 0;
 
+			this.playing = false;
+			this.paused = false;
+			this.isBreak = false;
 		}
 	}
 }

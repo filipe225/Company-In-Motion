@@ -42,7 +42,7 @@
                         <v-divider></v-divider>
 
                         <v-card-title>
-                            <p class="bigger">{{ new Date().toDateString('yyyy-MM-dd') }}</p>
+                            <p class="bigger">{{ new Date(props.item.created_in).toDateString('yyyy-MM-dd') }}</p>
                         </v-card-title>
                         <v-divider></v-divider>
 

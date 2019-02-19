@@ -95,6 +95,9 @@ export default {
                         let user_clients = [];
                         let user_project_managers = [];
                         let user_associates = [];
+                        
+                        // important to display user information in various pages
+                        let project_users_all = [];
 
                         // cada projeto so pode ter um admin 
                         let admin_id = admin[0]; 
@@ -102,6 +105,7 @@ export default {
                         let adminResp = await adminRef.get();
                         let adminData = adminResp.data();
                         admin_info.push(adminData);
+                        project_users_all.push(adminData);
                         commit('setUsersInProjectByType', {
                             project_index: i,
                             user_types: 'admin',
@@ -116,6 +120,7 @@ export default {
                                 let userData = userResp.data();
 
                                 user_clients.push(userData);
+                                project_users_all.push(userData);
                             }
                             commit('setUsersInProjectByType', {
                                 project_index: i,
@@ -132,6 +137,7 @@ export default {
                                 let userData = userResp.data();
 
                                 user_project_managers.push(userData);
+                                project_users_all.push(userData);
                             }
                             commit('setUsersInProjectByType', {
                                 project_index: i,
@@ -147,6 +153,7 @@ export default {
                                 let userData = userResp.data();
 
                                 user_associates.push(userData);
+                                project_users_all.push(userData);
                             }
                             commit('setUsersInProjectByType', {
                                 project_index: i,
@@ -154,6 +161,7 @@ export default {
                                 associates: user_associates
                             });
                         }
+                        // commit('setProjectUsers', project_users_all);
                         commit('incrementProgressValue', true);
                     }
 

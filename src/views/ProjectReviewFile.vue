@@ -37,47 +37,46 @@
 
         <v-layout row wrap>
             <v-flex xs12 sm8>
-                <v-list class="no-background elevation-12">
+                <v-card>
+                    <v-list class="no-background elevation-12">
 
-                    <v-list-tile>
-                        <v-list-tile-title>{{ this.project_name }}</v-list-tile-title>
-                    </v-list-tile>
+                        <v-list-tile>
+                            <v-list-tile-title>{{ this.project_name }}</v-list-tile-title>
+                        </v-list-tile>
 
-                    <v-list-tile>
-                        <v-list-tile-sub-title>{{ this.file_id }}</v-list-tile-sub-title>                        
-                    </v-list-tile>
+                        <v-list-tile>
+                            <v-list-tile-sub-title>
+                                <label v-bind:class="viewingProjectFile.state">{{ viewingProjectFile.state.toUpperCase() }}</label>
+                            </v-list-tile-sub-title>                        
+                        </v-list-tile>
 
-                    <v-list-tile>
-                        <v-list-tile-sub-title>
-                            <label v-bind:class="viewingProjectFile.state">{{ viewingProjectFile.state.toUpperCase() }}</label>
-                        </v-list-tile-sub-title>                        
-                    </v-list-tile>
+                        <v-list-tile-action>                    
+                            <v-btn icon title="Download file" ><v-icon large>cloud_download</v-icon></v-btn>
+                            <v-btn icon title="Delete file from Project" ><v-icon large>delete_forever</v-icon></v-btn>
+                            <v-btn icon title="Send Email for file revisition" v-if="viewingProjectFile.state === 'pending'"><v-icon large>email</v-icon></v-btn>
+                        </v-list-tile-action>
 
-                    <v-list-tile-action>                    
-                        <v-btn icon title="Download file" ><v-icon large>cloud_download</v-icon></v-btn>
-                        <v-btn icon title="Delete file from Project" ><v-icon large>delete_forever</v-icon></v-btn>
-                        <v-btn icon title="Send Email for file revisition" v-if="viewingProjectFile.state === 'pending'"><v-icon large>email</v-icon></v-btn>
-                    </v-list-tile-action>
+                        <v-list-tile-action>
+                            <v-btn flat @click="$router.back()">Cancel</v-btn>
+                            <v-btn v-if="((viewingProjectFile.uploaderUserType === 'admin' ||
+                                        viewingProjectFile.uploaderUserType === 'project_manager') &&
+                                        userDB.type === 'client')  ||
+                                        (viewingProjectFile.uploaderUserType === 'client' &&
+                                        (userDB.type === 'project_manager' ||
+                                        userDB.type === 'admin'))" 
+                                @click="dialogApproveFile = true">APPROVE</v-btn>
+                            <v-btn v-if="((viewingProjectFile.uploaderUserType === 'admin' ||
+                                        viewingProjectFile.uploaderUserType === 'project_manager') &&
+                                        userDB.type === 'client')  ||
+                                        (viewingProjectFile.uploaderUserType === 'client' &&
+                                        (userDB.type === 'project_manager' ||
+                                        userDB.type === 'admin'))" 
+                                @click="dialogRejectFile = true;">Reject</v-btn>
+                        </v-list-tile-action>
 
-                    <v-list-tile-action>
-                        <v-btn flat @click="$router.back()">Cancel</v-btn>
-                        <v-btn v-if="((viewingProjectFile.uploaderUserType === 'admin' ||
-                                      viewingProjectFile.uploaderUserType === 'project_manager') &&
-                                      userDB.type === 'client')  ||
-                                      (viewingProjectFile.uploaderUserType === 'client' &&
-                                      (userDB.type === 'project_manager' ||
-                                      userDB.type === 'admin'))" 
-                            @click="dialogApproveFile = true">APPROVE</v-btn>
-                        <v-btn v-if="((viewingProjectFile.uploaderUserType === 'admin' ||
-                                      viewingProjectFile.uploaderUserType === 'project_manager') &&
-                                      userDB.type === 'client')  ||
-                                      (viewingProjectFile.uploaderUserType === 'client' &&
-                                      (userDB.type === 'project_manager' ||
-                                      userDB.type === 'admin'))" 
-                            @click="dialogRejectFile = true;">Reject</v-btn>
-                    </v-list-tile-action>
+                    </v-list>                    
+                </v-card>
 
-                </v-list>
                 <v-layout row wrap>
                     <v-flex xs10 offset-xs1>
                         <v-textarea v-model="newComment" placeholder="New Comment"></v-textarea>
