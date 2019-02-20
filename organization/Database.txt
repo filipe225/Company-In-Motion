@@ -60,7 +60,8 @@ PROJECT_FILES:
             comments: [ {
                 id: _
                 content: _
-                made_by: user_uid
+                made_by: user_uid,
+                created_in: new Date().toISOString()
             }]
 
 PROJECT_BUDGET:

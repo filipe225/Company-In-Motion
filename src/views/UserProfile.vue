@@ -82,9 +82,12 @@
 	</v-dialog>
 
     <v-layout row wrap v-if="this.viewing_user.id === this.userDB.id">
-		<v-btn flat class="page-main-button" @click="editProfileDialog = true;">Edit Profile</v-btn>
-		<v-btn flat>Change Email</v-btn>
-		<v-btn flat>Change Password</v-btn>
+        <v-flex xs12 justify-end>
+            <v-btn flat class="page-main-button right" @click="editProfileDialog = true;">Edit Profile</v-btn>
+            <v-btn flat class=" right">Change Avatar</v-btn>
+            <v-btn flat class=" right">Change Email</v-btn>
+            <v-btn flat class=" right">Change Password</v-btn>
+        </v-flex>
     </v-layout>
 
     <v-layout row v-if="viewing_user === userDB.id">
@@ -100,39 +103,40 @@
             <v-list-tile-title class="my-2 user-display-name">
               <h4 class="normal" style="line-height: 56px;">{{ viewing_user.displayName }}</h4>
             </v-list-tile-title>
-            <v-list-tile dense="true">
-              <v-list-tile-title style="text-align: center;">Description</v-list-tile-title>
+            <v-list-tile dense="true" class="smaller-tile">
+              <v-list-tile-title class="my-small-centered-title">Description</v-list-tile-title>
             </v-list-tile>
-			<v-list-tile dense="true">
+			<v-list-tile dense="true" class="smaller-tile">
 				<v-list-tile-title v-html="viewing_user.description || '<em>No description available</em>'"></v-list-tile-title>
 			</v-list-tile>
-            <v-list-tile dense="true">
-              <v-list-tile-title style="text-align: center;">Member since</v-list-tile-title>
+            <v-list-tile dense="true" class="smaller-tile">
+              <v-list-tile-title class="my-small-centered-title">Member since</v-list-tile-title>
             </v-list-tile>
-			<v-list-tile dense="true">
+			<v-list-tile dense="true" class="smaller-tile">
 				<v-list-tile-title>{{ new Date(viewing_user.created_in).toDateString() }}</v-list-tile-title>
 			</v-list-tile>
-            <v-list-tile dense="true">
-              <v-list-tile-title style="text-align: center;">Company title</v-list-tile-title> 
+            <v-list-tile dense="true" class="smaller-tile">
+              <v-list-tile-title class="my-small-centered-title">Company title</v-list-tile-title> 
             </v-list-tile>
-			<v-list-tile dense="true">
+			<v-list-tile dense="true" class="smaller-tile">
 				<v-list-tile-title>{{ viewing_user.company_title }}</v-list-tile-title>
 			</v-list-tile>
-            <v-list-tile dense="true">
-              <v-list-tile-title style="text-align: center;">Location</v-list-tile-title>
+            <v-list-tile dense="true" class="smaller-tile">
+              <v-list-tile-title class="my-small-centered-title">
+                    <v-btn icon flat><v-icon>location_on</v-icon></v-btn> Location</v-list-tile-title>
             </v-list-tile>
-			<v-list-tile dense="true">
+			<v-list-tile dense="true" class="smaller-tile">
 				<v-list-tile-title>{{ viewing_user.location }}</v-list-tile-title>
 			</v-list-tile>
-            <v-list-tile dense="true">
-              <v-list-tile-title style="text-align: center;">User type</v-list-tile-title>          
+            <v-list-tile dense="true" class="smaller-tile">
+              <v-list-tile-title class="my-small-centered-title">User type</v-list-tile-title>          
             </v-list-tile>
-			<v-list-tile dense="true">
+			<v-list-tile dense="true" class="smaller-tile">
 				<v-list-tile-title>{{ viewing_user.type }}</v-list-tile-title>
 			</v-list-tile>
           </v-list>
         </v-flex>
-        <v-flex xs12 sm6>
+        <v-flex xs12 sm6 style="text-align: center; margin-top: 30px;">
 			<v-avatar size="200" color="grey lighten-4">
 				<img v-bind:src="viewing_user.photo_url" alt="avatar">
 			</v-avatar>
@@ -227,6 +231,13 @@ export default {
 .user-display-avatar {
   height: auto;
   justify-content: center;
+}
+
+.smaller-tile { height: 36px; }
+.my-small-centered-title {
+    height: auto;
+    text-align: center;
+    color: rgba(0, 0, 0, 0.8);
 }
 
 @media (min-width: 600px) {

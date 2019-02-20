@@ -55,7 +55,7 @@
                             </v-list-tile>
                             <v-list-tile to="/relax">
                                 <v-list-tile-action>
-                                    <v-icon class="pr-1">how_to_reg</v-icon>
+                                    <v-icon class="pr-1">free_breakfast</v-icon>
                                 </v-list-tile-action>
                                 <v-list-tile-content>Relax</v-list-tile-content>                       
                             </v-list-tile>

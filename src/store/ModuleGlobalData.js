@@ -3,6 +3,7 @@ const MY_CONSTS = {
         PLAN_FREE: {
             MAX_PROJETOS: 1,
             MAX_FILE_SIZE: 2048,
+            MAX_STORAGE: 500 * 1024,
             MAX_TASKS: 50,
             MAX_APPOINTMENTS: 20
         },

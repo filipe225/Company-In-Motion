@@ -162,6 +162,11 @@ export default {
 
         setFileUploadProgress: function (state, payload) {
             state.file_upload_progress = payload;
+        },
+
+        setProjectUsers: function(state, payload) {
+            console.log("setProjectUsers", payload);
+            state.projects[payload.project_index].all_users = payload.project_users_all;
         }
     },
 

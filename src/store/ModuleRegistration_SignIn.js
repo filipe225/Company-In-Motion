@@ -104,6 +104,7 @@ export default {
                         let adminRef = firebase.firestore().collection('users').doc(admin_id);
                         let adminResp = await adminRef.get();
                         let adminData = adminResp.data();
+                        delete adminData.notes;
                         admin_info.push(adminData);
                         project_users_all.push(adminData);
                         commit('setUsersInProjectByType', {
@@ -118,6 +119,7 @@ export default {
                                 let userRef = firebase.firestore().collection('users').doc(user_id);
                                 let userResp = await userRef.get();
                                 let userData = userResp.data();
+                                delete userData.notes;
 
                                 user_clients.push(userData);
                                 project_users_all.push(userData);
@@ -135,6 +137,7 @@ export default {
                                 let userRef = firebase.firestore().collection('users').doc(user_id);
                                 let userResp = await userRef.get();
                                 let userData = userResp.data();
+                                delete userData.notes;
 
                                 user_project_managers.push(userData);
                                 project_users_all.push(userData);
@@ -151,6 +154,7 @@ export default {
                                 let userRef = firebase.firestore().collection('users').doc(user_id);
                                 let userResp = await userRef.get();
                                 let userData = userResp.data();
+                                delete userData.notes;
 
                                 user_associates.push(userData);
                                 project_users_all.push(userData);
@@ -161,7 +165,10 @@ export default {
                                 associates: user_associates
                             });
                         }
-                        // commit('setProjectUsers', project_users_all);
+                        commit('setProjectUsers', {
+                            project_index: i,
+                            project_users_all: project_users_all
+                        });
                         commit('incrementProgressValue', true);
                     }
 
