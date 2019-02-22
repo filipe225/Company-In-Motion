@@ -604,10 +604,10 @@ export default {
             }
         },
         getUserInProject: function(state) {
-            return function(projectName, userId) {
+            return function(project_name, userId) {
                 let viewing_user = null;
                 const projects = state.projects;
-                const viewing_project = projects.filter( p => p.name === projectName)[0];
+                const viewing_project = projects.filter( p => p.name === project_name)[0];
                 if(viewing_project) {
                     const users_in_project = [].concat(
                             viewing_project.admin, 
@@ -627,6 +627,13 @@ export default {
                 if(project) {
                     return project[0].admin[0];
                 }
+            }
+        },
+        getProjectAllUsers: function(state, payload) {
+            return function(project_name) {
+                const projects = state.projects;
+                const viewing_project = projects.find( p => p.name === project_name);
+                return viewing_project.all_users;
             }
         }
     }
