@@ -34,6 +34,15 @@ PROJECTS:
 PROJECT_TASKS:
     project_uid:
         tasks:
+            taskId: String,
+            title: String (75),
+            description: String (500),
+            dueDate: String,
+            assignee: String id,
+            creator: String id,
+            priority: int,
+            created_in: String,
+            state: int
 
 
 PROJECT_EVENTS:

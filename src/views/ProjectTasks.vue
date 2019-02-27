@@ -4,72 +4,75 @@
 	  <v-card>
 		<h4 class="pa-3">New Task</h4>
 		<v-form v-model="newTaskValid" class="px-3 pb-2">
-		  <v-text-field v-model="newTaskModel.name" :counter="75" :rules="newTaskRules.nameRules" label="Name" required></v-text-field>
+            <v-text-field v-model="newTaskModel.title" :counter="75" 
+                :rules="newTaskRules.titleRules" label="Title" required></v-text-field>
 
-		  <v-text-field v-model="newTaskModel.email" :rules="newTaskRules.emailRules" label="E-mail" required></v-text-field>
+            <v-textarea v-model="newTaskModel.description" label="Description"
+                        :rules="newTaskRules.descriptionRules" ></v-textarea>
+            
+            <v-menu
+                ref="menu"
+                v-model="menu"
+                :close-on-content-click="false"
+                :nudge-right="40"
+                :return-value.sync="date"
+                lazy
+                transition="scale-transition"
+                offset-y
+                full-width
+                min-width="290px">
+                    <v-text-field
+                        slot="activator"
+                        v-model="newTaskModel.dueDate"
+                        label="Picker in menu"
+                        prepend-icon="event"
+                        readonly></v-text-field>
+                <v-date-picker v-model="newTaskModel.dueDate" no-title scrollable>
+                    <v-spacer></v-spacer>
+                    <v-btn flat color="primary" @click="menu = false">Cancel</v-btn>
+                    <v-btn flat color="primary" @click="$refs.menu.save(date)">OK</v-btn>
+                </v-date-picker>
+            </v-menu>
 
-		  <v-btn :disabled="!newTaskValid" color="success" @click="validate">Validate</v-btn>
+            <v-select v-model="newTaskModel.state" label="State"
+                :items="newTaskFixedData.states"></v-select>
 
-		  <v-btn color="error" @click="reset">Reset Form</v-btn>
+            <v-select v-model="newTaskModel.assignee" label="Assignee"
+                :items="newTaskFixedData.assignees"></v-select>
 
-		  <v-btn color="warning" @click="resetValidation">Reset Validation</v-btn>
+            <v-select v-model="newTaskModel.priority" label="Priority"
+                :items="newTaskFixedData.priorities"></v-select>
+
+            <v-btn :disabled="!newTaskValid" color="success" @click="validate">Validate</v-btn>
+
+            <v-btn color="error" @click="reset">Reset Form</v-btn>
+
+            <v-btn color="warning" @click="resetValidation">Reset Validation</v-btn>
 		</v-form>
 	  </v-card>
 	</v-dialog>
 
-<v-dialog v-model="sideDialog" persistent max-width="600px" class="mydialog">
-      <v-btn slot="activator" color="primary" dark>Open Dialog</v-btn>
-      <v-card>
-        <v-card-title>
-          <span class="headline">User Profile</span>
-        </v-card-title>
-        <v-card-text>
-          <v-container grid-list-md>
-            <v-layout wrap>
-              <v-flex xs12 sm6 md4>
-                <v-text-field label="Legal first name*" required></v-text-field>
-              </v-flex>
-              <v-flex xs12 sm6 md4>
-                <v-text-field label="Legal middle name" hint="example of helper text only on focus"></v-text-field>
-              </v-flex>
-              <v-flex xs12 sm6 md4>
-                <v-text-field
-                  label="Legal last name*"
-                  hint="example of persistent helper text"
-                  persistent-hint
-                  required
-                ></v-text-field>
-              </v-flex>
-              <v-flex xs12>
-                <v-text-field label="Email*" required></v-text-field>
-              </v-flex>
-              <v-flex xs12>
-                <v-text-field label="Password*" type="password" required></v-text-field>
-              </v-flex>
-              <v-flex xs12 sm6>
-                <v-select
-                  :items="['0-17', '18-29', '30-54', '54+']"
-                  label="Age*"
-                  required
-                ></v-select>
-              </v-flex>
-              <v-flex xs12 sm6>
-                <v-autocomplete
-                  :items="['Skiing', 'Ice hockey', 'Soccer', 'Basketball', 'Hockey', 'Reading', 'Writing', 'Coding', 'Basejump']"
-                  label="Interests"
-                  multiple
-                ></v-autocomplete>
-              </v-flex>
-            </v-layout>
-          </v-container>
-          <small>*indicates required field</small>
-        </v-card-text>
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn color="blue darken-1" flat @click="dialog = false">Close</v-btn>
-          <v-btn color="blue darken-1" flat @click="dialog = false">Save</v-btn>
-        </v-card-actions>
-      </v-card>
+    <v-dialog v-model="sideDialog" max-width="600px" content-class="task-edit-dialog">
+        <v-btn slot="activator" color="primary" dark>Open Dialog</v-btn>
+        <v-card class="task-edit-card">
+            <v-card-title>
+                <span class="headline">Task View</span>
+                <br>
+                <span>task title to add</span>
+            </v-card-title>
+            <v-card-text>
+                <v-container grid-list-md>
+                    <v-layout wrap>
+                    </v-layout>
+                </v-container>
+                <small>*indicates required field</small>
+            </v-card-text>
+            <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn color="blue darken-1" flat @click="sideDialog = false">Close</v-btn>
+                <v-btn color="blue darken-1" flat @click="sideDialog = false">Save</v-btn>
+            </v-card-actions>
+        </v-card>
     </v-dialog>
 
 	<v-layout>
@@ -165,14 +168,30 @@ export default {
 		return {
 			sideDialog: true,
 			newTaskDialog: false,
-			newTaskValid: true,
+            newTaskValid: true,
+            newTaskFixedData: {
+                states: [
+                    {text: 'Backlog', value: '1'},{text: 'To do next', value: '2'},
+                    {text: 'In progress', value: '3'},{text: 'Done', value: '4'}],
+                priority: [
+                    {text: 'normal', value: '1'},{text: 'medium', value: '2'},
+                    {text: 'high', value: '3'},{text: 'major', value: '4'},
+                    {text: 'show stopper', value: '5'}],
+                assigneed: [
+                    {text: 'teste', value: '1'},{text: 'teste1', value: '2'},
+                    {text: 'teste2', value: '3'},{text: 'teste3', value: '4'},
+                    {text: 'teste4', value: '5'}]
+            },
 			newTaskModel: {
-				name: '',
-				email: ''
+				title: '',
+                description: '',
+                priority: '',
+                dueDate: '',
+                assignee: ''
 			},
 			newTaskRules: {
-				nameRules: [v => !!v || "Required"],
-				emailRules: [v=> !!v || "Required"]
+				titleRules: [v => !!v || "Required"],
+				descriptionRules: [v=> !!v || "Required"]
 			},
 			viewTaskDialog: false,
 			viewTask: null,
@@ -283,7 +302,27 @@ export default {
 }
 </script>
 
-<style scoped>
+<style >
+
+.v-dialog.task-edit-dialog {
+    max-width: 600px;
+    margin: 0;
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    overflow: hidden;
+    max-height: initial;
+}
+
+.task-edit-card {
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: 100%;
+    width: 100%;
+}
+
 .taskCard {
   	margin-bottom: 10px;
 }
@@ -326,10 +365,4 @@ export default {
   	color: red;
 }
 
-.v-dialog.mydialog  {
-	position: absolute;
-	right: 0;
-	top: 0;
-	height: 100%;
-}
 </style>
