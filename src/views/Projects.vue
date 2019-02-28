@@ -178,7 +178,7 @@
                                         <v-divider></v-divider>
                                         <v-list-tile>
                                             <v-btn flat>
-                                                <router-link tag="span" v-bind:to="'/projects/' + project.name + '/calendar'">
+                                                <router-link tag="span" v-bind:to="'/projects/' + project.name + '/project_calendar'">
                                                     <v-btn flat icon>
                                                         <v-icon>calendar_today</v-icon>
                                                     </v-btn>
