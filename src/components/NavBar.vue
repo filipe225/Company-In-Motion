@@ -84,7 +84,12 @@ export default {
         };
     },
 
-    computed: {
+    computed: {        
+        userDB: function() {
+            if(this.isUserAuthenticated)
+                return this.$store.getters.getUserDB;
+            else return null;
+        },
         menuItems: function() {
             let menuItems = [];
             if(this.isUserAuthenticated) {
@@ -108,11 +113,7 @@ export default {
         isUserAuthenticated: function() {
             return this.$store.getters.isUserAuthenticated;
         },
-        userDB: function() {
-            if(this.isUserAuthenticated)
-                return this.$store.getters.getUserDB;
-            else return null;
-        }
+
     },
     
     created: function() {

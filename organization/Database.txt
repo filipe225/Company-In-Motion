@@ -42,7 +42,8 @@ PROJECT_TASKS:
             creator: String id,
             priority: int,
             created_in: String,
-            state: int
+            state: int,
+            finished_in: String date
 
 
 PROJECT_EVENTS:

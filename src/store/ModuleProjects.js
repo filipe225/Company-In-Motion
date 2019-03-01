@@ -629,7 +629,7 @@ export default {
                 }
             }
         },
-        getProjectAllUsers: function(state, payload) {
+        getUsersInProject: function(state, payload) {
             return function(project_name) {
                 const projects = state.projects;
                 const viewing_project = projects.find( p => p.name === project_name);

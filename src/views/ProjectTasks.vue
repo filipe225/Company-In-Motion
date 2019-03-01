@@ -52,8 +52,7 @@
 	  </v-card>
 	</v-dialog>
 
-    <v-dialog v-model="sideDialog" max-width="600px" content-class="task-edit-dialog">
-        <v-btn slot="activator" color="primary" dark>Open Dialog</v-btn>
+    <v-dialog v-model="editTaskSideDialog" max-width="600px" content-class="task-edit-dialog">
         <v-card class="task-edit-card">
             <v-card-title>
                 <span class="headline">Task View</span>
@@ -106,7 +105,13 @@
 				<v-icon flat>arrow_upward</v-icon>
 			</div>
 			<v-spacer></v-spacer>
-			<div>{{task.created_in}}</div>
+			<div class="right">
+                <v-responsive>
+                    <v-avatar size="30">
+                        <img v-bind:src="getUserPhoto(task.assignee)" alt="user_photo" >
+                    </v-avatar>
+                </v-responsive> 
+            </div>
 		  </v-card-actions>
 		</v-card>
 	  </v-flex>
@@ -123,7 +128,13 @@
 					<v-icon flat>arrow_upward</v-icon>
 				</div>
 				<v-spacer></v-spacer>
-				<div>{{task.created_in}}</div>
+				<div class="right">
+                    <v-responsive>
+                        <v-avatar size="30">
+                            <img v-bind:src="getUserPhoto(task.assignee)" alt="user_photo" >
+                        </v-avatar>
+                    </v-responsive> 
+                </div>
 			</v-card-actions>
 			</v-card>
 	  </v-flex>
@@ -140,7 +151,14 @@
 					<v-icon flat>arrow_upward</v-icon>
 				</div>
 				<v-spacer></v-spacer>
-				<div>{{task.created_in}}</div>
+                <div class="right">
+                    <v-responsive>
+                        <v-avatar size="30">
+                            <img v-bind:src="getUserPhoto(task.assignee)" alt="user_photo" >
+                        </v-avatar>
+                    </v-responsive> 
+                </div>
+                
 			</v-card-actions>
 			</v-card>
 	  </v-flex>
@@ -148,12 +166,20 @@
 			<h4 class="text-xs-center">Done</h4>
 			<v-divider style="margin-bottom: 10px;"></v-divider>
 			<v-card	title="double click me to open"
-				id="myid" class="taskCard"
+				id="myid" class="taskCard bg-green-light"
 				v-for="(task, index) in tasksDone"
 				v-bind:key="index" @dblclick="viewTaskDetails(4, index)">
 			<v-card-title>{{task.title}}</v-card-title>
 			<v-card-actions>
-				<div> change order in done column </div>
+                <div class="left">
+                    <v-responsive>
+                        <v-avatar size="30">
+                            <img v-bind:src="getUserPhoto(task.assignee)" alt="user_photo" >
+                        </v-avatar>
+                    </v-responsive> 
+                </div>
+                <v-spacer></v-spacer>
+                <div>{{ task.finished ? task.finished_in.split(" ").slice(0,3).join(" ") : "" }}</div>
 			</v-card-actions>
 			</v-card>
 	  </v-flex>
@@ -166,7 +192,7 @@
 export default {
 	data: function() {
 		return {
-			sideDialog: true,
+			editTaskSideDialog: false,
 			newTaskDialog: false,
             newTaskValid: true,
             newTaskFixedData: {
@@ -251,13 +277,14 @@ export default {
 						.sort( (a, b) => {
 							return b.priority - a.priority;
 						});
-		}
+        },
+        projectUsers: function() {
+            return this.$store.getters.getUsersInProject(this.project_name);
+        }
 	},
 
 	created: function() {
 		this.project_name = this.$route.params.project_name;
-		this.project_users = this.$store.getters.getProjectAllUsers(this.project_name);
-		console.log(this.project_users);
 	},
 
 	mounted: function() {
@@ -297,7 +324,17 @@ export default {
 				default:
 					break;
 			}
-		}
+        },
+        getUserPhoto: function(userId) {
+            return this.projectUsers.find( obj => {
+                return obj.id === userId;
+            }).photo_url;
+        },
+        getUserDisplayName: function(userId) {
+            return this.projectUsers.find( obj => {
+                return obj.id === userId;
+            }).display_name;
+        }
 	}
 }
 </script>
