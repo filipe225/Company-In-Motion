@@ -206,9 +206,9 @@ export default {
                 const proj_files_refs = firebase.firestore().collection('project_files').doc(project_id) //.collection("files");
                 let secondResponse = await proj_files_refs.set({ files: [] });
                 const proj_tasks_refs = firebase.firestore().collection('project_tasks').doc(project_id) //.collection("tasks");
-                let thirdResponse = await proj_tasks_refs.set({ tasks: [] });
+                let thirdResponse = await proj_tasks_refs.collection("tasks");
                 const proj_budget_refs = firebase.firestore().collection('project_budget').doc(project_id);
-                let fourthResponse = await proj_budget_refs.set({ budget: [] });
+                let fourthResponse = await proj_budget_refs.collection("budget");
                 const proj_events_refs = firebase.firestore().collection('project_events').doc(project_id)
                 let fifthResponse = await proj_events_refs.set({ events })
                 const proj_invites_refs = firebase.firestore().collection('project_invites').doc(project_id)
@@ -634,6 +634,13 @@ export default {
                 const projects = state.projects;
                 const viewing_project = projects.find( p => p.name === project_name);
                 return viewing_project.all_users;
+            }
+        },
+        getProjectIdByName: function(state, payload) {
+            return function(project_name) {
+                const projects = state.projects;
+                const viewing_project = projects.find( p => p.name === project_name);
+                return viewing_project.id;
             }
         }
     }

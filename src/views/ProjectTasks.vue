@@ -8,46 +8,61 @@
                 :rules="newTaskRules.titleRules" label="Title" required></v-text-field>
 
             <v-textarea v-model="newTaskModel.description" label="Description"
-                        :rules="newTaskRules.descriptionRules" ></v-textarea>
+                      :counter="1000"  :rules="newTaskRules.descriptionRules" ></v-textarea>
             
             <v-menu
                 ref="menu"
-                v-model="menu"
+                v-model="datePickerMenu"
                 :close-on-content-click="false"
                 :nudge-right="40"
-                :return-value.sync="date"
-                lazy
-                transition="scale-transition"
-                offset-y
-                full-width
-                min-width="290px">
+                :return-value.sync="datePicker"
+                lazy transition="scale-transition"
+                offset-y full-width min-width="290px">
                     <v-text-field
                         slot="activator"
                         v-model="newTaskModel.dueDate"
-                        label="Picker in menu"
-                        prepend-icon="event"
-                        readonly></v-text-field>
+                        label="Due Date"
+                        append-icon="event"
+                        readonly clearable></v-text-field>
                 <v-date-picker v-model="newTaskModel.dueDate" no-title scrollable>
                     <v-spacer></v-spacer>
-                    <v-btn flat color="primary" @click="menu = false">Cancel</v-btn>
-                    <v-btn flat color="primary" @click="$refs.menu.save(date)">OK</v-btn>
+                    <v-btn flat color="primary" @click="datePickerMenu = false">Cancel</v-btn>
+                    <v-btn flat color="primary" @click="$refs.menu.save(datePicker)">OK</v-btn>
                 </v-date-picker>
             </v-menu>
 
-            <v-select v-model="newTaskModel.state" label="State"
+            <v-select v-model="newTaskModel.state" label="State" clearable
                 :items="newTaskFixedData.states"></v-select>
 
-            <v-select v-model="newTaskModel.assignee" label="Assignee"
-                :items="newTaskFixedData.assignees"></v-select>
+            <v-select v-model="newTaskModel.assignee" label="Assignee" clearable
+                :items="newTaskFixedData.assignees">
+                  <template slot="selection" slot-scope="data">
+                        <v-flex xs2>
+                            <v-avatar size="20">
+                                <img :src="data.item.photo_url"/>
+                            </v-avatar>
+                        </v-flex>
+                        <v-flex class='ml-1'>
+                            {{ data.item.displayName }}
+                        </v-flex>
+                </template>
+                <template slot="item" slot-scope="data" >
+                    <v-list-tile-avatar>
+                        <img :src="data.item.photo_url" />
+                    </v-list-tile-avatar>
+                    <v-list-tile-content>
+                        <v-list-tile-title v-html="data.item.displayName"></v-list-tile-title>
+                    </v-list-tile-content>
+                </template>
+            </v-select>
 
-            <v-select v-model="newTaskModel.priority" label="Priority"
+            <v-select v-model="newTaskModel.priority" label="Priority" required
                 :items="newTaskFixedData.priorities"></v-select>
 
-            <v-btn :disabled="!newTaskValid" color="success" @click="validate">Validate</v-btn>
 
-            <v-btn color="error" @click="reset">Reset Form</v-btn>
-
-            <v-btn color="warning" @click="resetValidation">Reset Validation</v-btn>
+            <v-btn  @click="newTaskDialog = false">Cancel</v-btn>
+            <v-btn class="page-main-button" :disabled="!newTaskValid"
+                 @click="saveNewTask">Save New Task</v-btn>
 		</v-form>
 	  </v-card>
 	</v-dialog>
@@ -192,21 +207,26 @@
 export default {
 	data: function() {
 		return {
+            datePicker: new Date().toISOString().substr(0, 10),
+            datePickerMenu: false,
 			editTaskSideDialog: false,
 			newTaskDialog: false,
             newTaskValid: true,
             newTaskFixedData: {
                 states: [
-                    {text: 'Backlog', value: '1'},{text: 'To do next', value: '2'},
-                    {text: 'In progress', value: '3'},{text: 'Done', value: '4'}],
-                priority: [
-                    {text: 'normal', value: '1'},{text: 'medium', value: '2'},
-                    {text: 'high', value: '3'},{text: 'major', value: '4'},
-                    {text: 'show stopper', value: '5'}],
-                assigneed: [
-                    {text: 'teste', value: '1'},{text: 'teste1', value: '2'},
-                    {text: 'teste2', value: '3'},{text: 'teste3', value: '4'},
-                    {text: 'teste4', value: '5'}]
+                        {text: 'Backlog', value: 1},
+                        {text: 'To do next', value: 2},
+                        {text: 'In progress', value: 3},
+                        {text: 'Done', value: 4}
+                    ],
+                priorities: [
+                        {text: 'normal', value: 1},
+                        {text: 'medium', value: 2},
+                        {text: 'high', value: 3},
+                        {text: 'major', value: 4},
+                        {text: 'show stopper', value: 5}
+                    ],
+                assignees: []
             },
 			newTaskModel: {
 				title: '',
@@ -217,7 +237,9 @@ export default {
 			},
 			newTaskRules: {
 				titleRules: [v => !!v || "Required"],
-				descriptionRules: [v=> !!v || "Required"]
+                descriptionRules: [v=> !!v || "Required"],
+                stateRules: [ v => !!v || "Required"],
+                priorityRules: [ v => !!v || "Required"]
 			},
 			viewTaskDialog: false,
 			viewTask: null,
@@ -289,7 +311,8 @@ export default {
 
 	mounted: function() {
 		Object.freeze(this.STATES);
-		Object.freeze(this.PRIORITIES);
+        Object.freeze(this.PRIORITIES);
+        this.newTaskFixedData.assignees = this.projectUsers;
 	},
 
 	methods: {
@@ -334,6 +357,17 @@ export default {
             return this.projectUsers.find( obj => {
                 return obj.id === userId;
             }).display_name;
+        },
+        saveNewTask: function() {
+            console.log(this.newTaskModel);
+            let taskObj = Object.create(this.newTaskModel);
+            taskObj.assignee = taskObj.assignee.id;
+            let project_id = this.$store.getters.getProjectIdByName(this.project_name);
+            this.$store.dispatch('saveNewTaskToProject', {
+                project_id: project_id,
+                taskObj: taskObj
+            });
+            this.newTaskDialog = false;
         }
 	}
 }
