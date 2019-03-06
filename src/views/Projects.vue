@@ -150,7 +150,7 @@
 
                                     <v-list>
                                         <v-list-tile v-if="userDB.type === 'admin' || userDB.type === 'project_manager'">
-                                            <v-btn 
+                                            <v-btn class="btn-fix-margin" 
                                                 @click="dialogNewProjectManager = true; projectSelectedIndex = index" flat>
                                                     <v-btn flat icon>
                                                         <v-icon>send</v-icon>
@@ -159,7 +159,7 @@
                                         </v-list-tile>
                                         <v-divider></v-divider>
                                         <v-list-tile v-if="userDB.type === 'admin' || userDB.type === 'project_manager'">
-                                            <v-btn  
+                                            <v-btn  class="btn-fix-margin" 
                                                 @click="dialogNewClient = true; projectSelectedIndex = index" flat>
                                                     <v-btn flat icon>
                                                         <v-icon>send</v-icon>
@@ -168,7 +168,7 @@
                                         </v-list-tile>
                                         <v-divider></v-divider>
                                         <v-list-tile v-if="userDB.type === 'admin' || userDB.type === 'project_manager'">
-                                            <v-btn 
+                                            <v-btn class="btn-fix-margin" 
                                                 @click="dialogNewAssociate = true; projectSelectedIndex = index" flat>
                                                     <v-btn flat icon>
                                                         <v-icon>send</v-icon>
@@ -177,7 +177,7 @@
                                         </v-list-tile>
                                         <v-divider></v-divider>
                                         <v-list-tile>
-                                            <v-btn flat>
+                                            <v-btn class="btn-fix-margin" flat>
                                                 <router-link tag="span" v-bind:to="'/projects/' + project.name + '/project_calendar'">
                                                     <v-btn flat icon>
                                                         <v-icon>calendar_today</v-icon>
@@ -187,7 +187,7 @@
                                         </v-list-tile>
                                         <v-divider></v-divider>
                                         <v-list-tile v-if="userDB.type === 'admin' || userDB.type === 'project_manager' || userDB.type === 'client'">
-                                            <v-btn flat>
+                                            <v-btn class="btn-fix-margin" flat>
                                                 <router-link tag="span" v-bind:to="'/projects/' + project.name + '/send_file_to_approval'">
                                                     <v-btn flat icon>
                                                         <v-icon>file_copy</v-icon>
@@ -197,7 +197,7 @@
                                         </v-list-tile>
                                         <v-divider></v-divider>
                                         <v-list-tile v-if="userDB.type === 'admin' || userDB.type === 'project_manager' || userDB.type === 'client'">
-                                            <v-btn flat>
+                                            <v-btn class="btn-fix-margin" flat>
                                                 <router-link tag="span" v-bind:to="'/projects/' + project.name + '/file_approval'">
                                                     <v-btn flat icon>
                                                         <v-icon>file_copy</v-icon>
@@ -589,5 +589,9 @@ export default {
         position: absolute;
         top: 0;
         right: 0;
+    }
+
+    .btn-fix-margin {
+        margin: 0;
     }
 </style>

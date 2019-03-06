@@ -2,336 +2,56 @@ import * as firebase from 'firebase'
 
 export default {
     state: {
-        tasks: [
-            {
-                id: 'ANI334JWDN1921',
-                title: 'lorem lorem lorem ipsum',
-                description: 'jbe ihqeoikdn as dhqpwo qndqpwdaskdm q dqhwidcbdbi poqjeqd',
-                state: 2,
-                priority: 4,
-                created_in: new Date().toDateString(),
-                deadline: new Date().toDateString(),
-                created_by: 'JKSHD712B2UO3Y',
-                assignee: '3SDFWg70hIh33nabFOUvXUdQB4P2',
-                tags: '',
-                watchers: []
-            },
-            {
-                id: 'ANI334JWDN1921',
-                title: 'lorem lorem lorem ipsum',
-                description: 'jbe ihqeoikdn as dhqpwo qndqpwdaskdm q dqhwidcbdbi poqjeqd',
-                state: 1,
-                priority: 1,
-                created_in: new Date().toDateString(),
-                deadline: new Date().toDateString(),
-                created_by: 'JKSHD712B2UO3Y',
-                assignee: '3SDFWg70hIh33nabFOUvXUdQB4P2',
-                watchers: []
-            },
-            {
-                id: 'ANI334JWDN1921',
-                title: 'lorem lorem lorem ipsum',
-                description: 'jbe ihqeoikdn as dhqpwo qndqpwdaskdm q dqhwidcbdbi poqjeqd',
-                state: 3,
-                priority: 2,
-                created_in: new Date().toDateString(),
-                deadline: new Date().toDateString(),
-                created_by: 'JKSHD712B2UO3Y',
-                assignee: '3SDFWg70hIh33nabFOUvXUdQB4P2',
-                watchers: []
-            },
-            {
-                id: 'ANI334JWDN1921',
-                title: 'lorem lorem lorem ipsum',
-                description: 'jbe ihqeoikdn as dhqpwo qndqpwdaskdm q dqhwidcbdbi poqjeqd',
-                state: 4,
-                priority: 3,
-                created_in: new Date().toDateString(),
-                deadline: new Date().toDateString(),
-                created_by: 'JKSHD712B2UO3Y',
-                assignee: '3SDFWg70hIh33nabFOUvXUdQB4P2',
-                watchers: []
-            },
-            {
-                id: 'ANI334JWDN1921',
-                title: 'lorem lorem lorem ipsum',
-                description: 'jbe ihqeoikdn as dhqpwo qndqpwdaskdm q dqhwidcbdbi poqjeqd',
-                state: 2,
-                priority: 5,
-                created_in: new Date().toDateString(),
-                deadline: new Date().toDateString(),
-                created_by: 'JKSHD712B2UO3Y',
-                assignee: '3SDFWg70hIh33nabFOUvXUdQB4P2',
-                watchers: []
-            },
-            {
-                id: 'ANI334JWDN1921',
-                title: 'lorem lorem lorem ipsum',
-                description: 'jbe ihqeoikdn as dhqpwo qndqpwdaskdm q dqhwidcbdbi poqjeqd',
-                state: 2,
-                priority: 4,
-                created_in: new Date().toDateString(),
-                deadline: new Date().toDateString(),
-                created_by: 'JKSHD712B2UO3Y',
-                assignee: '3SDFWg70hIh33nabFOUvXUdQB4P2',
-                tags: '',
-                watchers: []
-            },
-            {
-                id: 'ANI334JWDN1921',
-                title: 'lorem lorem lorem ipsum',
-                description: 'jbe ihqeoikdn as dhqpwo qndqpwdaskdm q dqhwidcbdbi poqjeqd',
-                state: 1,
-                priority: 1,
-                created_in: new Date().toDateString(),
-                deadline: new Date().toDateString(),
-                created_by: 'JKSHD712B2UO3Y',
-                assignee: '3SDFWg70hIh33nabFOUvXUdQB4P2',
-                watchers: []
-            },
-            {
-                id: 'ANI334JWDN1921',
-                title: 'lorem lorem lorem ipsum',
-                description: 'jbe ihqeoikdn as dhqpwo qndqpwdaskdm q dqhwidcbdbi poqjeqd',
-                state: 3,
-                priority: 2,
-                created_in: new Date().toDateString(),
-                deadline: new Date().toDateString(),
-                created_by: 'JKSHD712B2UO3Y',
-                assignee: '3SDFWg70hIh33nabFOUvXUdQB4P2',
-                watchers: []
-            },
-            {
-                id: 'ANI334JWDN1921',
-                title: 'lorem lorem lorem ipsum',
-                description: 'jbe ihqeoikdn as dhqpwo qndqpwdaskdm q dqhwidcbdbi poqjeqd',
-                state: 4,
-                priority: 3,
-                created_in: new Date().toDateString(),
-                deadline: new Date().toDateString(),
-                created_by: 'JKSHD712B2UO3Y',
-                assignee: '3SDFWg70hIh33nabFOUvXUdQB4P2',
-                watchers: []
-            },
-            {
-                id: 'ANI334JWDN1921',
-                title: 'lorem lorem lorem ipsum',
-                description: 'jbe ihqeoikdn as dhqpwo qndqpwdaskdm q dqhwidcbdbi poqjeqd',
-                state: 2,
-                priority: 5,
-                created_in: new Date().toDateString(),
-                deadline: new Date().toDateString(),
-                created_by: 'JKSHD712B2UO3Y',
-                assignee: '3SDFWg70hIh33nabFOUvXUdQB4P2',
-                watchers: []
-            },
-            {
-                id: 'ANI334JWDN1921',
-                title: 'lorem lorem lorem ipsum',
-                description: 'jbe ihqeoikdn as dhqpwo qndqpwdaskdm q dqhwidcbdbi poqjeqd',
-                state: 2,
-                priority: 4,
-                created_in: new Date().toDateString(),
-                deadline: new Date().toDateString(),
-                created_by: 'JKSHD712B2UO3Y',
-                assignee: '3SDFWg70hIh33nabFOUvXUdQB4P2',
-                tags: '',
-                watchers: []
-            },
-            {
-                id: 'ANI334JWDN1921',
-                title: 'lorem lorem lorem ipsum',
-                description: 'jbe ihqeoikdn as dhqpwo qndqpwdaskdm q dqhwidcbdbi poqjeqd',
-                state: 1,
-                priority: 1,
-                created_in: new Date().toDateString(),
-                deadline: new Date().toDateString(),
-                created_by: 'JKSHD712B2UO3Y',
-                assignee: '3SDFWg70hIh33nabFOUvXUdQB4P2',
-                watchers: []
-            },
-            {
-                id: 'ANI334JWDN1921',
-                title: 'lorem lorem lorem ipsum',
-                description: 'jbe ihqeoikdn as dhqpwo qndqpwdaskdm q dqhwidcbdbi poqjeqd',
-                state: 3,
-                priority: 2,
-                created_in: new Date().toDateString(),
-                deadline: new Date().toDateString(),
-                created_by: 'JKSHD712B2UO3Y',
-                assignee: '3SDFWg70hIh33nabFOUvXUdQB4P2',
-                watchers: []
-            },
-            {
-                id: 'ANI334JWDN1921',
-                title: 'lorem lorem lorem ipsum',
-                description: 'jbe ihqeoikdn as dhqpwo qndqpwdaskdm q dqhwidcbdbi poqjeqd',
-                state: 4,
-                priority: 3,
-                created_in: new Date().toDateString(),
-                deadline: new Date().toDateString(),
-                created_by: 'JKSHD712B2UO3Y',
-                assignee: '3SDFWg70hIh33nabFOUvXUdQB4P2',
-                watchers: []
-            },
-            {
-                id: 'ANI334JWDN1921',
-                title: 'lorem lorem lorem ipsum',
-                description: 'jbe ihqeoikdn as dhqpwo qndqpwdaskdm q dqhwidcbdbi poqjeqd',
-                state: 2,
-                priority: 5,
-                created_in: new Date().toDateString(),
-                deadline: new Date().toDateString(),
-                created_by: 'JKSHD712B2UO3Y',
-                assignee: '3SDFWg70hIh33nabFOUvXUdQB4P2',
-                watchers: []
-            },
-            {
-                id: 'ANI334JWDN1921',
-                title: 'lorem lorem lorem ipsum',
-                description: 'jbe ihqeoikdn as dhqpwo qndqpwdaskdm q dqhwidcbdbi poqjeqd',
-                state: 2,
-                priority: 4,
-                created_in: new Date().toDateString(),
-                deadline: new Date().toDateString(),
-                created_by: 'JKSHD712B2UO3Y',
-                assignee: '3SDFWg70hIh33nabFOUvXUdQB4P2',
-                tags: '',
-                watchers: []
-            },
-            {
-                id: 'ANI334JWDN1921',
-                title: 'lorem lorem lorem ipsum',
-                description: 'jbe ihqeoikdn as dhqpwo qndqpwdaskdm q dqhwidcbdbi poqjeqd',
-                state: 1,
-                priority: 1,
-                created_in: new Date().toDateString(),
-                deadline: new Date().toDateString(),
-                created_by: 'JKSHD712B2UO3Y',
-                assignee: '3SDFWg70hIh33nabFOUvXUdQB4P2',
-                watchers: []
-            },
-            {
-                id: 'ANI334JWDN1921',
-                title: 'lorem lorem lorem ipsum',
-                description: 'jbe ihqeoikdn as dhqpwo qndqpwdaskdm q dqhwidcbdbi poqjeqd',
-                state: 3,
-                priority: 2,
-                created_in: new Date().toDateString(),
-                deadline: new Date().toDateString(),
-                created_by: 'JKSHD712B2UO3Y',
-                assignee: '3SDFWg70hIh33nabFOUvXUdQB4P2',
-                watchers: []
-            },
-            {
-                id: 'ANI334JWDN1921',
-                title: 'lorem lorem lorem ipsum',
-                description: 'jbe ihqeoikdn as dhqpwo qndqpwdaskdm q dqhwidcbdbi poqjeqd',
-                state: 4,
-                priority: 3,
-                created_in: new Date().toDateString(),
-                deadline: new Date().toDateString(),
-                created_by: 'JKSHD712B2UO3Y',
-                assignee: '3SDFWg70hIh33nabFOUvXUdQB4P2',
-                watchers: []
-            },
-            {
-                id: 'ANI334JWDN1921',
-                title: 'lorem lorem lorem ipsum',
-                description: 'jbe ihqeoikdn as dhqpwo qndqpwdaskdm q dqhwidcbdbi poqjeqd',
-                state: 2,
-                priority: 5,
-                created_in: new Date().toDateString(),
-                deadline: new Date().toDateString(),
-                created_by: 'JKSHD712B2UO3Y',
-                assignee: '3SDFWg70hIh33nabFOUvXUdQB4P2',
-                watchers: []
-            },
-            {
-                id: 'ANI334JWDN1921',
-                title: 'lorem lorem lorem ipsum',
-                description: 'jbe ihqeoikdn as dhqpwo qndqpwdaskdm q dqhwidcbdbi poqjeqd',
-                state: 2,
-                priority: 4,
-                created_in: new Date().toDateString(),
-                deadline: new Date().toDateString(),
-                created_by: 'JKSHD712B2UO3Y',
-                assignee: '3SDFWg70hIh33nabFOUvXUdQB4P2',
-                tags: '',
-                watchers: []
-            },
-            {
-                id: 'ANI334JWDN1921',
-                title: 'lorem lorem lorem ipsum',
-                description: 'jbe ihqeoikdn as dhqpwo qndqpwdaskdm q dqhwidcbdbi poqjeqd',
-                state: 1,
-                priority: 1,
-                created_in: new Date().toDateString(),
-                deadline: new Date().toDateString(),
-                created_by: 'JKSHD712B2UO3Y',
-                assignee: '3SDFWg70hIh33nabFOUvXUdQB4P2',
-                watchers: []
-            },
-            {
-                id: 'ANI334JWDN1921',
-                title: 'lorem lorem lorem ipsum',
-                description: 'jbe ihqeoikdn as dhqpwo qndqpwdaskdm q dqhwidcbdbi poqjeqd',
-                state: 3,
-                priority: 2,
-                created_in: new Date().toDateString(),
-                deadline: new Date().toDateString(),
-                created_by: 'JKSHD712B2UO3Y',
-                assignee: '3SDFWg70hIh33nabFOUvXUdQB4P2',
-                watchers: []
-            },
-            {
-                id: 'ANI334JWDN1921',
-                title: 'lorem lorem lorem ipsum',
-                description: 'jbe ihqeoikdn as dhqpwo qndqpwdaskdm q dqhwidcbdbi poqjeqd',
-                state: 4,
-                priority: 3,
-                created_in: new Date().toDateString(),
-                deadline: new Date().toDateString(),
-                created_by: 'JKSHD712B2UO3Y',
-                assignee: '3SDFWg70hIh33nabFOUvXUdQB4P2',
-                watchers: []
-            },
-            {
-                id: 'ANI334JWDN1921',
-                title: 'lorem lorem lorem ipsum',
-                description: 'jbe ihqeoikdn as dhqpwo qndqpwdaskdm q dqhwidcbdbi poqjeqd',
-                state: 2,
-                priority: 5,
-                created_in: new Date().toDateString(),
-                deadline: new Date().toDateString(),
-                created_by: 'JKSHD712B2UO3Y',
-                assignee: '3SDFWg70hIh33nabFOUvXUdQB4P2',
-                watchers: []
-            }
-        ]
+        tasks: []
     },
 
     mutations: {
-
+        setTasksArray: function(state, payload) {
+            state.tasks = payload;
+        },
+        addNewTask: function(state, payload) {
+            state.tasks.push(payload);
+            console.log(state.tasks);
+        }
     },
 
     actions: {
+        getTasksFromFirebase: async function({commit}, payload) {
+            let taskRef = firebase.firestore()
+                                    .collection('project_tasks')
+                                    .doc('uzZunDnyWZPlkZ9alR9w')
+                                    .collection('tasks');
+            let taskResp = await taskRef.get();
+            console.log(taskResp);
+            let documents = taskResp.docs;
+            documents.forEach( doc => {
+                let taskData = doc.data();
+                commit('addNewTask', taskData);
+            });
+        },
         saveNewTaskToProject: async function({commit}, payload) {
-            console.log(payload);
-
             let project_id = payload.project_id;
-            let taskObj = payload.taskObj;
+            let taskObj = {
+                title: payload.taskObj.title,
+                description: payload.taskObj.description,
+                priority: payload.taskObj.priority,
+                state: payload.taskObj.state,
+                assignee: payload.taskObj.assignee,
+                dueDate: new Date(payload.taskObj.dueDate).toISOString()
+            }
+            console.log(taskObj);
 
             try {            
-                let taskRef = firebase.firestore().collection('projects_tasks')
+                let taskRef = firebase.firestore().collection('project_tasks')
                                             .doc(project_id).collection('tasks');
-                let taskResp = await taskRef.add({taskObj});
+                let taskResp = await taskRef.add(taskObj);
                 let task_id = taskResp.uid;
                 taskObj.id = task_id;
-                commit('addNewTaskToProejct', {
+                console.log(taskResp);
+/*                 commit('addNewTaskToProject', {
                     project_id: project_id,
                     task: taskObj
-                });
+                }); */
                 commit('setNewHttpCall', { response: 200, msg: `New Task successfully added!!` })
             } catch (error) {
                 console.log(error);
@@ -343,7 +63,15 @@ export default {
         updateTaskToProject: async function({commit}, payload) {
             let project_id = payload.project_id;
             let task_id = payload.task_id;
-            let taskObj = payload.taskObj;
+            let taskObj = {
+                title: payload.taskObj.title,
+                description: payload.taskObj.description,
+                priority: payload.taskObj.priority.value,
+                state: payload.taskObj.state.value,
+                assignee: payload.taskObj.assignee,
+                dueDate: new Date(payload.taskObj.dueDate).toISOString(),
+                timeSpent: payload.taskObj.timeSpent
+            }
 
             try {
                 let taskRef = firebase.firestore().collection('projects_tasks')
