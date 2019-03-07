@@ -168,7 +168,7 @@
 		  </v-btn>
 		  <div class="right">
 			<p
-			  v-bind:class="'task-counter ' + (tasks.length === TASK_LIMIT ? 'tasks-limit' : tasks.length>30 ? 'tasks-close-limit' : 'tasks-far-limit')">{{ tasks.length }}/50</p>
+			  v-bind:class="'task-counter ' + (tasks.length === TASK_LIMIT ? 'tasks-limit' : tasks.length > TASK_LIMIT-30 ? 'tasks-close-limit' : 'tasks-far-limit')">{{ tasks.length + "/" + TASK_LIMIT }}</p>
 		  </div>
 		</header>
 	  </v-flex>
@@ -178,7 +178,7 @@
 	  <v-flex md3 justify-center class="droppable-area">
 		<h4 class="text-xs-center">BackLog</h4>
 		<v-divider style="margin-bottom: 10px;"></v-divider>
-		<v-card title="double click me to open" v-bind:id="'coiso-' + index"
+		<v-card v-bind:title="'Double click to open. Assignee: ' + getUserDisplayName(task.assignee)"  v-bind:id="'coiso-' + index"
 		  class="taskCard" v-for="(task, index) in tasksBacklog"
 		  v-bind:key="index" @dblclick="viewTaskDetails(1, index)">
 		  <v-card-title>{{task.title}}</v-card-title>
@@ -436,7 +436,7 @@ export default {
         getUserDisplayName: function(userId) {
             return this.projectUsers.find( obj => {
                 return obj.id === userId;
-            }).display_name;
+            }).displayName;
         },
         saveNewTask: function() {
             let taskObj = Object.create(this.newTaskModel);
