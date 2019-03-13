@@ -384,7 +384,9 @@ export default {
 
 	created: function() {
         this.project_name = this.$route.params.project_name;
-        this.$store.dispatch('getTasksFromFirebase');
+        this.$store.dispatch('getTasksFromFirebase', {
+            project_name: this.project_name
+        });
 	},
 
 	mounted: function() {

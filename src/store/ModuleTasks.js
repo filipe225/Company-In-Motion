@@ -19,10 +19,12 @@ export default {
     },
 
     actions: {
-        getTasksFromFirebase: async function({commit}, payload) {
+        getTasksFromFirebase: async function({commit, getters}, payload) {
+            const project_id = getters.getProjectIdByName(payload.project_name);
+
             let taskRef = firebase.firestore()
                                     .collection('project_tasks')
-                                    .doc('uzZunDnyWZPlkZ9alR9w')
+                                    .doc(project_id)
                                     .collection('tasks');
             let taskResp = await taskRef.get();
             console.log(taskResp);

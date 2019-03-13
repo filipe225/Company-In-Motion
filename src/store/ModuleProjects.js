@@ -642,6 +642,12 @@ export default {
                 const viewing_project = projects.find( p => p.name === project_name);
                 return viewing_project.id;
             }
+        },
+        getProjectIdByName: function(state) {
+            return function(project_name) {
+                let project = state.projects.find(p => p.name === project_name);
+                return project.id;
+            }
         }
     }
 }
