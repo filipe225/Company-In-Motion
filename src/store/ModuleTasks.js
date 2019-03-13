@@ -12,6 +12,9 @@ export default {
         addNewTask: function(state, payload) {
             state.tasks.push(payload);
             console.log(state.tasks);
+        },
+        resetTasks: function(state) {
+            state.tasks = [];
         }
     },
 

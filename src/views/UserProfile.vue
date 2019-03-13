@@ -98,48 +98,48 @@
 
     <v-container>
       <v-layout row wrap>
-        <v-flex xs12 sm6 > <!-- class="fix-margin-top" -->
-          <v-list class="bg-transparent">
-            <v-list-tile-title class="my-2 user-display-name">
-              <h4 class="normal" style="line-height: 56px;">{{ viewing_user.displayName }}</h4>
-            </v-list-tile-title>
-            <v-list-tile dense="true" class="smaller-tile">
-              <v-list-tile-title class="my-small-centered-title">Description</v-list-tile-title>
-            </v-list-tile>
-			<v-list-tile dense="true" class="smaller-tile">
-				<v-list-tile-title v-html="viewing_user.description || '<em>No description available</em>'"></v-list-tile-title>
-			</v-list-tile>
-            <v-list-tile dense="true" class="smaller-tile">
-              <v-list-tile-title class="my-small-centered-title">Member since</v-list-tile-title>
-            </v-list-tile>
-			<v-list-tile dense="true" class="smaller-tile">
-				<v-list-tile-title>{{ new Date(viewing_user.created_in).toDateString() }}</v-list-tile-title>
-			</v-list-tile>
-            <v-list-tile dense="true" class="smaller-tile">
-              <v-list-tile-title class="my-small-centered-title">Company title</v-list-tile-title> 
-            </v-list-tile>
-			<v-list-tile dense="true" class="smaller-tile">
-				<v-list-tile-title>{{ viewing_user.company_title }}</v-list-tile-title>
-			</v-list-tile>
-            <v-list-tile dense="true" class="smaller-tile">
-              <v-list-tile-title class="my-small-centered-title">
-                    <v-btn icon flat><v-icon>location_on</v-icon></v-btn> Location</v-list-tile-title>
-            </v-list-tile>
-			<v-list-tile dense="true" class="smaller-tile">
-				<v-list-tile-title>{{ viewing_user.location }}</v-list-tile-title>
-			</v-list-tile>
-            <v-list-tile dense="true" class="smaller-tile">
-              <v-list-tile-title class="my-small-centered-title">User type</v-list-tile-title>          
-            </v-list-tile>
-			<v-list-tile dense="true" class="smaller-tile">
-				<v-list-tile-title>{{ viewing_user.type }}</v-list-tile-title>
-			</v-list-tile>
-          </v-list>
-        </v-flex>
-        <v-flex xs12 sm6 style="text-align: center; margin-top: 30px;">
+        <v-flex xs12 sm6 style="text-align: center; margin-top: 30px;"> <!-- class="fix-margin-top" -->
 			<v-avatar size="200" color="grey lighten-4">
 				<img v-bind:src="viewing_user.photo_url" alt="avatar">
 			</v-avatar>
+        </v-flex>
+        <v-flex xs12 sm6 >
+            <v-list class="bg-transparent">
+                <v-list-tile-title class="my-2 user-display-name">
+                    <h4 class="normal centered" style="line-height: 56px;">{{ viewing_user.displayName }}</h4>
+                </v-list-tile-title>
+                <v-list-tile dense="true" class="smaller-tile">
+                    <v-list-tile-title  class="my-small-centered-title">Description</v-list-tile-title>
+                </v-list-tile>
+                <v-list-tile dense="true" class="smaller-tile">
+                    <v-list-tile-title class="centered" v-html="viewing_user.description || '<em>No description available</em>'"></v-list-tile-title>
+                </v-list-tile>
+                <v-list-tile dense="true" class="smaller-tile">
+                    <v-list-tile-title class="my-small-centered-title">Member since</v-list-tile-title>
+                </v-list-tile>
+                <v-list-tile dense="true" class="smaller-tile">
+                    <v-list-tile-title class="centered">{{ new Date(viewing_user.created_in).toDateString() }}</v-list-tile-title>
+                </v-list-tile>
+                <v-list-tile dense="true" class="smaller-tile">
+                    <v-list-tile-title class="my-small-centered-title">Company title</v-list-tile-title> 
+                </v-list-tile>
+                <v-list-tile dense="true" class="smaller-tile">
+                    <v-list-tile-title class="centered">{{ viewing_user.company_title }}</v-list-tile-title>
+                </v-list-tile>
+                <v-list-tile dense="true" class="smaller-tile">
+                    <v-list-tile-title class="my-small-centered-title">
+                        <v-btn icon flat><v-icon>location_on</v-icon></v-btn> Location</v-list-tile-title>
+                </v-list-tile>
+                <v-list-tile dense="true" class="smaller-tile">
+                    <v-list-tile-title class="centered">{{ viewing_user.location }}</v-list-tile-title>
+                </v-list-tile>
+                <v-list-tile dense="true" class="smaller-tile">
+                    <v-list-tile-title class="my-small-centered-title">User type</v-list-tile-title>          
+                </v-list-tile>
+                <v-list-tile dense="true" class="smaller-tile">
+                    <v-list-tile-title class="centered">{{ viewing_user.type }}</v-list-tile-title>
+                </v-list-tile>
+            </v-list>
         </v-flex>
       </v-layout>
 
@@ -233,12 +233,14 @@ export default {
   justify-content: center;
 }
 
-.smaller-tile { height: 36px; }
+.smaller-tile { height: auto; }
 .my-small-centered-title {
     height: auto;
     text-align: center;
-    color: rgba(0, 0, 0, 0.8);
+    color: rgba(0, 0, 0, 0.6);
 }
+
+.centered { text-align: center; }
 
 @media (min-width: 600px) {
   .fix-margin-top {

@@ -77,10 +77,10 @@
                 <span class="headline">Task View</span>
             </v-card-title>
             <v-card-title>
-                {{ viewingTaskInfo.title }}
+                <h5 class="normal">{{ viewingTaskInfo.title }}</h5>
             </v-card-title>
             <v-card-text>
-                {{ viewingTaskInfo.description }}
+                <h6 class="normal">{{ viewingTaskInfo.description }}</h6>
             </v-card-text>
             <v-card-text>
                 <v-menu ref="menu_edit_task" v-model="datePickerMenu2"

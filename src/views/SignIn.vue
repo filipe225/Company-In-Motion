@@ -1,7 +1,7 @@
 <template>
     <v-container>
         <v-layout row wrap>
-            <v-flex xs12 sm8 offset-sm2 class="bg-green-light">
+            <v-flex xs12 sm8 lg6 offset-sm2 offset-lg-3 class="bg-green-light">
                 <v-card class="bg-transparent">
                     <v-card-text>
                         <v-layout row>
@@ -29,7 +29,7 @@
                     </v-card-text>
                 </v-card>
             </v-flex>
-            <v-flex xs12 sm8 offset-sm2 >
+            <v-flex xs12 sm8 lg6 offset-sm2 offset-lg-3>
                 <v-layout row wrap>
                     <v-flex xs6>
                         <div class="text-xs-left">
