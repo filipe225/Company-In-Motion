@@ -66,7 +66,7 @@ export default {
         },
         // NOT IN USE
         updateTaskToProject: async function({commit}, payload) {
-            let project_id = payload.project_id;
+            //let project_id = payload.project_id;
             let task_id = payload.task_id;
             let taskObj = {
                 title: payload.taskObj.title,
@@ -95,6 +95,10 @@ export default {
             } catch (error) {
                 commit('setNewHttpCall', { response: 500, msg: `Error rejecting file ${file.fileName}. Try again or contact support.` })
             }
+        },
+        // NOT IN USE       
+        deleteTaskFromProject: async function({commit}, payload) {
+
         }
     },
 
