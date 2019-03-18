@@ -116,11 +116,16 @@
             <v-layout row wrap>
                 <v-flex xs12 v-if="userDB.type === 'admin'">
                     <v-layout row wrap>
-                        <v-flex xs6>
-                            <v-btn left>REFRESH PROJECTS</v-btn>
-                        </v-flex>
-                        <v-flex xs6>
-                            <v-btn @click="newProjectCreation = true" class="page-main-button right">CREATE NEW PROJECT</v-btn>
+                        <v-flex xs12>
+                            <v-btn @click="newProjectCreation = true" 
+                                class="page-main-button right">
+                                  CREATE NEW PROJECT <v-icon flat style="margin-left: 5px">add_circle</v-icon>
+                            </v-btn>
+                            <div class="right">
+                                <p style="font-size: 2em;">
+                                   {{ getNumberOfProjects() + '/5'}} 
+                                </p>
+                            </div>
                         </v-flex>
                     </v-layout>                  
                 </v-flex>
@@ -571,6 +576,9 @@ export default {
             this.$store.dispatch('firebaseDeleteProject', {project_index: this.selectedIndex});
             this.selectedIndex = -1;
 
+        },
+        getNumberOfProjects: function() {
+            return this.projects.length;
         },
         showDeleteProjectDialog: function(index) {
             this.dialogDeleteProject = true;

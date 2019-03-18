@@ -63,7 +63,7 @@ export default {
 
     getters: {
         orderedNotes: function(state, payload) {
-            return state.userDB.notes.sort( (a, b) => a.id - b.id);
+            //return state.userDB.notes.sort( (a, b) => a.id - b.id);
         },
         getNodeById: function(state) {
             return function(id) {

@@ -2,39 +2,37 @@ import * as firebase from 'firebase'
 
 export default {
     state: {
-        tasks: []
-    },
+        project_tasks: {
 
-    mutations: {
-        setTasksArray: function(state, payload) {
-            state.tasks = payload;
-        },
-        addNewTask: function(state, payload) {
-            state.tasks.push(payload);
-            console.log(state.tasks);
-        },
-        resetTasks: function(state) {
-            state.tasks = [];
         }
     },
 
-    actions: {
-        getTasksFromFirebase: async function({commit, getters}, payload) {
-            const project_id = getters.getProjectIdByName(payload.project_name);
+    mutations: {
 
-            let taskRef = firebase.firestore()
-                                    .collection('project_tasks')
-                                    .doc(project_id)
-                                    .collection('tasks');
-            let taskResp = await taskRef.get();
-            console.log(taskResp);
-            let documents = taskResp.docs;
-            documents.forEach( doc => {
-                let taskData = doc.data();
-                commit('addNewTask', taskData);
-            });
+    },
+
+    actions: {
+        getTasksFromFirebase: async function ({ commit, getters }, payload) {
+            const project_id = payload.project_id; //getters.getProjectIdByName(payload.project_name);
+
+            try {
+                let taskRef = firebase.firestore()
+                    .collection('project_tasks')
+                    .doc(project_id)
+                    .collection('tasks');
+                let taskResp = await taskRef.get();
+                let documents = taskResp.docs;
+                commit('resetProjectTasks', {project_id: project_id});
+                documents.forEach(doc => {
+                    let taskData = doc.data();
+                    commit('addNewTask', {project_id: project_id, taskData: taskData});
+                });                
+            } catch (error) {
+                commit('setNewHttpCall', { response: 500, message: 'Error loading project tasks. Try again or contact support.'});
+            }
+
         },
-        saveNewTaskToProject: async function({commit}, payload) {
+        saveNewTaskToProject: async function ({ commit }, payload) {
             let project_id = payload.project_id;
             let taskObj = {
                 title: payload.taskObj.title,
@@ -46,17 +44,17 @@ export default {
             }
             console.log(taskObj);
 
-            try {            
+            try {
                 let taskRef = firebase.firestore().collection('project_tasks')
-                                            .doc(project_id).collection('tasks');
+                    .doc(project_id).collection('tasks');
                 let taskResp = await taskRef.add(taskObj);
                 let task_id = taskResp.uid;
                 taskObj.id = task_id;
                 console.log(taskResp);
-/*                 commit('addNewTaskToProject', {
+                commit('addNewTaskToProject', {
                     project_id: project_id,
-                    task: taskObj
-                }); */
+                    taskData: taskObj
+                });
                 commit('setNewHttpCall', { response: 200, msg: `New Task successfully added!!` })
             } catch (error) {
                 console.log(error);
@@ -65,7 +63,7 @@ export default {
 
         },
         // NOT IN USE
-        updateTaskToProject: async function({commit}, payload) {
+        updateTaskToProject: async function ({ commit }, payload) {
             //let project_id = payload.project_id;
             let task_id = payload.task_id;
             let taskObj = {
@@ -80,9 +78,9 @@ export default {
 
             try {
                 let taskRef = firebase.firestore().collection('projects_tasks')
-                                            .doc(project_id)
-                                            .collection('tasks')
-                                            .doc(task_id);
+                    .doc(project_id)
+                    .collection('tasks')
+                    .doc(task_id);
                 let taskResp = await taskRef.update(taskObj);
 
                 commit('updateTaskToProject', {
@@ -97,21 +95,35 @@ export default {
             }
         },
         // NOT IN USE       
-        deleteTaskFromProject: async function({commit}, payload) {
+        deleteTaskFromProject: async function ({ commit }, payload) {
+            const project_id = payload.project_id;
+            const taskId = payload.taskObj.id;
+            const taskName = payload.taskObj.title;
+
+            try {            
+                const taskRef = firebase.firestore()
+                                    .collection('project_tasks')
+                                    .doc(project_id)
+                                    .collection('tasks')
+                                    .doc(taskId);
+
+                const taskResp = await taskRef.delete();
+
+                commit('deleteTaskFromProject', taskId);
+
+                commit('setNewHttpCall', { response: 200, msg: `${taskName} was successfully deleted!!` })
+            } catch (error) {
+                commit('setNewHttpCall', { response: 500, msg: `Error deleting task ${taskName}. Try again or contact support.` })
+            }
+
 
         }
     },
 
     getters: {
-        orderedTasks: function(state, getters) {
-
-        },
-        getTasks: function(state, getters) {
-            return state.tasks;
-        },
-        getTasksById: function(state, getters) {
-            return function(id) {
-                return state.tasks.find( obj => obj.id === id);
+        getTasksById: function (state) {
+            return function (id) {
+                return state.project_tasks[project_id].tasks.find(obj => obj.id === id);
             }
         }
     }

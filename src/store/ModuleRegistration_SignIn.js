@@ -284,7 +284,7 @@ export default {
             return state.user;
         },
         getUserDB: function(state) {
-            return state.userDB
+            return state.userDB;
         },
         getNotes: function(state) {
             return state.userDB.notes;

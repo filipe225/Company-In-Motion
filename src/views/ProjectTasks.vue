@@ -71,6 +71,22 @@
 	  </v-card>
 	</v-dialog>
 
+    <v-dialog v-model="deleteTaskDialog" max-width="500">
+        <v-card>
+            <v-card-title>
+                <h6 class="normal">Delete Task</h6>
+            </v-card-title>
+            <v-card-text>
+                You are about to delete the task <b>{{ deleteTask.title }}</b>.
+                Are you sure?
+            </v-card-text>
+            <v-card-actions>
+                <v-btn flat @click="deleteTaskDialog = false;">Cancel</v-btn>
+                <v-btn flat class="" @click="deleteTaskFromProject">Confirm Delete</v-btn>
+            </v-card-actions>
+        </v-card>
+    </v-dialog>
+
     <v-dialog v-model="editTaskSideDialog" max-width="600px" content-class="task-edit-dialog">
         <v-card class="task-edit-card">
             <v-card-title>
@@ -151,7 +167,7 @@
             <v-card-actions>
                 <v-spacer></v-spacer>
                 <v-btn color="blue darken-1" flat @click="editTaskSideDialog = false">Close</v-btn>
-                <v-btn color="red" flat @click="deleteTaskFromProject">Delete Task</v-btn>
+                <v-btn color="red" flat @click="confirmDelete">Delete Task</v-btn>
                 <v-btn class="page-main-button" flat @click="updateViewingTask">Save</v-btn>
             </v-card-actions>
         </v-card>
@@ -317,6 +333,8 @@ export default {
 			viewingTaskInfo: {
 
             },
+            deleteTaskDialog: false,
+            deleteTask: {},
 
 			STATES: {
 				BACKLOG: 1,
@@ -336,7 +354,7 @@ export default {
 
 	computed: {
 		tasks: function() {
-			return this.$store.getters.getTasks
+			return this.$store.getters.getTasks(this.project_id);
 		},
 		tasksBacklog: function() {
 			return this.tasks
@@ -384,9 +402,13 @@ export default {
 
 	created: function() {
         this.project_name = this.$route.params.project_name;
+        this.project_id = this.$store.getters.getProjectIdByName(this.project_name);
+        
         this.$store.dispatch('getTasksFromFirebase', {
-            project_name: this.project_name
+            project_id: this.project_id
         });
+
+        console.log(this.project_id);
 	},
 
 	mounted: function() {
@@ -396,6 +418,11 @@ export default {
 	},
 
 	methods: {
+        confirmDelete: function() {
+            deleteTask.id = viewingTaskInfo.id;
+            deleteTask.title = viewingTaskInfo.title,
+            deleteTaskDialog = true;
+        },
 		resetValidation: function() {
 
 		},
@@ -454,8 +481,8 @@ export default {
 
             if(taskObj.state === this.STATES.DONE)
                 taskObj.finished_in = new Date().toISOString();
-                    
-            let project_id = this.$store.getters.getProjectIdByName(this.project_name);
+            
+            let project_id = this.project_id;
             this.$store.dispatch('saveNewTaskToProject', {
                 project_id: project_id,
                 taskObj: taskObj

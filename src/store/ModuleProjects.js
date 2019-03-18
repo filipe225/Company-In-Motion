@@ -167,7 +167,23 @@ export default {
         setProjectUsers: function(state, payload) {
             console.log("setProjectUsers", payload);
             state.projects[payload.project_index].all_users = payload.project_users_all;
-        }
+        },
+        
+        /* PROJECT TASKS */
+        resetProjectTasks: function(state, payload) {
+            const projectIndex = state.projects.findIndex( p => p.id === payload.project_id);
+            state.projects[projectIndex].tasks = [];
+        },
+        addTaskToProject: function(state, payload) {
+            const projectIndex = state.projects.findIndex( p => p.id === payload.project_id);
+
+            state.projects[projectIndex].tasks.push(payload.taskData);
+        },
+        addNewTask: function (state, payload) {
+            const projectIndex = state.projects.findIndex( p => p.id === payload.project_id);
+
+            state.projects[projectIndex].tasks.push(payload.taskData);
+        },
     },
 
     actions: {
@@ -648,7 +664,13 @@ export default {
                 let project = state.projects.find(p => p.name === project_name);
                 return project.id;
             }
-        }
+        },
+        getTasks: function (state) {
+            return function(project_id) {
+                const projectIndex = state.projects.findIndex( p => p.id === project_id)
+                return state.projects[projectIndex].tasks;
+            }
+        },
     }
 }
 
