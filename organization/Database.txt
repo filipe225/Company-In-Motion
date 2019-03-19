@@ -6,6 +6,7 @@ USERS:
         created_in: _
         last_login: _
         photo_url: String
+        company: _
         company_title: _
         location: _
         description: _
