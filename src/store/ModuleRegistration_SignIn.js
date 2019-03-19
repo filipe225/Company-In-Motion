@@ -19,6 +19,9 @@ export default {
         },
         setUserDB: function(state, payload) {
             state.userDB = payload;
+        },
+        updateUserDB: function(state, payload) {
+            state.userDB = payload;
         }
     },
 
@@ -251,6 +254,7 @@ export default {
                         photo_url: 'https://firebasestorage.googleapis.com/v0/b/companysimplify-1992.appspot.com/o/users_avatars%2Fdefault%2Fuser_avatar_default.png?alt=media&token=b6883e32-5b03-48d2-9d9a-3c802e0e359b',
                         notes: [],
                         location: "",
+                        company: "",
                         company_title: "",
                         description: "",
                         newsletter: false,
@@ -271,6 +275,37 @@ export default {
                     console.log(error);
                     commit('setNewHttpCall', { response: 500, msg: 'Error registering user. Try Again.'})
                 });
+        },
+        updateUserProfile: async function({commit}, payload) {
+            const user_id = payload.user_id;
+            const user_profile = payload.profile;
+
+            try  {
+
+                const updatedUser = {
+                    displayName: user_profile.displayName,
+                    email: user_profile.email,
+                    type: user_profile.type,
+                    notes: [],
+                    location: user_profile.location,
+                    company: user_profile.company,
+                    company_title: user_profile.company_title,
+                    description: user_profile.description,
+                    newsletter: user_profile.checkboxNewsletter,
+                    email_new_file: user_profile.checkboxEmailFiles,
+                    email_new_task: user_profile.checkBoxEmailTasks,
+                    email_new_appointment: true                  
+                }
+
+                const userRef = firebase.firestore().collection('users').doc(user_id);
+                const userResp = await userRef.update(updatedUser);
+
+                commit('updateUserDb', updatedUser);
+                commit('setNewHttpCall', { response: 200, msg: 'Successfully updated user profile!'});
+            } catch(error) {
+                commit('setNewHttpCall', { response: 500, msg: 'Error updating user profile. Try again or contact support.'});
+            }
+
         }
     
 
