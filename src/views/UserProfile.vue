@@ -3,83 +3,106 @@
   <v-container fluid>
 
     <!-- MODAL EDIT PROFILE -->
-    <v-dialog v-model="editProfileDialog" width="500">
-      <v-card class="bg-green-light px-5 py-3">
-          <h4 class="normal">Edit User Profile</h4>
-            <v-form ref="form" lazy-validation>
-            <v-text-field
-                v-model="editProfile.displayName"
-                :rules="editProfile.displayNameRules"
-                label="Name"
-                required
-            ></v-text-field>
+    <v-dialog v-model="editProfileDialog" width="500">            
+        <v-form ref="form" lazy-validation>
+            <v-card>
+                <v-card-title>
+                    <h4>Edit User Profile</h4>
+                </v-card-title>
+                <v-card-text>
+                    <v-text-field
+                        v-model="editProfile.displayName"
+                        :rules="editProfile.displayNameRules"
+                        label="Name"
+                        required
+                    ></v-text-field>
 
-            <v-text-field v-model="editProfile.description" label="Description" required></v-text-field>
+                    <v-text-field v-model="editProfile.description" label="Description" required></v-text-field>
 
-            <v-text-field v-model="editProfile.location" label="Location" required></v-text-field>
+                    <v-text-field v-model="editProfile.location" label="Location" required></v-text-field>
 
-            <v-text-field v-model="editProfile.description" label="Company" required></v-text-field>
+                    <v-text-field v-model="editProfile.description" label="Company" required></v-text-field>
 
-            <v-text-field v-model="editProfile.company_title" label="Company Title" required></v-text-field>
+                    <v-text-field v-model="editProfile.company_title" label="Company Title" required></v-text-field>
 
-            <v-checkbox v-model="editProfile.checkboxNewsletter" label="Receive Newsletter?"></v-checkbox>
+                    <v-checkbox v-model="editProfile.checkboxNewsletter" label="Receive Newsletter?"></v-checkbox>
 
-            <v-checkbox v-model="editProfile.checkboxEmailFiles" label="Receive email on new file?"></v-checkbox>
+                    <v-checkbox v-model="editProfile.checkboxEmailFiles" label="Receive email on new file?"></v-checkbox>
 
-            <v-checkbox v-model="editProfile.checkboxEmailTasks" label="Receive email on new task?"></v-checkbox>
+                    <v-checkbox v-model="editProfile.checkboxEmailTasks" label="Receive email on new task?"></v-checkbox>
 
-            <v-checkbox
-                v-model="editProfile.checkboxEmailAppointment"
-                label="Receive email on new appointment?"
-            ></v-checkbox>
-            </v-form>
-            <v-card-actions style="justify-content: space-between;">
-                <v-btn flat @click="editProfileDialog = false">Cancel</v-btn>
-                <v-btn flat class="page-main-button" @click="saveProfileChanges">Save</v-btn>
-            </v-card-actions>
-      </v-card>
+                    <v-checkbox
+                        v-model="editProfile.checkboxEmailAppointment"
+                        label="Receive email on new appointment?"
+                    ></v-checkbox>                    
+                </v-card-text>
+                <v-card-actions style="justify-content: space-between;">
+                    <v-btn flat @click="editProfileDialog = false">Cancel</v-btn>
+                    <v-btn flat class="page-main-button" @click="saveProfileChanges">Save</v-btn>
+                </v-card-actions>
+            </v-card>
+      </v-form>
     </v-dialog>
 
 	<!-- MODAL CHANGE EMAIL -->
 	<v-dialog v-model="changeEmailDialog" width="500">
-        <v-card class="bg-green-light pa-5">
-            <h4>Change Email</h4>
-            <v-form class="bg-green-light pa-5">
-                <v-text-field
-                    v-model="changeEmail.currentEmail"
-                    label="Current E-mail"></v-text-field>
-                <v-text-field
-                    v-model="changeEmail.newEmail"
-                    label="New E-mail"></v-text-field>
-            </v-form>
-        </v-card>
+        <v-form>
+            <v-card>
+                <v-card-title>
+                    <h4>Change Email</h4>
+                </v-card-title>
+                <v-card-text>
+                    <v-text-field
+                        type="email"
+                        v-model="changeEmail.currentEmail"
+                        :rules="[compareEmail]"
+                        label="Current E-mail"></v-text-field>
+                    <v-text-field
+                        type="email"
+                        v-model="changeEmail.newEmail"
+                        label="New E-mail"></v-text-field>
+                </v-card-text>
+                <v-card-actions style="justify-content: space-between">
+                    <v-btn flat @click="changeEmailDialog = false;">Cancel</v-btn>
+                    <v-btn flat class="page-main-button" @click="changeUserEmail">Change Email</v-btn>
+                </v-card-actions>
+            </v-card>
+        </v-form>
 	</v-dialog>
 
 	<!-- MODAL CHANGE PASSWORD -->
-	<v-dialog v-model="changePasswordDialog" width="500">
-        <v-card class="bg-green-light pa-5">
-            <h4>Change Password</h4>
-            <v-form class="bg-green-light pa-5">
-                <v-text-field
-                    v-model="changePassword.currentPassword"
-                    type="password"
-                    name="input-current-password"
-                    label="Normal with hint text"
-                    hint="At least 8 characters"></v-text-field>
-                <v-text-field
-                    v-model="changePassword.newPassword"
-                    type="password"
-                    name="input-new-password"
-                    label="Normal with hint text"
-                    hint="At least 8 characters"></v-text-field>
-                <v-text-field
-                    v-model="changePassword.repeatPassword"
-                    type="password"
-                    name="input-repeat-password"
-                    label="Normal with hint text"
-                    hint="At least 8 characters"></v-text-field>
-            </v-form>
-        </v-card>
+	<v-dialog v-model="changePasswordDialog" width="500">            
+        <v-form>
+            <v-card>
+                <v-card-title>
+                    <h4>Change Password</h4>
+                </v-card-title>
+                <v-card-text>                
+                    <v-text-field
+                        v-model="changePassword.currentPassword"
+                        type="password"
+                        name="input-current-password"
+                        label="Normal with hint text"
+                        hint="At least 8 characters"></v-text-field>
+                    <v-text-field
+                        v-model="changePassword.newPassword"
+                        type="password"
+                        name="input-new-password"
+                        label="Normal with hint text"
+                        hint="At least 8 characters"></v-text-field>
+                    <v-text-field
+                        v-model="changePassword.repeatPassword"
+                        type="password"
+                        name="input-repeat-password"
+                        label="Normal with hint text"
+                        hint="At least 8 characters"></v-text-field>
+                </v-card-text>
+                <v-card-actions style="justify-content: space-between">
+                    <v-btn flat @click="changePasswordDialog = false;">Cancel</v-btn>
+                    <v-btn flat class="page-main-button" @click="changeUserPassword"></v-btn>
+                </v-card-actions>
+            </v-card>
+        </v-form>
 	</v-dialog>
 
     <v-layout row wrap v-if="this.viewing_user.id === this.userDB.id">
@@ -175,7 +198,7 @@ export default {
             },
             changeEmailRules: {
                 currentEmail: [
-                    v => !!v || "Current E-mail is required",
+                    v => !!v || "Current E-mail is required"
                 ],
                 newEmail: [
                     v => !!v || "New E-mail is required",
@@ -201,6 +224,11 @@ export default {
     },
 
     computed: {
+        compareEmail: function() {
+            return this.changeEmail.currentEmail !== this.userDB.email 
+                    ? "Email does not match"
+                    : "";
+        },
         comparePasswords: function() {
             return this.register.password !== this.register.confirmPassword
                 ? "Password do not match!"
@@ -229,6 +257,15 @@ export default {
     mounted: function() {},
 
     methods: {
+        changeUserEmail: function() {
+            changeEmail
+            this.$store.dispatch('firebaseUserLogout');
+            this.$router.push('/');
+        },
+        changeUserPassword: function() {
+            this.$store.dispatch('firebaseUserLogout');
+            this.$router.push('/');
+        },
         editUserProfile: function() {   
             this.editProfile.displayName = this.userDB.displayName;
             this.editProfile.description = this.userDB.description;

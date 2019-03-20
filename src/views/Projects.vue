@@ -67,8 +67,7 @@
                             <span class="headline">New Project Creation</span>
                         </v-card-title>
                         <v-card-text>
-                        <v-container grid-list-md>
-                            
+                        <v-container grid-list-md>             
                             <v-layout wrap>
                                 <v-flex xs12>
                                     <v-text-field label="Project Name *" required 
@@ -84,7 +83,6 @@
                                 </v-flex>
                             </v-layout>
                         </v-container>
-                        <small>*indicates required field</small>
                         </v-card-text>
                         <v-card-actions>
                             <v-btn flat type="reset" ref="reset_project_creation">Reset Form</v-btn>

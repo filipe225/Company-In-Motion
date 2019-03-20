@@ -305,8 +305,56 @@ export default {
             } catch(error) {
                 commit('setNewHttpCall', { response: 500, msg: 'Error updating user profile. Try again or contact support.'});
             }
+        },
+        updateUserEmail: async function({commit}, payload) {
+            try {
+                const currentUser = firebase.auth().currentUser;
+                const newEmail = payload.newEmail;
 
-        }
+                const ref = await currentUser.updateEmail(newEmail);
+                console.log(ref);
+                commit('setNewHttpCall', { response: 200, msg: 'Success. Try again or contact support.'});
+            } catch (error) {
+                commit('setNewHttpCall', { response: 500, msg: 'Error. Try again or contact support.'});
+
+            }
+        },
+        updateUserPassword: async function({commit, getters}, payload) {
+            try {
+                const currentUser = firebase.auth().currentUser;
+                const newPassword = payload.newPassword;
+
+                const ref = await currentUser.updatePassword(newPassword);
+                console.log(ref);
+                commit('setNewHttpCall', { response: 200, msg: 'Success. Try again or contact support.'});
+            } catch (error) {
+                commit('setNewHttpCall', { response: 500, msg: 'Error. Try again or contact support.'});
+
+            }
+        },
+        resetUserPassword: async function({commit}, payload) {
+            try {            
+                const ref = await firebase.auth().sendPasswordResetEmail(payload.email);
+                console.log(ref);
+                commit('setNewHttpCall', { response: 200, msg: 'Success. Try again or contact support.'});
+            } catch (error) {
+                commit('setNewHttpCall', { response: 500, msg: 'Error. Try again or contact support.'});
+            }
+        },
+        deleteUser: async function({commit, getters}, payload) {
+            try {
+                const currentUser = firebase.auth().currentUser;
+                const ref = currentUser.delete();
+                console.log(ref);
+                const userRef = firebase.firestore().collection('users').doc(payload.user_id);
+                const userResp = await userRef.delete();
+                console.log(userResp);
+                commit('setNewHttpCall', { response: 200, msg: 'Success. Try again or contact support.'});
+            } catch (error) {
+                commit('setNewHttpCall', { response: 500, msg: 'Error. Try again or contact support.'});
+
+            }
+        },
     
 
     },

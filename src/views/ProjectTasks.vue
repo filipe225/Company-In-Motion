@@ -87,18 +87,20 @@
         </v-card>
     </v-dialog>
 
-    <v-dialog v-model="editTaskSideDialog" max-width="600px" content-class="task-edit-dialog">
+    <v-dialog v-model="editTaskSideDialog" max-width="600px" 
+            content-class="task-edit-dialog" grid-list-lg>
         <v-card class="task-edit-card">
             <v-card-title>
                 <span class="headline">Task View</span>
             </v-card-title>
-            <v-card-title>
-                <h5 class="normal">{{ viewingTaskInfo.title }}</h5>
-            </v-card-title>
             <v-card-text>
-                <h6 class="normal">{{ viewingTaskInfo.description }}</h6>
-            </v-card-text>
-            <v-card-text>
+                <v-text-field v-model="viewingTaskInfo.title"
+                    label="Title"></v-text-field>
+
+                                    <v-textarea v-model="viewingTaskInfo.description"
+                    label="Description"></v-textarea>
+            
+            
                 <v-menu ref="menu_edit_task" v-model="datePickerMenu2"
                     :close-on-content-click="false"
                     :nudge-right="40"
@@ -117,23 +119,23 @@
                         <v-btn flat color="primary" @click="$refs.menu_edit_task.save(datePicker2)">OK</v-btn>
                     </v-date-picker>
                 </v-menu>
-            </v-card-text>
-            <v-card-text>
+            
+            
                 <v-select v-model="viewingTaskInfo.state" label="State"
-                    :rules="newTaskRules.stateRules" dense height="60"
+                    :rules="newTaskRules.stateRules" dense
                     item-text="text" item-value="value"
                     :items="newTaskFixedData.states"></v-select>
-            </v-card-text>
-            <v-card-text>
+            
+            
                 <v-select v-model="viewingTaskInfo.priority" label="Priority" required
-                    :rules="newTaskRules.priorityRules" dense height="60"
+                    :rules="newTaskRules.priorityRules" dense 
                     item-text="text" item-value="value"
                     :items="newTaskFixedData.priorities"></v-select>
-            </v-card-text>
-            <v-card-text>
-                <v-select v-model="newTaskModel.assignee" label="Assignee" clearable
-                    dense height="60"
-                    :items="newTaskFixedData.assignees">
+            
+            
+                <v-select v-model="viewingTaskInfo.assignee" label="Assignee" clearable
+                    dense :items="newTaskFixedData.assignees"
+                    item-text="displayName" item-value="id">
                     <template slot="selection" slot-scope="data">
                             <v-flex xs2>
                                 <v-avatar size="20">
@@ -153,15 +155,16 @@
                         </v-list-tile-content>
                     </template>
                 </v-select>
-            </v-card-text>
-            <v-card-text>
+            
+            
                 {{ viewingTaskInfo.timeSpent }}
-            </v-card-text>
-            <v-card-text>
+            
+            
                 {{ viewingTaskInfo.created_in }}
-            </v-card-text>
-            <v-card-text>
+            
+            
                 {{ viewingTaskInfo.created_by }}
+            
             </v-card-text>
 
             <v-card-actions>
@@ -330,9 +333,7 @@ export default {
                 priorityRules: [ v => !!v || "Required"]
 			},
 			viewTaskDialog: false,
-			viewingTaskInfo: {
-
-            },
+			viewingTaskInfo: {},
             deleteTaskDialog: false,
             deleteTask: {},
 
@@ -407,8 +408,6 @@ export default {
         this.$store.dispatch('getTasksFromFirebase', {
             project_id: this.project_id
         });
-
-        console.log(this.project_id);
 	},
 
 	mounted: function() {
@@ -437,24 +436,24 @@ export default {
 			switch(container) {
 				case this.STATES.BACKLOG:
 					const backlogs = this.tasksBacklog;
-					this.viewingTaskInfo = backlogs[index];
+					this.viewingTaskInfo = Object.assign({}, backlogs[index]);
 					break;
 				case this.STATES.TO_DO_NEXT:
 					const to_do_next = this.tasksToDoNext;
-					this.viewingTaskInfo = to_do_next[index];
+					this.viewingTaskInfo = Object.assign({}, to_do_next[index]);
 					break;
 				case this.STATES.IN_PROGRESS:
 					const in_progress = this.tasksInProgress;
-					this.viewingTaskInfo = in_progress[index];
+					this.viewingTaskInfo = Object.assign({}, in_progress[index]);
 					break;
 				case this.STATES.DONE:
 					const done = this.tasksDone;
-					this.viewingTaskInfo = done[index];
+					this.viewingTaskInfo = Object.assign({}, done[index]);
 					break;
 				default:
 					break;
             }
-            
+            //this.viewingTaskInfo.dueDate = new Date(this.viewingTaskInfo.dueDate).toDateString('yyyy-MM-dd');
             this.editTaskSideDialog = true;
         },
         getUserPhoto: function(userId) {
@@ -489,12 +488,23 @@ export default {
             });
             this.newTaskDialog = false;
             console.log(this.newTaskModel);
+            this.resetNewTaskModel();
         },
         updateViewingTask: function() {
             console.log(this.viewingTaskInfo);
         },
         deleteTaskFromProject: function() {
             console.log(this.viewingTaskInfo);
+        },
+        resetNewTaskModel: function() {
+            this.newTaskModel = {
+                title: '',
+                description: '',
+                priority: { text: 'Normal', value: 1},
+                dueDate: '',
+                assignee: '',
+                state: { text: 'Backlog', value: 1}
+            };
         }
 	}
 }
@@ -502,65 +512,66 @@ export default {
 
 <style >
 
-.v-dialog.task-edit-dialog {
-    max-width: 600px;
-    margin: 0;
-    position: fixed;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    overflow: hidden;
-    max-height: initial;
-}
+    .v-dialog.task-edit-dialog {
+        max-width: 600px;
+        margin: 0;
+        position: fixed;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        overflow: hidden;
+        max-height: initial;
+    }
 
-.task-edit-card {
-    position: absolute;
-    top: 0;
-    right: 0;
-    height: 100%;
-    width: 100%;
-}
+    .task-edit-card {
+        position: absolute;
+        top: 0;
+        right: 0;
+        height: 100%;
+        width: 100%;
+    }
 
-.taskCard {
-  	margin-bottom: 10px;
-}
+    .taskCard {
+        margin-bottom: 10px;
+        cursor: pointer;
+    }
 
-.task-counter {
-	line-height: 50px;
-	font-size: 1.5em;
-	font-weight: 400;
-}
+    .task-counter {
+        line-height: 50px;
+        font-size: 1.5em;
+        font-weight: 400;
+    }
 
-.tasks-far-limit {
-  	color: green;
-}
-.tasks-close-limit {
-  	color: darkgoldenrod;
-}
-.tasks-limit {
-  	color: red;
-}
+    .tasks-far-limit {
+        color: green;
+    }
+    .tasks-close-limit {
+        color: darkgoldenrod;
+    }
+    .tasks-limit {
+        color: red;
+    }
 
-.priority {
-	height: 21px;
-	border-radius: 50%;
-	margin: 0 5px;
-}
-.priority.priority-1 .v-icon {
-	display: none;
-  	color: lightgreen;
-}
-.priority.priority-2 .v-icon {
-  	color: lightgreen;
-}
-.priority.priority-3 .v-icon {
-  	color: yellow;
-}
-.priority.priority-4 .v-icon {
-  	color: darkorange;
-}
-.priority.priority-5 .v-icon {
-  	color: red;
-}
+    .priority {
+        height: 21px;
+        border-radius: 50%;
+        margin: 0 5px;
+    }
+    .priority.priority-1 .v-icon {
+        display: none;
+        color: lightgreen;
+    }
+    .priority.priority-2 .v-icon {
+        color: lightgreen;
+    }
+    .priority.priority-3 .v-icon {
+        color: yellow;
+    }
+    .priority.priority-4 .v-icon {
+        color: darkorange;
+    }
+    .priority.priority-5 .v-icon {
+        color: red;
+    }
 
 </style>

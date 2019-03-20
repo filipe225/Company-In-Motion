@@ -17,7 +17,6 @@ import ProjectTasks from './views/ProjectTasks.vue'
 import ProjectSendFileToAproval from './views/ProjectSendFileToAproval.vue'
 import ProjectReviewFile from './views/ProjectReviewFile.vue'
 import ProjectCalendar from './views/ProjectCalendar.vue'
-import Relax from './views/Relax.vue'
 import Focus from './views/Focus.vue'
 import UserProfile from './views/UserProfile.vue'
 
@@ -96,12 +95,6 @@ export default new Router({
         path: '/projects/:project_name/project_files/file_review/:file_id',
         name: 'file_review',
         component: ProjectReviewFile,
-        beforeEnter: AuthGuard
-    },
-    {
-        path: "/relax",
-        name: "relax",
-        component: Relax,
         beforeEnter: AuthGuard
     },
     {
