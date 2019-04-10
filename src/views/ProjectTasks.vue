@@ -453,7 +453,7 @@ export default {
 				default:
 					break;
             }
-            //this.viewingTaskInfo.dueDate = new Date(this.viewingTaskInfo.dueDate).toDateString('yyyy-MM-dd');
+            this.viewingTaskInfo.dueDate = new Date(this.viewingTaskInfo.dueDate).toISOString().split('T')[0];
             this.editTaskSideDialog = true;
         },
         getUserPhoto: function(userId) {
